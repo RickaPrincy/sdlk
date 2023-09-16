@@ -8,19 +8,3 @@ MouseEvent::MouseEvent(){
         _allEvents[static_cast<MouseEventType>(i)] = false;
     }
 }
-
-void MouseEvent::updateEventState(MouseEventType event, bool newState){
-    _allEvents[event] = newState;
-}
-
-bool MouseEvent::checkEventState(MouseEventType event){
-    return _allEvents[event];
-}
-
-bool MouseEvent::isStateTrue(MouseEventType event){
-    return checkEventState(event);
-}
-
-bool MouseEvent::isStateFalse(MouseEventType event){
-    return !checkEventState(event);
-}

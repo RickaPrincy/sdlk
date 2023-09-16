@@ -2,7 +2,8 @@
 #define __SDLK_MOUSE_EVENT__
 
     #include <map>
-    
+    #include "./eventHandled.hpp" 
+
     namespace Sdlk{
         enum MouseEventType {
             MOUSE_NO_EVENT,        // No mouse event occurred
@@ -21,15 +22,9 @@
             MOUSE_SCROLL_DOWN      // Mouse scroll wheel moved down
         };
 
-        class MouseEvent{
-            private:
-                std::map<MouseEventType, bool> _allEvents;
+        class MouseEvent : EventHandled<MouseEventType>{
             public: 
                 MouseEvent();
-                void updateEventState(MouseEventType event, bool newState);
-                bool checkEventState(MouseEventType event);
-                bool isStateTrue(MouseEventType event);
-                bool isStateFalse(MouseEventType event);
         };
     }
 

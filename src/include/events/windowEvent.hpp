@@ -2,6 +2,7 @@
 #define __SDLK_WINDOW_EVENT__
     #include <SDL2/SDL.h>
     #include <map>
+    #include "./eventHandled.hpp"
 
     namespace Sdlk{
         enum WindowEventType {
@@ -19,15 +20,9 @@
             WINDOW_CLOSE          // Window close requested
         };
 
-        class WindowEvent{
-            private:
-                std::map<WindowEventType, bool> _allEvents;
+        class WindowEvent : EventHandled<WindowEventType>{
             public: 
                 WindowEvent();
-                void updateEventState(WindowEventType event, bool newState);
-                bool checkEventState(WindowEventType event);
-                bool isStateTrue(WindowEventType event);
-                bool isStateFalse(WindowEventType event);
         };
     }
 #endif
