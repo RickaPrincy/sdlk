@@ -4,15 +4,19 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 
-#include "./utils.hpp"
-namespace Sdlk{
-    class SDL{
-        private:
-            Uint32 _flags;
-        public:
-            SDL(Uint32 flags);
-            ~SDL();
-    };
-}
+    #include "./utils.hpp"
+    #include "./types.hpp"
+    #include "./window.hpp"
+
+    namespace Sdlk{
+
+        class SDL{
+            private:
+                Uint32 _flags;
+            public:
+                SDL(Uint32 flags);
+                ~SDL();
+        };
+    }
 
 #endif
