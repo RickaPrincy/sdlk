@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5.0)
 
 project(Sdlk VERSION 0.1.0 LANGUAGES C CXX)
 
-file(GLOB SOURCES "src/*.cpp")
+file(GLOB SOURCES "src/**/*.cpp" "src/*.cpp")
 add_library(${PROJECT_NAME} ${SOURCES})
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
@@ -24,7 +24,12 @@ target_link_libraries(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/include)
 
 install(TARGETS ${PROJECT_NAME} LIBRARY DESTINATION lib)
-install(DIRECTORY src/include/ DESTINATION include/sdl_kit)
+
+file(GLOB_RECURSE HEADER_FILES "${CMAKE_SOURCE_DIR}/src/include/*.hpp")
+install(
+    FILES ${HEADER_FILES}
+    DESTINATION include/sdl_kit
+)
 
 if(CMAKE_SYSTEM MATCHES "Linux")
     set(DEFAULT_CMAKE_MODULE_PATH "/usr/share/cmake/Modules")

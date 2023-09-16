@@ -4,18 +4,23 @@
     #include <iostream>
     #include <SDL2/SDL.h>
 
-    #include "./utils.hpp"
-    #include "./types.hpp"
+    #include "../utils.hpp"
+    #include "../types/position.hpp"
 
     namespace Sdlk{
         class Window{
-            private: 
-                std::string _title;
-                SDL_Window *_window = NULL;
             public:
+                //Maybe utils for user
+                SDL_Window *_window = NULL;
+
+                //Window informations 
                 std::string getTitle();
+                Position getPosition();
+                
                 void setTitle(std::string newTitle);
-                Positions getPositions();
+                void setPosition(Position newPosition);
+                
+                //Constructor && Deconstructor
                 Window(std::string title, int w, int h);
                 Window(std::string title, int w, int h, int x, int y);
                 ~Window();

@@ -4,11 +4,11 @@
     #include <iostream>
 
     namespace Sdlk{
-
-        class Positions{
+        class Position{
             public:
                 int _x, _y;
-                Positions(int x ,int y);
+                Position(int x ,int y):_x(x),_y(y){};
+                Position():_x(0),_y(0){};
         };
     }
 #endif
