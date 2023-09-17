@@ -1,6 +1,7 @@
 #ifndef __SDLK__
 #define __SDLK__
     #include <iostream>
+    #include <set>
     #include <SDL2/SDL.h>
 
     #include "./utils.hpp"
@@ -9,13 +10,19 @@
     #include "./components/window.hpp"
 
     namespace Sdlk{
-        class SDL{
-            private:
-                Uint32 _flags;
+        class App{
+            private: 
+                std::set<Uint32> _flags;
             public:
+                Event _event;
+                Window *_mainWindow;
+
+                void initSdl(Uint32 flags);
                 void run();
-                SDL(Uint32 flags);
-                ~SDL();
+
+                App(Uint32 flags);
+                App(Uint32 flags, Window *mainWindow);
+                ~App();
         };
     }
 

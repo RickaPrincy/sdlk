@@ -3,6 +3,7 @@
 
     #include <map>
     #include "./eventHandled.hpp" 
+    #include <SDL2/SDL.h>
 
     namespace Sdlk{
         enum MouseEventType {

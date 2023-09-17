@@ -54,7 +54,7 @@ Window::Window(std::string title, int w, int h, int x, int y){
 
 Window::~Window(){
     if(_window != NULL){
+        Utils::cout("Destroy window " + getTitle());
         SDL_DestroyWindow(_window);
-        Utils::cout("Destroy window" + getTitle());
     }
 }
