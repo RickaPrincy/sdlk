@@ -15,7 +15,7 @@
                 std::set<Uint32> _flags;
             public:
                 Event _event;
-                Window *_mainWindow;
+                Window *_mainWindow = nullptr;
 
                 void initSdl(Uint32 flags);
                 void run();

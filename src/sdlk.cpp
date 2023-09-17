@@ -12,13 +12,14 @@ void App::initSdl(Uint32 flags){
 }
 
 void App::run(){
-    if(_mainWindow != NULL){
+    if(_mainWindow != nullptr){
         while(true){
             _event.handlerAllEvents();
+            SDL_RenderPresent(_mainWindow->_renderer);
         }
     }
 
-    Utils::cerr("Main window cannot be NULL");
+    Utils::cerr("Main window cannot be null");
 }
 
 App::App(Uint32 flags){

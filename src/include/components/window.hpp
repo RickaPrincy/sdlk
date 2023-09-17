@@ -6,12 +6,13 @@
 
     #include "../utils.hpp"
     #include "../types/position.hpp"
+    #include "../components/component.hpp"
 
     namespace Sdlk{
-        class Window{
+        class Window: public Component{
             public:
                 //Maybe utils for user
-                SDL_Window *_window = NULL;
+                SDL_Window *_window = nullptr;
 
                 //Window informations 
                 std::string getTitle();
@@ -21,8 +22,10 @@
                 void setPosition(Position newPosition);
                 
                 //Constructor && Deconstructor
-                Window(std::string title, int w, int h);
-                Window(std::string title, int w, int h, int x, int y);
+                Window(
+                    Component *parent,std::string title, int w, int h, 
+                    int x = 0, int y = 0, bool createRenderer = false 
+                );
                 ~Window();
         };
     }
