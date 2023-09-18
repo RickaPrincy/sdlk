@@ -3,14 +3,14 @@
 using namespace Sdlk;
 
 void Component::render(){
-    if(_parent == nullptr || _parent == NULL){
+    if(Error<Component>::isNull(_parent)){
         //TODO : how if _renderer == nullptr | NULL?
         SDL_RenderPresent(_renderer);
     }
 }
 
 Component::Component(Component *parent): _parent(parent){
-    if(parent != nullptr || parent != NULL){
+    if(!Error<Component>::isNull(_parent)){
         _renderer = parent->_renderer;
     }
 }

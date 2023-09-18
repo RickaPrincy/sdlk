@@ -23,7 +23,7 @@
             MOUSE_SCROLL_DOWN      // Mouse scroll wheel moved down
         };
 
-        class MouseEvent : EventHandled<MouseEventType>{
+        class MouseEvent : public EventHandled<MouseEventType>{
             public: 
                 MouseEvent();
         };

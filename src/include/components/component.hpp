@@ -4,6 +4,7 @@
     #include <SDL2/SDL.h>
     #include "../types/visibility.hpp"
     #include "../utils.hpp"
+    #include "../error.hpp"
 
     namespace Sdlk{
         class Component{

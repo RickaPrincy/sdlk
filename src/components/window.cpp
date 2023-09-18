@@ -4,12 +4,16 @@ using namespace Sdlk;
 
 //Window Informations
 std::string Window::getTitle(){
-    return _sdl_window == nullptr ? "" : SDL_GetWindowTitle(_sdl_window);
+    if(!Error<SDL_Window>::isNull(_sdl_window, "Cannot get the title, because the window is null")){
+        return SDL_GetWindowTitle(_sdl_window);
+    }
+    
+    return "";
 }
 
 Position Window::getPosition(){
     int x = -1, y = -1;
-    if(_sdl_window != nullptr){
+    if(!Error<SDL_Window>::isNull(_sdl_window, "Cannot get the position because the window is null")){
         SDL_GetWindowPosition(_sdl_window, &x, &y);
     }
     
@@ -17,11 +21,15 @@ Position Window::getPosition(){
 }
 
 void Window::setTitle(std::string newTitle){
-    SDL_SetWindowTitle(_sdl_window, newTitle.c_str());
+    if(!Error<SDL_Window>::isNull(_sdl_window, "Cannot set the title because the window is null")){
+        SDL_SetWindowTitle(_sdl_window, newTitle.c_str());
+    }
 }
 
 void Window::setPosition(Position newPosition){
-    SDL_SetWindowPosition(_sdl_window, newPosition._x, newPosition._y);
+    if(!Error<SDL_Window>::isNull(_sdl_window, "Cannot set the position because the window is null")){
+        SDL_SetWindowPosition(_sdl_window, newPosition._x, newPosition._y);
+    }
 }
 
 Window::Window(
@@ -33,14 +41,14 @@ Window::Window(
         SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN
     );
     
-    if(_sdl_window == nullptr){
+    if(Error<SDL_Window>::isNull(_sdl_window)){
         Program::exit(EXIT_FAILURE, "Cannot create window " + title);
         return;
     }
 
-    if(_parent == nullptr || _parent == NULL){
+    if(Error<Component>::isNull(_parent)){
         _renderer = SDL_CreateRenderer(_sdl_window, -1, SDL_RENDERER_ACCELERATED);
-        if(_renderer == nullptr){
+        if(Error<SDL_Renderer>::isNull(_renderer)){
             Program::exit(EXIT_FAILURE, "Cannot create renderer for " + title); 
         }
     }

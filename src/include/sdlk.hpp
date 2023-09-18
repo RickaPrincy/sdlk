@@ -1,16 +1,16 @@
 #ifndef __SDLK__
 #define __SDLK__
     #include <iostream>
-    #include <set>
     #include <SDL2/SDL.h>
 
     #include "./utils.hpp"
+    #include "./error.hpp"
+    #include "./events/mouseEvent.hpp"
     #include "./events/event.hpp"
     #include "./exit.hpp"
     #include "./types/position.hpp"
     #include "./components/window.hpp"
     
-    #define EXIT_STATUS int
 
     namespace Sdlk{
         class App{

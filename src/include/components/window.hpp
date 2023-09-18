@@ -5,6 +5,7 @@
     #include <SDL2/SDL.h>
 
     #include "../utils.hpp"
+    #include "../error.hpp"
     #include "../exit.hpp"
     #include "../types/position.hpp"
     #include "../types/position.hpp"
