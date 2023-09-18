@@ -8,7 +8,7 @@
     #include "./error.hpp"
     #include "./events/mouseEvent.hpp"
     #include "./events/event.hpp"
-    #include "./exit.hpp"
+    #include "./program.hpp"
     #include "./types/position.hpp"
     #include "./components/window.hpp"
     

@@ -6,7 +6,7 @@
 
     #include "../utils.hpp"
     #include "../error.hpp"
-    #include "../exit.hpp"
+    #include "../program.hpp"
     #include "../types/position.hpp"
     #include "../types/position.hpp"
     #include "../components/component.hpp"

@@ -11,11 +11,19 @@ void App::initSdl(Uint32 flags){
 
 void App::run(){
     Program::start();
+    Program::setShouldRenderer(true);
 
     while(Program::getStatus()){
         if(!Error<SDL_Window>::isNull(_window->_sdl_window, "Window cannot be null")){
             _event.handlerAllEvents();
-            _window->render();
+
+            if(Program::getShouldRenderer()){
+                _window->render();
+                Program::setShouldRenderer(false);
+
+                Utils::cout("render");
+            }
+
             Utils::wait(1);
         }
     }

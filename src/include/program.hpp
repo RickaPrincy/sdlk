@@ -7,12 +7,15 @@
 
     namespace Sdlk{
         static bool programLaunched = false;
-        
+        static bool shouldRender = false;
         class Program{
             public:
                 static void start();
                 static bool getStatus();
                 static void exit(EXIT_STATUS status,std::string message = "");
+
+                static void setShouldRenderer(bool renderStatus);
+                static bool getShouldRenderer();
         };
     }
 #endif

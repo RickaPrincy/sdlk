@@ -2,8 +2,8 @@
 #include <iostream>
 
 int main(int argc, char const *argv[]){
-    Sdlk::App myApp("My application",500,500);
-
+    Sdlk::App myApp("R_Chess",500,500);
+    
     myApp.run();
     return 0;
 }
