@@ -32,10 +32,7 @@ void Window::setPosition(Position newPosition){
     }
 }
 
-Window::Window(
-    Component *parent, std::string title, 
-    int w, int h, Position position
-):Component(parent){
+Window::Window( std::string title, int w, int h, Position position):Component(nullptr){
     _sdl_window = SDL_CreateWindow(
         title.c_str(),position._x ,position._y, w, h,
         SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN
@@ -46,16 +43,17 @@ Window::Window(
         return;
     }
 
-    if(Error<Component>::isNull(_parent)){
-        _renderer = SDL_CreateRenderer(_sdl_window, -1, SDL_RENDERER_ACCELERATED);
-        if(Error<SDL_Renderer>::isNull(_renderer)){
-            Program::exit(EXIT_FAILURE, "Cannot create renderer for " + title); 
-        }
+    _renderer = SDL_CreateRenderer(_sdl_window, -1, SDL_RENDERER_ACCELERATED);
+    if(Error<SDL_Renderer>::isNull(_renderer)){
+        Program::exit(EXIT_FAILURE, "Cannot create renderer for " + title); 
+        return;
     }
+    
+    setColor(Rgb(255,255,255));
 }
 
 Window::~Window(){
-    if(_parent == nullptr && _renderer != nullptr){
+    if(_renderer != nullptr){
         Utils::cout("Destroy render for " + getTitle());
         SDL_DestroyRenderer(_renderer);
     }

@@ -23,10 +23,10 @@
                 
                 void setTitle(std::string newTitle);
                 void setPosition(Position newPosition);
-                
+
                 //Constructor && Deconstructor
                 Window(
-                    Component *parent,std::string title, int w, int h,
+                    std::string title, int w, int h,
                     Position position = Position(SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED)
                 );
                 ~Window();

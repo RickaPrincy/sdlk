@@ -24,7 +24,7 @@ void App::run(){
 
 App::App( std::string name, int w, int h,  Position position, Uint32 flags){
     initSdl(flags);
-    _window = new Window(nullptr,name, w, h,position);
+    _window = new Window(name, w, h,position);
 }
 
 App::~App(){

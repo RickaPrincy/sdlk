@@ -4,6 +4,7 @@
     #include <SDL2/SDL.h>
 
     #include "./utils.hpp"
+    #include "./types/Rgb.hpp"
     #include "./error.hpp"
     #include "./events/mouseEvent.hpp"
     #include "./events/event.hpp"
