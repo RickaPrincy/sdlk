@@ -5,6 +5,8 @@
     #include <SDL2/SDL.h>
 
     #include "../utils.hpp"
+    #include "../exit.hpp"
+    #include "../types/position.hpp"
     #include "../types/position.hpp"
     #include "../components/component.hpp"
 
@@ -12,7 +14,7 @@
         class Window: public Component{
             public:
                 //Maybe utils for user
-                SDL_Window *_window = nullptr;
+                SDL_Window *_sdl_window = nullptr;
 
                 //Window informations 
                 std::string getTitle();
@@ -23,8 +25,8 @@
                 
                 //Constructor && Deconstructor
                 Window(
-                    Component *parent,std::string title, int w, int h, 
-                    int x = 0, int y = 0, bool createRenderer = false 
+                    Component *parent,std::string title, int w, int h,
+                    Position position = Position(SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED)
                 );
                 ~Window();
         };

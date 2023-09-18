@@ -9,8 +9,9 @@
         class Component{
             protected:
                 Component *_parent = nullptr;
-            public:
                 SDL_Renderer *_renderer = nullptr;
+            public:
+                void render();
                 Component(Component *parent);
                 ~Component();
         };

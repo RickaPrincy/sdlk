@@ -7,7 +7,7 @@ void Utils::cout(std::string message){
 }
 
 void Utils::cerr(std::string error){
-    std::cerr << "[ ERROR ]: " << error << std::endl;
+    std::cerr << "[ ERR ]: " << error << std::endl;
 }
 
 void Utils::wait(Uint32 ms){

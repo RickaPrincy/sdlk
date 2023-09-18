@@ -3,6 +3,7 @@
 
     #include <SDL2/SDL.h>
     #include "../utils.hpp"
+    #include "../exit.hpp"
     #include "./mouseEvent.hpp"
 
     namespace Sdlk{

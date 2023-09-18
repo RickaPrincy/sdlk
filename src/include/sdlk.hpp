@@ -6,22 +6,25 @@
 
     #include "./utils.hpp"
     #include "./events/event.hpp"
+    #include "./exit.hpp"
     #include "./types/position.hpp"
     #include "./components/window.hpp"
+    
+    #define EXIT_STATUS int
 
     namespace Sdlk{
         class App{
-            private: 
-                std::set<Uint32> _flags;
             public:
                 Event _event;
-                Window *_mainWindow = nullptr;
-
+                Window *_window = nullptr;
                 void initSdl(Uint32 flags);
                 void run();
 
-                App(Uint32 flags);
-                App(Uint32 flags, Window *mainWindow);
+                App(
+                    std::string name, int w, int h,
+                    Position position = Position(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED), 
+                    Uint32 flags = SDL_INIT_EVERYTHING
+                );
                 ~App();
         };
     }

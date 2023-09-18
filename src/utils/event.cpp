@@ -8,7 +8,7 @@ void Event::handlerAllEvents(){
     while(SDL_PollEvent(&event)){
         switch(event.type){
             case SDL_QUIT:
-                exit(EXIT_SUCCESS);
+                Program::exit(EXIT_SUCCESS);
                 break;
             case SDL_WINDOWEVENT:
                 break;
