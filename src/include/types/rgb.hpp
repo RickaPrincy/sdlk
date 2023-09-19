@@ -9,6 +9,7 @@
                 int _r = 0,_g = 0,_b = 0;
                 Rgb(int r, int g, int b);
                 Rgb(){};
+                Rgb& operator=(const Rgb& other);
         };
     }
 #endif

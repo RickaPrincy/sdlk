@@ -1,4 +1,4 @@
-#include "../include/types/Rgb.hpp"
+#include "../include/types/rgb.hpp"
 
 using namespace Sdlk;
 
@@ -10,4 +10,13 @@ Rgb::Rgb(int r, int g, int b){
     _r = r;
     _g = g;
     _b = b;
+}
+
+Rgb& Rgb::operator=(const Rgb& other) {
+    if (this != &other) {
+        _r = other._r;
+        _g = other._g;
+        _b = other._b;
+    }
+    return *this;
 }
