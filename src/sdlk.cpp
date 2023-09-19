@@ -11,26 +11,19 @@ void App::initSdl(Uint32 flags){
 
 void App::run(){
     Program::start();
-    Program::setShouldRenderer(true);
 
     while(Program::getStatus()){
         if(!Error<SDL_Window>::isNull(_window->_sdl_window, "Window cannot be null")){
             _event.handlerAllEvents();
-
-            if(Program::getShouldRenderer()){
-                _window->render();
-                Program::setShouldRenderer(false);
-
-                Utils::cout("render");
-            }
-
+            _window->render();
+            
             Utils::wait(1);
         }
     }
 }
 
 
-App::App( std::string name, int w, int h,  Position position, Uint32 flags){
+App::App(std::string name, int w, int h,Position position, Uint32 flags){
     initSdl(flags);
     _window = new Window(name, w, h,position);
 }

@@ -5,7 +5,7 @@
     #include "../types/visibility.hpp"
     #include "../utils.hpp"
     #include "../error.hpp"
-    #include "../types/Rgb.hpp"
+    #include "../types/rgb.hpp"
 
     namespace Sdlk{
         class Component{

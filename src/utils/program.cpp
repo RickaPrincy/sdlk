@@ -20,11 +20,3 @@ void Program::exit(EXIT_STATUS status, std::string message){
     }
    programLaunched = false; 
 }
-
-void Program::setShouldRenderer(bool renderStatus){
-    shouldRender = renderStatus;
-}
-
-bool Program::getShouldRenderer(){
-    return shouldRender;
-}

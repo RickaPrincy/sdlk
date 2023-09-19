@@ -10,6 +10,7 @@
     #include "../types/position.hpp"
     #include "../types/position.hpp"
     #include "../components/component.hpp"
+    #include "../types/rgb.hpp"
 
     namespace Sdlk{
         class Window: public Component{
