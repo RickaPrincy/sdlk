@@ -4,12 +4,17 @@
     #include <SDL2/SDL.h>
 
     #include "./utils.hpp"
-    #include "./types/Rgb.hpp"
-    #include "./error.hpp"
-    #include "./events/mouseEvent.hpp"
-    #include "./events/event.hpp"
     #include "./program.hpp"
+    #include "./error.hpp"
+    #include "./types/visibility.hpp"
+    #include "./types/rgb.hpp"
+    #include "./types/size.hpp"
     #include "./types/position.hpp"
+    #include "./events/eventHandled.hpp"
+    #include "./events/mouseEvent.hpp"
+    #include "./events/windowEvent.hpp"
+    #include "./events/event.hpp"
+    #include "./components/component.hpp"
     #include "./components/window.hpp"
     
 
@@ -22,7 +27,7 @@
                 void run();
 
                 App(
-                    std::string name, int w, int h,
+                    std::string name, Size size,
                     Position position = Position(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED), 
                     Uint32 flags = SDL_INIT_EVERYTHING
                 );

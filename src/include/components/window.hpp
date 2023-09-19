@@ -11,6 +11,7 @@
     #include "../types/position.hpp"
     #include "../components/component.hpp"
     #include "../types/rgb.hpp"
+    #include "../types/size.hpp"
 
     namespace Sdlk{
         class Window: public Component{
@@ -27,7 +28,7 @@
 
                 //Constructor && Deconstructor
                 Window(
-                    std::string title, int w, int h,
+                    std::string title,Size size, 
                     Position position = Position(SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED)
                 );
                 ~Window();

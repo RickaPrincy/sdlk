@@ -32,9 +32,9 @@ void Window::setPosition(Position newPosition){
     }
 }
 
-Window::Window( std::string title, int w, int h, Position position):Component(nullptr){
+Window::Window( std::string title, Size size, Position position):Component(nullptr){
     _sdl_window = SDL_CreateWindow(
-        title.c_str(),position._x ,position._y, w, h,
+        title.c_str(),position._x ,position._y, size._w, size._h,
         SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN
     );
     
