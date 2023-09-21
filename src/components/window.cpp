@@ -32,12 +32,12 @@ void Window::setPosition(Position newPosition){
     }
 }
 
-Window::Window( std::string title, Size size, Position position):Component(nullptr){
+Window::Window( std::string title, Size size, Position position):Component(nullptr,size,position){
     _sdl_window = SDL_CreateWindow(
         title.c_str(),position._x ,position._y, size._w, size._h,
         SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN
     );
-    
+     
     if(Error<SDL_Window>::isNull(_sdl_window)){
         Program::exit(EXIT_FAILURE, "Cannot create window " + title);
         return;
