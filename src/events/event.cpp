@@ -8,7 +8,7 @@ void Event::handlerAllEvents(){
     while(SDL_PollEvent(&event)){
         switch(event.type){
             case SDL_QUIT:
-                Program::exit(EXIT_SUCCESS);
+                Program::exit(ExitStatus::SUCCESS);
                 break;
             case SDL_WINDOWEVENT:
                 break;
@@ -23,7 +23,7 @@ void Event::handlerAllEvents(){
             case SDL_MOUSEWHEEL:
                 break;
             default: 
-                Sdlk::Utils::cout("Event not handled yet");
+                Sdlk::Utils::clog("Event not handled yet");
                 break;
         }
     }

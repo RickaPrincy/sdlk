@@ -1,7 +1,6 @@
 #ifndef __SDLK_RGB__
 #define __SDLK_RGB__
     #include <iostream>
-    #include "../utils.hpp"
 
     namespace Sdlk{
         class Rgb{

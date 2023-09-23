@@ -1,36 +1,34 @@
 #ifndef __SDLK_COMPONENT__
 #define __SDLK_COMPONENT__
 
-    #include <SDL2/SDL.h>
     #include <vector>
-    #include "../types/visibility.hpp"
-    #include "../utils.hpp"
-    #include "../error.hpp"
+    #include <SDL2/SDL.h>
+    #include "../utils/program.hpp"
+    #include "../utils/check.hpp"
+    #include "../utils/utils.hpp"
     #include "../types/rgb.hpp"
     #include "../types/position.hpp"
     #include "../types/size.hpp"
-    #include "../program.hpp"
-    
+
     namespace Sdlk{
         class Component{
             protected:
-                SDL_Renderer *_renderer = nullptr;
-                SDL_Texture *_texture = nullptr;
-                Rgb _color;
-                Position _position;
                 Size _size;
+                Position _position;
+                Rgb _color;
                 Component *_parent = nullptr;
                 std::vector<Component*> _childrens;
             public:
+                SDL_Texture *_texture = nullptr;
+                void setSize(Size size);
                 void setColor(Rgb color);
-                void render();
-                void setRenderToMe();
-                void appendChild(Component *child);
+                void setPosition(Position position);
                 void setTexture(SDL_Texture *texture);
-                static void releaseRenderer(SDL_Renderer *renderer);
-                static void clearRenderer(SDL_Renderer *renderer);
-                Component(Component *parent, Size size, Position position);
+                void render(SDL_Renderer *renderer);
+                void appendChild(Component *component);
+                Component(Size size = Size(10),Position position = Position(0));
                 ~Component();
         };
     }
+
 #endif

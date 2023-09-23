@@ -1,2 +1,4 @@
 build
 example/build
+test.sh
+example/test.sh

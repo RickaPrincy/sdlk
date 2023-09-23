@@ -1,4 +1,4 @@
-#include "../include/program.hpp"
+#include "../include/utils/program.hpp"
 
 using namespace Sdlk;
 
@@ -10,13 +10,13 @@ void Program::start(){
     programLaunched = true;
 }
 
-void Program::exit(EXIT_STATUS status, std::string message){
+void Program::exit(ExitStatus status, std::string message){
     if(message != ""){
-        if(status == EXIT_FAILURE){
+        if(status == ExitStatus::FAILURE){
             Utils::cerr(message);
         }else{
-            Utils::cout(message);
+            Utils::clog(message);
         }
     }
-   programLaunched = false; 
+    programLaunched = false; 
 }

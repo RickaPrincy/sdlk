@@ -1,11 +1,18 @@
-#include <sdl_kit/sdlk.hpp>
+#include <sdl_kit/app.hpp>
 #include <iostream>
 
+using namespace Sdlk;
 int main(int argc, char const *argv[]){
-    Sdlk::App myApp("LOL",Sdlk::Size(500));
+    App myApp("est",Size(500));
 
-    Sdlk::Component test(myApp._window,Sdlk::Size(200), Sdlk::Position(0));
-    test.setColor(Sdlk::Rgb(255,0,0));
+    Component first(Size(100),Position(55));
+    first.setColor(Rgb(255,0,0));
+    
+    Component second(Size(50));
+    second.setColor(Rgb(0,255,0));
+
+    first.appendChild(&second);
+    myApp._window->_component.appendChild(&first);
 
     myApp.run();
     return 0;

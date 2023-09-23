@@ -1,35 +1,29 @@
 #ifndef __SDLK_WINDOW__
 #define __SDLK_WINDOW__
 
-    #include <iostream>
     #include <SDL2/SDL.h>
-
-    #include "../utils.hpp"
-    #include "../error.hpp"
-    #include "../program.hpp"
-    #include "../types/position.hpp"
-    #include "../types/position.hpp"
-    #include "../components/component.hpp"
+    #include <iostream>
+    #include <string>
+    #include "../utils/program.hpp"
+    #include "../utils/check.hpp"
+    #include "../utils/utils.hpp"
     #include "../types/rgb.hpp"
+    #include "../types/position.hpp"
     #include "../types/size.hpp"
+    #include "./component.hpp"
 
     namespace Sdlk{
-        class Window: public Component{
+        class Window{
             public:
-                //Maybe utils for user
+                SDL_Renderer *_renderer = nullptr;
                 SDL_Window *_sdl_window = nullptr;
-
-                //Window informations 
-                std::string getTitle();
-                Position getPosition();
-                
-                void setTitle(std::string newTitle);
-                void setPosition(Position newPosition);
-
-                //Constructor && Deconstructor
+                Component _component;
+                void render();
                 Window(
-                    std::string title,Size size, 
-                    Position position = Position(SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED)
+                    std::string title, 
+                    Size size,
+                    Position position = Position(SDL_WINDOWPOS_CENTERED),
+                    Uint32 flags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN
                 );
                 ~Window();
         };
