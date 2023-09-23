@@ -24,8 +24,8 @@
                 void setColor(Rgb color);
                 void setPosition(Position position);
                 void setTexture(SDL_Texture *texture);
-                void render(SDL_Renderer *renderer);
                 void appendChild(Component *component);
+                virtual void render(SDL_Renderer *renderer);
                 Component(Size size = Size(10),Position position = Position(0));
                 ~Component();
         };

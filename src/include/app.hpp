@@ -19,6 +19,7 @@
     #include "./events/mouseEvent.hpp"
     #include "./events/windowEvent.hpp"
     #include "./components/component.hpp"
+    #include "./components/box.hpp"
     #include "./components/window.hpp"
 
     namespace Sdlk{

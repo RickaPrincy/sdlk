@@ -3,7 +3,7 @@
 using namespace Sdlk;
 
 void Window::render(){
-    _component.render(_renderer);
+    _box.render(_renderer);
     SDL_RenderPresent(_renderer);
 }
 
@@ -28,13 +28,13 @@ Window::Window(std::string title, Size size, Position position, Uint32 flags){
         return;
     }
 
-    _component.setSize(size);
-    _component.setTexture(nullptr);
-    _component.setColor(Rgb(255,255,255));
+    _box.setSize(size);
+    _box.setColor(Rgb(255,255,255));
 }
 
 Window::~Window(){
-    _component.~Component();
+    _box.~Box();
+
     if(!Check::isNull(_renderer)){
         Utils::clog("Destroy renderer");
         SDL_DestroyRenderer(_renderer);

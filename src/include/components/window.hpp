@@ -11,13 +11,14 @@
     #include "../types/position.hpp"
     #include "../types/size.hpp"
     #include "./component.hpp"
+    #include "./box.hpp"
 
     namespace Sdlk{
         class Window{
             public:
                 SDL_Renderer *_renderer = nullptr;
                 SDL_Window *_sdl_window = nullptr;
-                Component _component;
+                Box _box;
                 void render();
                 Window(
                     std::string title, 

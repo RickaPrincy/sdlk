@@ -3,17 +3,10 @@
 
 using namespace Sdlk;
 int main(int argc, char const *argv[]){
-    App myApp("est",Size(500));
+    App game("Ricka",Size(500));
 
-    Component first(Size(100),Position(55));
-    first.setColor(Rgb(255,0,0));
-    
-    Component second(Size(50));
-    second.setColor(Rgb(0,255,0));
-
-    first.appendChild(&second);
-    myApp._window->_component.appendChild(&first);
-
-    myApp.run();
+    Box container(Size(500, 100));
+    game._window->_box.appendChild(&container);
+    game.run();
     return 0;
 }

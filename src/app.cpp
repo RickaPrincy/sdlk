@@ -7,8 +7,7 @@ void App::run(){
     if(!Check::isNull(_window)){
         while(Program::getStatus()){
             _event.handlerAllEvents();
-            _window->_component.render(_window->_renderer);
-            SDL_RenderPresent(_window->_renderer);
+            _window->render();
         }
     }
 }

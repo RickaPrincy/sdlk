@@ -26,18 +26,12 @@ void  Component::render(SDL_Renderer *renderer){
         return;
     }
 
-    Utils::setRenderColor(renderer,_color);
     if(Check::isNull(_texture)){
-        _texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, _size._w,_size._h);
-        if (Check::isNull(_texture)){
-            Program::exit(ExitStatus::FAILURE, "Cannot create a texture");
-            return;
-        }
-        Utils::setRenderTarget(renderer,_texture);
-        Utils::clearRenderer(renderer);
-        Utils::setRenderTarget(renderer,NULL);
+        Utils::cerr("Cannot render component without texture");
+        return;
     }
 
+    Utils::setRenderColor(renderer,_color);
     if(!Check::isNull(_parent)){
         Utils::setRenderTarget(renderer, _parent->_texture);
     }
@@ -45,7 +39,6 @@ void  Component::render(SDL_Renderer *renderer){
     SDL_Rect rect = { _position._x, _position._y, _size._w, _size._h };
     Utils::renderCopy(renderer,_texture,NULL,&rect);
     Utils::setRenderTarget(renderer,NULL);
-
     for(size_t i = 0; i < _childrens.size(); i++){
         _childrens.at(i)->render(renderer);
     }
