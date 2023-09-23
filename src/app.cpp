@@ -12,6 +12,10 @@ void App::run(){
     }
 }
 
+void App::appendChild(Component *child){
+    _window->_box.appendChild(child);
+}
+
 void App::initSdl(Uint32 flags){
     if(SDL_WasInit(flags) != 0 && SDL_InitSubSystem(flags) != 0){
         Program::exit(ExitStatus::FAILURE, "Cannot init sdl");

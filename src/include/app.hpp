@@ -30,6 +30,7 @@
                 void run();
                 void initSdl(Uint32 flags);
                 void quitSdl(Uint32 flags);
+                void appendChild(Component *child);
                 App(
                     std::string title, 
                     Size size,
