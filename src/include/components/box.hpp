@@ -6,19 +6,25 @@
     namespace Sdlk{
         class Box : public Component{
             public:
-                Box(Size size, Position position = Position(0)): Component(size,position){};
+                Box(Style style): Component(style){};
+                Box(StyleArg style): Component(style){};
                 Box():Component(){};
                 ~Box(){};
 
                 //overrided function
                 void render(SDL_Renderer *renderer) override{
+                    Rgb color; 
+                    Size size; 
+                    color = getStyle(Attribute::COLOR);
+                    size = getStyle(Attribute::SIZE);
+
                     if(Check::isNull(_texture)){
-                        _texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, _size._w,_size._h);
+                        _texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, size._w,size._h);
                         if (Check::isNull(_texture)){
                             Program::exit(ExitStatus::FAILURE, "Cannot create a texture");
                             return;
                         }
-                        Utils::setRenderColor(renderer,_color);
+                        Utils::setRenderColor(renderer,color);
                         Utils::setRenderTarget(renderer,_texture);
                         Utils::clearRenderer(renderer);
                         Utils::setRenderTarget(renderer,NULL);

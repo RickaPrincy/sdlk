@@ -28,8 +28,10 @@ Window::Window(std::string title, Size size, Position position, Uint32 flags){
         return;
     }
 
-    _box.setSize(size);
-    _box.setColor(Rgb(255,255,255));
+    _box.updateStyle({
+        { Attribute::SIZE, size },
+        { Attribute::COLOR, "r: 255, g: 255, b: 255"}
+    });
 }
 
 Window::~Window(){

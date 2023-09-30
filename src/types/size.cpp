@@ -10,7 +10,7 @@ const std::regex Size::_format("w:(\\d+),h:(\\d+)");
 Size Size::fromString(std::string input){
     std::smatch match;
     std::string removedSpace = Utils::removeSpace(input);
-    int _w = 0, _h = 0 ;
+    int _w = 10, _h = 10;
 
     if(std::regex_match(removedSpace, match, _format)){
         _w = std::stoi(match.str(1));
@@ -21,8 +21,8 @@ Size Size::fromString(std::string input){
 }
 
 Size::Size(int w, int h){
-    if(w < 0 || h < 0 ){
-        std::cerr << "Size value not valid (min : 0)" << std::endl;
+    if(w < 10 || h < 10 ){
+        std::cerr << "Size value not valid (min : 10)" << std::endl;
         return;
     }
     _w = w;
