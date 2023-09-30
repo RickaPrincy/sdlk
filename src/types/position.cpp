@@ -38,10 +38,10 @@ Position& Position::operator=(const std::string& other) {
 }
 
 Position& Position::operator=(const std::variant<Rgb,Size,Position,std::string> &other){
-    if(typeid(other) == typeid(std::string)){
+    if(std::holds_alternative<std::string>(other)){
         *this = std::get<std::string>(other);
     }
-    else if(typeid(other) == typeid(Position)){
+    else if(std::holds_alternative<Position>(other)){
         *this = std::get<Position>(other);
     }
 

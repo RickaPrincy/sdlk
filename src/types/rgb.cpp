@@ -50,12 +50,11 @@ Rgb& Rgb::operator=(const Rgb& other) {
 }
 
 Rgb& Rgb::operator=(const std::variant<Rgb,Size,Position,std::string> &other){
-    if(typeid(other) == typeid(std::string)){
+    if(std::holds_alternative<std::string>(other)){
         *this = std::get<std::string>(other);
     }
-    else if(typeid(other) == typeid(Rgb)){
+    else if(std::holds_alternative<Rgb>(other)){
         *this = std::get<Rgb>(other);
     }
-
     return *this;
 }

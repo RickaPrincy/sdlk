@@ -51,10 +51,10 @@ Size& Size::operator=(const Size& other) {
 }
 
 Size& Size::operator=(const std::variant<Rgb,Size,Position,std::string> &other){
-    if(typeid(other) == typeid(std::string)){
+    if(std::holds_alternative<std::string>(other)){
         *this = std::get<std::string>(other);
     }
-    else if(typeid(other) == typeid(Size)){
+    else if(std::holds_alternative<Size>(other)){
         *this = std::get<Size>(other);
     }
 
