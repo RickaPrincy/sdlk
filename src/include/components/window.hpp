@@ -16,9 +16,9 @@
     namespace Sdlk{
         class Window{
             public:
+                Box _box;
                 SDL_Renderer *_renderer = nullptr;
                 SDL_Window *_sdl_window = nullptr;
-                Box _box;
                 void render();
                 Window(
                     std::string title, 

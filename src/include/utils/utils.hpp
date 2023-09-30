@@ -15,6 +15,7 @@
                 static bool setRenderColor(SDL_Renderer *renderer, Rgb color);
                 static bool renderCopy(SDL_Renderer *renderer, SDL_Texture *texture, SDL_Rect *rect_src, SDL_Rect *rect_dst);
                 static bool clearRenderer(SDL_Renderer *renderer);
+                static std::string removeSpace(std::string input);
         };
     }
 #endif

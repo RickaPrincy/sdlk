@@ -46,3 +46,8 @@ bool Utils::clearRenderer(SDL_Renderer *renderer){
     }
     return true;
 }
+
+std::string Utils::removeSpace(std::string input){
+    input.erase(std::remove(input.begin(), input.end(), ' '), input.end());
+    return input;
+}

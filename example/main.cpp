@@ -3,8 +3,8 @@
 
 using namespace Sdlk;
 int main(int argc, char const *argv[]){
-    App game("Ricka",Size(500));
-
+    App game("Ri",Size(500));
+    
     Box container(Size(500, 100));
     container.setColor(Rgb(255,255,1));
 
@@ -13,6 +13,6 @@ int main(int argc, char const *argv[]){
     
     container.appendChild(&cool);
     game.appendChild(&container);
-    game.run();
+      game.run();
     return 0;
 }

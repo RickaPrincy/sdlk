@@ -33,8 +33,6 @@ Window::Window(std::string title, Size size, Position position, Uint32 flags){
 }
 
 Window::~Window(){
-    _box.~Box();
-
     if(!Check::isNull(_renderer)){
         Utils::clog("Destroy renderer");
         SDL_DestroyRenderer(_renderer);

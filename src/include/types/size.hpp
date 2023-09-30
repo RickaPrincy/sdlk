@@ -1,15 +1,28 @@
 #ifndef __SDLK_SIZE__
 #define __SDLK_SIZE__
-    #include <iostream>
+
+    #include "./attribute.lib.hpp"
 
     namespace Sdlk{
+        class Position;
+        class Rgb;
+        
         class Size{
+            private:
+                static const std::regex _format;
             public:
                 int _w, _h;
-                Size(int w, int h):_w(w), _h(h){};
-                Size(int wh):_w(wh),_h(wh){};
+
+                Size(int w, int h);
+                Size(int wh);
+                Size(std::string input);
                 Size():_w(0),_h(0){};
+
                 Size& operator=(const Size& other);
+                Size& operator=(const std::string& other);
+                Size& operator=(const std::variant<Rgb,Size,Position,std::string> &other);
+
+                static Size fromString(std::string input);
         };
     }
 #endif

@@ -1,11 +1,49 @@
 #include "../include/types/position.hpp"
+#include "../include/types/size.hpp"
+#include "../include/types/rgb.hpp"
+#include "../include/utils/utils.hpp"
 
 using namespace Sdlk;
+
+const std::regex Position::_format("x:(\\d+),y:(\\d+)");
+
+Position Position::fromString(std::string input){
+    std::smatch match;
+    std::string removedSpace = Utils::removeSpace(input);
+    int _x = 0, _y = 0 ;
+
+    if(std::regex_match(removedSpace, match, _format)){
+        _x = std::stoi(match.str(1));
+        _y = std::stoi(match.str(2)); 
+    }
+    
+    return Position(_x,_y);
+}
+
+Position::Position(std::string input){
+    *this = input;
+}
 
 Position& Position::operator=(const Position& other) {
     if (this != &other) {
         _x = other._x;
         _y = other._y;
     }
+    return *this;
+}
+
+Position& Position::operator=(const std::string& other) {
+    *this = fromString(other);
+    return *this;
+}
+
+Position& Position::operator=(const std::variant<Rgb,Size,Position,std::string> &other){
+    if(typeid(other) == typeid(std::string)){
+        *this = std::get<std::string>(other);
+    }
+    else if(typeid(other) == typeid(Position)){
+        *this = std::get<Position>(other);
+    }
+
     return *this;
 }
