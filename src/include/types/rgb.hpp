@@ -12,9 +12,10 @@
                 static const std::regex _format;
             public:
                 int _r = 0,_g = 0,_b = 0;
+
+                Rgb();
                 Rgb(int r, int g, int b);
                 Rgb(std::string input);
-                Rgb(){};
 
                 Rgb& operator=(const Rgb& other);
                 Rgb& operator=(const std::string& other);

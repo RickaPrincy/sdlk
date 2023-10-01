@@ -16,17 +16,21 @@
                 std::vector<Component*> _childrens;
             public:
                 SDL_Texture *_texture = nullptr;
-                
-                StyleVariant getStyle(Attribute key);
-                void updateStyle(StyleArg style);
-                void setTexture(SDL_Texture *texture);
-                void appendChild(Component *component);
-                virtual void render(SDL_Renderer *renderer);
 
-                Component(){};
-                Component(Style style):_style(style){}
+                Component();
+                Component(Style style);
                 Component(StyleArg style);
                 ~Component();
+
+                void updateStyle(StyleArg style);
+                void updateStyle(Style style);
+                void setTexture(SDL_Texture *texture);
+                void appendChild(Component *component);
+                
+                virtual void render(SDL_Renderer *renderer);
+
+                template <typename T>
+                T getOneStyle(Attribute key) { return _style.getOneStyle<T>(key); }
         };
     }
 

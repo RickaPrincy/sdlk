@@ -27,10 +27,7 @@
             public:
                 Window *_window = nullptr;
                 Event _event;
-                void run();
-                void initSdl(Uint32 flags);
-                void quitSdl(Uint32 flags);
-                void appendChild(Component *child);
+
                 App(
                     std::string title, 
                     Size size,
@@ -38,6 +35,12 @@
                     Uint32 flags = SDL_INIT_EVERYTHING 
                 );
                 ~App();
+
+                void run();
+                void initSdl(Uint32 flags);
+                void quitSdl(Uint32 flags);
+                void appendChild(Component *child);
+
         };
     }
 #endif

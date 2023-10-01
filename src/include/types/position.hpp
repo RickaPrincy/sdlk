@@ -12,10 +12,10 @@
             public:
                 int _x, _y;
 
-                Position(int x ,int y):_x(x),_y(y){};
-                Position(int xy):_x(xy),_y(xy){};
+                Position();
+                Position(int x ,int y);
+                Position(int xy);
                 Position(std::string input);
-                Position():_x(0),_y(0){};
 
                 Position& operator=(const Position& other);
                 Position& operator=(const std::string& other);

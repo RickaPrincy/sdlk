@@ -4,26 +4,15 @@
 #include "../include/utils/utils.hpp"
 
 using namespace Sdlk;
-
 const std::regex Position::_format("x:(\\d+),y:(\\d+)");
 
-Position Position::fromString(std::string input){
-    std::smatch match;
-    std::string removedSpace = Utils::removeSpace(input);
-    int _x = 0, _y = 0 ;
+//----------------------------------------------------------------
+Position::Position():_x(0),_y(0){};
+Position::Position(int x ,int y):_x(x),_y(y){};
+Position::Position(int xy):_x(xy),_y(xy){};
+Position::Position(std::string input){ *this = input; }
 
-    if(std::regex_match(removedSpace, match, _format)){
-        _x = std::stoi(match.str(1));
-        _y = std::stoi(match.str(2)); 
-    }
-    
-    return Position(_x,_y);
-}
-
-Position::Position(std::string input){
-    *this = input;
-}
-
+//----------------------------------------------------------------
 Position& Position::operator=(const Position& other) {
     if (this != &other) {
         _x = other._x;
@@ -46,4 +35,18 @@ Position& Position::operator=(const std::variant<Rgb,Size,Position,std::string> 
     }
 
     return *this;
+}
+
+//----------------------------------------------------------------
+Position Position::fromString(std::string input){
+    std::smatch match;
+    std::string removedSpace = Utils::removeSpace(input);
+    int _x = 0, _y = 0 ;
+
+    if(std::regex_match(removedSpace, match, _format)){
+        _x = std::stoi(match.str(1));
+        _y = std::stoi(match.str(2)); 
+    }
+    
+    return Position(_x,_y);
 }

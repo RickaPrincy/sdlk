@@ -5,5 +5,4 @@
     #include <regex>
     #include <vector>
     #include <variant>
-    #include <typeinfo> 
 #endif

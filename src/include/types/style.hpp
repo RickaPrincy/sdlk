@@ -12,22 +12,33 @@
         using StyleArg = std::map<Attribute, StyleVariant>;
         
         class Style{
-            public:
+            private:
+                Rgb _color;
+                Size _size;
+                Position _position;
                 StyleArg _style = { 
-                    { Attribute::COLOR, "r:0, g:0, b:0" },
-                    { Attribute::SIZE,  "w:10, h:10" },
-                    { Attribute::POSITION, "x:0, y:0" }
+                    { Attribute::COLOR, Rgb() },
+                    { Attribute::SIZE,  Size() },
+                    { Attribute::POSITION, Position() }
                 };
-                
-                StyleVariant getStyle(Attribute key);
-                Style(){}
+            public:
+                Style();
                 Style(StyleArg style);
-
+                
+                Style& operator=(const Style &other);
+                Style& operator=(const StyleArg &other);
+                
+                void updateStyle(Attribute key, StyleVariant value);
                 void updateStyle(StyleArg style);
                 void updateStyle(Style style);
 
-                Style& operator=(const Style &other);
-                Style& operator=(const StyleArg &other);
+                Rgb getColor(){ return _color; }
+                Size getSize(){ return _size; }
+                Position getPosition(){ return _position; }
+                StyleArg getAllStyles(){ return _style; }
+                
+                template<typename T> 
+                T getOneStyle(Attribute key){ return std::get<T>(_style.at(key)); }
         };
    }
 #endif

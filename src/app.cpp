@@ -36,4 +36,5 @@ App::App(std::string title, Size size, Position position, Uint32 flags){
 
 App::~App(){
     delete _window;
+    SDL_Quit();
 }

@@ -13,18 +13,13 @@
 
                 //overrided function
                 void render(SDL_Renderer *renderer) override{
-                    Rgb color; 
-                    Size size; 
-                    color = getStyle(Attribute::COLOR);
-                    size = getStyle(Attribute::SIZE);
-
                     if(Check::isNull(_texture)){
-                        _texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, size._w,size._h);
+                        _texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, _style.getSize()._w,_style.getSize()._h);
                         if (Check::isNull(_texture)){
                             Program::exit(ExitStatus::FAILURE, "Cannot create a texture");
                             return;
                         }
-                        Utils::setRenderColor(renderer,color);
+                        Utils::setRenderColor(renderer,_style.getColor());
                         Utils::setRenderTarget(renderer,_texture);
                         Utils::clearRenderer(renderer);
                         Utils::setRenderTarget(renderer,NULL);
