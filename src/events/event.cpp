@@ -21,10 +21,10 @@ void Event::handlerAllEvents(){
             case SDL_KEYUP:
                 break;
             case SDL_MOUSEMOTION:
-                break;
-            case SDL_MOUSEBUTTONDOWN:
-                break;
+            case SDL_MOUSEBUTTONUP:
             case SDL_MOUSEWHEEL:
+            case SDL_MOUSEBUTTONDOWN:
+                _mouseEvents.handlerMouseEvent(&event);
                 break;
             default: 
                 Sdlk::Utils::clog("Event not handled yet");

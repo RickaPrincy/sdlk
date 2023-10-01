@@ -9,7 +9,6 @@ WindowEvent::WindowEvent(){
 }
 
 void WindowEvent::handlerWindowEvent(SDL_Event *event){
-    resetAll();
     switch(event->window.event){
         case SDL_WINDOWEVENT_RESIZED:
             updateState(WindowEventType::WINDOW_RESIZED, true);

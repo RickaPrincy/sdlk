@@ -2,6 +2,8 @@
 
 using namespace Sdlk;
 
+bool Program::programLaunched = false;
+
 bool Program::getStatus(){
     return programLaunched;
 }

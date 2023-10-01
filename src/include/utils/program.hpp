@@ -7,7 +7,6 @@
     #define EXIT_STATUS short
     
     namespace Sdlk{
-        static bool programLaunched = false;
 
         enum ExitStatus{
             FAILURE,
@@ -15,6 +14,8 @@
         };
 
         class Program{
+            private: 
+                static bool programLaunched;
             public:
                 static bool getStatus();
                 static void start();

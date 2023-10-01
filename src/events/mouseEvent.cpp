@@ -10,6 +10,11 @@ MouseEvent::MouseEvent(){
 }
 
 void MouseEvent::handlerMouseEvent(SDL_Event *event){
-    resetAll();
-    Utils::clog("Resized made");
+    switch(event->type){
+        case SDL_MOUSEBUTTONDOWN:
+            updateState(MouseEventType::MOUSE_BUTTON_DOWN, true);
+            break;
+        default:
+            break;
+    }
 }

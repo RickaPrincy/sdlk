@@ -18,7 +18,7 @@ void Window::render(){
             { Attribute::SIZE, getSize() }
         });
     }
-
+    _box.handlerEvent();
     _box.render(_renderer);
     SDL_RenderPresent(_renderer);
 }

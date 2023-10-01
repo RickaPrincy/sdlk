@@ -61,3 +61,17 @@ void  Component::render(SDL_Renderer *renderer){
         _childrens.at(i)->render(renderer);
     }
 }
+
+//----------------------------------------------------------------
+void Component::onClick(const std::function<void()> &onClickFunction){
+    _onClickFunction = onClickFunction;
+}
+
+//----------------------------------------------------------------
+void Component::handlerEvent(){
+    if(Event::_mouseEvents.hasOccured(MouseEventType::MOUSE_BUTTON_DOWN)){
+        if(_onClickFunction){
+            _onClickFunction();
+        }
+    }
+}

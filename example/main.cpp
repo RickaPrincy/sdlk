@@ -10,15 +10,13 @@ int main(int argc, char const *argv[]){
     { Attribute::SIZE, "w: 100, h: 100"},
     { Attribute::POSITION, "x: 5, y : 9"}
   });
-  
-  Box otherBox({
-    { Attribute::SIZE, Size(100)},
-    { Attribute::POSITION, "x: 150, y : 150"}
-  });
-  
-  app.appendChild(&container);
-  app.appendChild(&otherBox);
-  app.run();
 
+  app._window->_box.onClick([](){
+    Utils::clog("Cliked");
+    Utils::clog("Yeah");
+  });
+
+  app.appendChild(&container);
+  app.run();
   return 0;
 }
