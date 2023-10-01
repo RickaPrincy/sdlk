@@ -6,8 +6,10 @@ void App::run(){
     Program::start();
     if(!Check::isNull(_window)){
         while(Program::getStatus()){
-            _event.handlerAllEvents();
+            Event::handlerAllEvents();
             _window->render();
+            Event::_mouseEvents.resetAll();
+            Event::_windowEvents.resetAll();
         }
     }
 }

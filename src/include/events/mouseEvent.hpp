@@ -1,9 +1,10 @@
 #ifndef __SDLK_MOUSE_EVENT__
 #define __SDLK_MOUSE_EVENT__
 
+    #include <SDL2/SDL.h>
     #include <map>
     #include "./eventHandled.hpp" 
-    #include <SDL2/SDL.h>
+    #include "../utils/utils.hpp"
 
     namespace Sdlk{
         enum MouseEventType {
@@ -25,6 +26,7 @@
 
         class MouseEvent : public EventHandled<MouseEventType>{
             public: 
+                void handlerMouseEvent(SDL_Event *event);
                 MouseEvent();
         };
     }

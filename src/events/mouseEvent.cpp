@@ -8,3 +8,8 @@ MouseEvent::MouseEvent(){
         _allEvents[static_cast<MouseEventType>(i)] = false;
     }
 }
+
+void MouseEvent::handlerMouseEvent(SDL_Event *event){
+    resetAll();
+    Utils::clog("Resized made");
+}

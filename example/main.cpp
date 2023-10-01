@@ -15,11 +15,10 @@ int main(int argc, char const *argv[]){
     { Attribute::SIZE, Size(100)},
     { Attribute::POSITION, "x: 150, y : 150"}
   });
-
-  Rgb test(255,1,1);
-
+  
   app.appendChild(&container);
   app.appendChild(&otherBox);
   app.run();
+
   return 0;
 }

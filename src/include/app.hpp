@@ -26,8 +26,6 @@
         class App{
             public:
                 Window *_window = nullptr;
-                Event _event;
-
                 App(
                     std::string title, 
                     Size size,

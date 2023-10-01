@@ -2,7 +2,7 @@
 #define __SDLK_EVENT_HANDLER__
     #include <iostream> 
     #include <map>
-
+    
     namespace Sdlk{
         template <typename T>
         class EventHandled{
@@ -10,6 +10,7 @@
                 std::map<T, bool> _allEvents;
             public: 
                 void updateState(T event, bool newState);
+                void resetAll(); 
                 bool checkState(T event);
                 bool hasOccured(T event); 
                 bool hasNotOccured(T event);
@@ -33,6 +34,13 @@
         template <typename T>
         bool EventHandled<T>::hasNotOccured(T event){
             return !checkState(event);
+        }
+
+        template <typename T>
+        void EventHandled<T>::resetAll(){
+            for(const auto &pair :_allEvents){
+                _allEvents.at(pair.first) = false;
+            }
         }
     }
 #endif

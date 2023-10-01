@@ -2,6 +2,9 @@
 
 using namespace Sdlk;
 
+WindowEvent Event::_windowEvents;
+MouseEvent Event::_mouseEvents;
+
 void Event::handlerAllEvents(){
     SDL_Event event;
     
@@ -11,6 +14,7 @@ void Event::handlerAllEvents(){
                 Program::exit(ExitStatus::SUCCESS);
                 break;
             case SDL_WINDOWEVENT:
+                _windowEvents.handlerWindowEvent(&event);
                 break;
             case SDL_KEYDOWN:
                 break;

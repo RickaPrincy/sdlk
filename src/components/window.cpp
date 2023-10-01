@@ -1,8 +1,24 @@
 #include "../include/components/window.hpp"
+#include "../include/events/event.hpp"
 
 using namespace Sdlk;
 
+Size Window::getSize(){
+    int x = 1, y = 1;
+    
+    if(!Check::isNull(_sdl_window)){
+        SDL_GetWindowSize(_sdl_window, &x, &y);
+    }
+    return Size(x,y);
+}
+
 void Window::render(){
+    if(Event::_windowEvents.hasOccured(WindowEventType::WINDOW_RESIZED)){
+        _box.updateStyle({
+            { Attribute::SIZE, getSize() }
+        });
+    }
+
     _box.render(_renderer);
     SDL_RenderPresent(_renderer);
 }

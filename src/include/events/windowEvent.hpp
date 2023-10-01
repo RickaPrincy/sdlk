@@ -1,9 +1,11 @@
 #ifndef __SDLK_WINDOW_EVENT__
 #define __SDLK_WINDOW_EVENT__
+
     #include <SDL2/SDL.h>
     #include <map>
     #include "./eventHandled.hpp"
-
+    #include "../utils/utils.hpp"
+    
     namespace Sdlk{
         enum WindowEventType {
             WINDOW_SHOWN,         // Window shown
@@ -20,8 +22,9 @@
             WINDOW_CLOSE          // Window close requested
         };
 
-        class WindowEvent : EventHandled<WindowEventType>{
+        class WindowEvent : public EventHandled<WindowEventType>{
             public: 
+                void handlerWindowEvent(SDL_Event *event);
                 WindowEvent();
         };
     }

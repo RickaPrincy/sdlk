@@ -19,7 +19,10 @@
                 Box _box;
                 SDL_Renderer *_renderer = nullptr;
                 SDL_Window *_sdl_window = nullptr;
+
                 void render();
+                Size getSize();
+                
                 Window(
                     std::string title, 
                     Size size,
