@@ -4,6 +4,7 @@
     #include <SDL2/SDL.h>
     #include <map>
     #include "./eventHandled.hpp" 
+    #include "./mouse.hpp" 
     #include "../utils/utils.hpp"
 
     namespace Sdlk{
@@ -14,10 +15,7 @@
             MOUSE_SINGLE_CLICK,    // Mouse button was clicked once
             MOUSE_DOUBLE_CLICK,    // Mouse button was double-clicked
             MOUSE_MANY_CLICKS,     // Multiple clicks occurred
-            MOUSE_MOVE_UP,         // Mouse moved upwards
-            MOUSE_MOVE_DOWN,       // Mouse moved downwards
-            MOUSE_MOVE_LEFT,       // Mouse moved to the left
-            MOUSE_MOVE_RIGHT,      // Mouse moved to the right
+            MOUSE_MOVE,
             MOUSE_DRAG_START,      // Mouse drag operation started
             MOUSE_DRAG_END,        // Mouse drag operation ended
             MOUSE_SCROLL_UP,       // Mouse scroll wheel moved up

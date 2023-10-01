@@ -17,8 +17,8 @@ void Window::render(){
         _box.updateStyle({
             { Attribute::SIZE, getSize() }
         });
+        _box.setTexture(nullptr);
     }
-    _box.handlerEvent();
     _box.render(_renderer);
     SDL_RenderPresent(_renderer);
 }

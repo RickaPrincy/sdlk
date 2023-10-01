@@ -9,7 +9,7 @@
     #include "../utils/utils.hpp"
     #include "../types/style.hpp" 
     #include "../events/event.hpp" 
-    
+    #include "../events/mouse.hpp" 
     namespace Sdlk{
         class Component{
             protected:
@@ -17,6 +17,7 @@
                 Component *_parent = nullptr;
                 std::vector<Component*> _childrens;
                 std::function<void()> _onClickFunction;
+                Position _realPosition;
             public:
                 SDL_Texture *_texture = nullptr;
 
@@ -29,6 +30,8 @@
                 void updateStyle(Style style);
                 void setTexture(SDL_Texture *texture);
                 void appendChild(Component *component);
+                void calcRealPosition();
+                Position getRealPosition();
 
                 void onClick(const std::function<void()> &onClickFunction);
                 void handlerEvent();

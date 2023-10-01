@@ -11,9 +11,8 @@ int main(int argc, char const *argv[]){
     { Attribute::POSITION, "x: 5, y : 9"}
   });
 
-  app._window->_box.onClick([](){
-    Utils::clog("Cliked");
-    Utils::clog("Yeah");
+  container.onClick([](){
+    Utils::clog("Clicked");
   });
 
   app.appendChild(&container);

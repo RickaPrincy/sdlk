@@ -14,7 +14,17 @@ Component::~Component(){
 }
 
 //----------------------------------------------------------------
-void Component::updateStyle(StyleArg style){ _style.updateStyle(style);}
+void Component::updateStyle(StyleArg style){ 
+    Position temp = _style.getPosition();
+    _style.updateStyle(style);
+
+    if(temp._x != _style.getPosition()._x || temp._y != _style.getPosition()._y){
+        for(const auto &child: _childrens){
+            child->calcRealPosition();
+        }
+    }
+}
+
 void Component::updateStyle(Style style){ updateStyle(style.getAllStyles()); }
 void Component::setTexture(SDL_Texture *texture){
     if(Check::isNull(_texture)){
@@ -32,6 +42,8 @@ void Component::appendChild(Component *child){
 
 //----------------------------------------------------------------
 void  Component::render(SDL_Renderer *renderer){
+    handlerEvent();
+    
     if(Check::isNull(renderer)){
         Utils::cerr("Cannot render component without renderer");
         return;
@@ -62,16 +74,13 @@ void  Component::render(SDL_Renderer *renderer){
     }
 }
 
-//----------------------------------------------------------------
-void Component::onClick(const std::function<void()> &onClickFunction){
-    _onClickFunction = onClickFunction;
+Position Component::getRealPosition(){
+    return _realPosition;
 }
 
-//----------------------------------------------------------------
-void Component::handlerEvent(){
-    if(Event::_mouseEvents.hasOccured(MouseEventType::MOUSE_BUTTON_DOWN)){
-        if(_onClickFunction){
-            _onClickFunction();
-        }
-    }
+void Component::calcRealPosition(){
+    _realPosition = Position(
+        _parent->getRealPosition()._x + _style.getPosition()._x,
+        _parent->getRealPosition()._y + _style.getPosition()._y
+    );
 }
