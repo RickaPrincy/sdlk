@@ -20,6 +20,9 @@ void Component::onHover(const std::function<void()> &onHoverFunction){
     _actions.insert_or_assign(ComponentEventType::HOVER, onHoverFunction);
 }
 
+void Component::onRender(const std::function<void()> &onRenderFunction){
+    _actions.insert_or_assign(ComponentEventType::RENDER, onRenderFunction);
+}
 //----------------------------------------------------------------
 void Component::shouldExecuteEvent(ComponentEventType event){
     if(

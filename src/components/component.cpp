@@ -23,6 +23,8 @@ void Component::updateStyle(StyleArg style){
     if(style.find(Attribute::SIZE) != style.end()){
         setTexture(nullptr);
     }
+
+    makeRenderer();
 }
 
 void Component::updateStyle(Style style){ updateStyle(style.getAllStyles()); }
@@ -33,11 +35,25 @@ void Component::setTexture(SDL_Texture *texture){
     _texture = texture;
 }
 
+void Component::appendChilds(std::vector<Component*> childs){
+    for(auto *child: childs){
+        appendChild(child);
+    }
+}
+
 void Component::appendChild(Component *child){ 
     if(child != this){
         child->_parent = this;
         child->calcRealPosition();
         _childrens.push_back(child); 
+    }
+}
+
+//----------------------------------------------------------------
+void Component::makeRenderer(){
+    _shouldRenderer = true;
+    if(!Check::isNull(_parent)){
+        _parent->makeRenderer();
     }
 }
 
@@ -51,6 +67,12 @@ void  Component::render(SDL_Renderer *renderer){
     if(Check::isNull(_texture)){
         Utils::cerr("Cannot render component without texture");
         return;
+    }
+
+    if(_shouldRenderer){
+        for(size_t i = 0; i < _childrens.size(); i++){
+            _childrens.at(i)->render(renderer);
+        }
     }
 
     if(!Check::isNull(_parent)){
@@ -67,9 +89,12 @@ void  Component::render(SDL_Renderer *renderer){
     Utils::renderCopy(renderer,_texture,NULL,&rect);
     Utils::setRenderTarget(renderer,NULL);
 
-    for(size_t i = 0; i < _childrens.size(); i++){
-        _childrens.at(i)->render(renderer);
+
+    if(_actions.find(ComponentEventType::RENDER) != _actions.end()){
+        _actions.at(ComponentEventType::RENDER)();
     }
+    
+    _shouldRenderer = false;
 }
 
 Position Component::getRealPosition(){

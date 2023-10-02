@@ -21,10 +21,12 @@
                         }
                     }
                     
-                    Utils::setRenderColor(renderer,_style.getColor());
-                    Utils::setRenderTarget(renderer,_texture);
-                    Utils::clearRenderer(renderer);
-                    Utils::setRenderTarget(renderer,NULL);
+                    if(_shouldRenderer){
+                        Utils::setRenderColor(renderer,_style.getColor());
+                        Utils::setRenderTarget(renderer,_texture);
+                        Utils::clearRenderer(renderer);
+                        Utils::setRenderTarget(renderer,NULL);
+                    }
 
                     Component::render(renderer);
                 }

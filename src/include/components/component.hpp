@@ -28,21 +28,25 @@
             public:
                 ComponentEvent _events;                
                 SDL_Texture *_texture = nullptr;
+                bool _shouldRenderer = true;
 
                 Component();
                 Component(Style style);
                 Component(StyleArg style);
                 ~Component();
 
+                void makeRenderer();
                 void updateStyle(StyleArg style);
                 void updateStyle(Style style);
                 void setTexture(SDL_Texture *texture);
                 void appendChild(Component *component);
+                void appendChilds(std::vector<Component*> childs);
                 void calcRealPosition();
                 Position getRealPosition();
 
                 void onClick(const std::function<void()> &onClickFunction);
                 void onHover(const std::function<void()> &onClickFunction);
+                void onRender(const std::function<void()> &onRenderFuction);
                 void handlerAllEvent();
                 void resetAllEvent();
 

@@ -6,7 +6,8 @@
     namespace Sdlk{
         enum ComponentEventType{
             CLICK,
-            HOVER
+            HOVER,
+            RENDER
         };
 
         class ComponentEvent : public EventHandled<ComponentEventType>{

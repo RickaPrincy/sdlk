@@ -18,6 +18,10 @@ void App::run(){
     }
 }
 
+void App::appendChilds(std::vector<Component*> childs){
+    _window->_box.appendChilds(childs);
+}
+
 void App::appendChild(Component *child){
     _window->_box.appendChild(child);
 }

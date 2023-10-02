@@ -11,7 +11,7 @@ int main(int argc, char const *argv[]){
   Box centerBox({
     { Attribute::COLOR, "r: 0, g: 0, b: 255" },
     { Attribute::SIZE, "w: 50, h: 50"},
-    { Attribute::POSITION, "x: 250, y: 250"}
+    { Attribute::POSITION, "x: 250, y: 50"}
   });
 
   Box rightBox({
@@ -43,13 +43,17 @@ int main(int argc, char const *argv[]){
     });
   });
 
-  navbar.appendChild(&leftBox);
-  navbar.appendChild(&rightBox);
+  navbar.onRender([](){
+    Utils::clog("Render navbar");
+  });
 
-  App app("MyGame", Size(500));
+  App app("R_Chess", Size(500));
+  std::vector<Component*> childs = { &leftBox, &rightBox, &centerBox };
+
+  navbar.appendChilds(childs);
+
   app.appendChild(&navbar);
-  app.appendChild(&centerBox);
-
   app.run();
+  
   return 0;
 }

@@ -40,6 +40,7 @@
                 void initSdl(Uint32 flags);
                 void quitSdl(Uint32 flags);
                 void appendChild(Component *child);
+                void appendChilds(std::vector<Component*> childs);
                 void limitFps(unsigned int limit);
 
         };
