@@ -49,7 +49,7 @@ Window::Window(std::string title, Size size, Position position, Uint32 flags){
 
     _box.updateStyle({
         { Attribute::SIZE, size },
-        { Attribute::COLOR, "r: 255, g: 255, b: 255"}
+        { Attribute::COLOR, Rgb(255,255,255)}
     });
 }
 

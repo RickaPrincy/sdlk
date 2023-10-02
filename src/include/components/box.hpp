@@ -19,12 +19,13 @@
                             Program::exit(ExitStatus::FAILURE, "Cannot create a texture");
                             return;
                         }
-                        Utils::setRenderColor(renderer,_style.getColor());
-                        Utils::setRenderTarget(renderer,_texture);
-                        Utils::clearRenderer(renderer);
-                        Utils::setRenderTarget(renderer,NULL);
                     }
                     
+                    Utils::setRenderColor(renderer,_style.getColor());
+                    Utils::setRenderTarget(renderer,_texture);
+                    Utils::clearRenderer(renderer);
+                    Utils::setRenderTarget(renderer,NULL);
+
                     Component::render(renderer);
                 }
         };

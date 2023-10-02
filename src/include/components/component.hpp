@@ -18,12 +18,13 @@
             protected:
                 Style _style;
                 Component *_parent = nullptr;
-                std::vector<Component*> _childrens;
                 Position _realPosition;
+                std::vector<Component*> _childrens;
                 std::map<ComponentEventType,std::function<void()>> _actions;
                 void handlerClick();
                 void handlerHover();
                 void executeEventActions();
+                void shouldExecuteEvent(ComponentEventType event);
             public:
                 ComponentEvent _events;                
                 SDL_Texture *_texture = nullptr;

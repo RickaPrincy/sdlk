@@ -15,18 +15,19 @@ Component::~Component(){
 
 //----------------------------------------------------------------
 void Component::updateStyle(StyleArg style){ 
-    setTexture(nullptr);
-    Position temp = _style.getPosition();
     _style.updateStyle(style);
 
-    if(temp._x != _style.getPosition()._x || temp._y != _style.getPosition()._y){
+    if(style.find(Attribute::POSITION) != style.end()){
         calcRealPosition();
+    }
+    if(style.find(Attribute::SIZE) != style.end()){
+        setTexture(nullptr);
     }
 }
 
 void Component::updateStyle(Style style){ updateStyle(style.getAllStyles()); }
 void Component::setTexture(SDL_Texture *texture){
-    if(Check::isNull(_texture)){
+    if(!Check::isNull(_texture)){
         SDL_DestroyTexture(_texture);
     }
     _texture = texture;
@@ -52,7 +53,6 @@ void  Component::render(SDL_Renderer *renderer){
         return;
     }
 
-    Utils::setRenderColor(renderer,_style.getColor());
     if(!Check::isNull(_parent)){
         Utils::setRenderTarget(renderer, _parent->_texture);
     }

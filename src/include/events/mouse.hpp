@@ -8,7 +8,7 @@
         class Mouse{
             public:
                 static Position _position;
-                static void takePosition(SDL_Event *event);
+                static void setPosition(SDL_Event *event);
         };
     }
 #endif

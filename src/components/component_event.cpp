@@ -21,18 +21,16 @@ void Component::onHover(const std::function<void()> &onHoverFunction){
 }
 
 //----------------------------------------------------------------
-void Component::executeEventActions(){
+void Component::shouldExecuteEvent(ComponentEventType event){
     if(
-        _actions.find(ComponentEventType::CLICK) != _actions.end()
-        && _events.hasOccured(ComponentEventType::CLICK)
+        _actions.find(event) != _actions.end()
+        && _events.hasOccured(event)
     ){
-        _actions.at(ComponentEventType::CLICK)();
+        _actions.at(event)();
     }
+}
 
-    if(
-        _actions.find(ComponentEventType::HOVER) != _actions.end()
-        && _events.hasOccured(ComponentEventType::HOVER)
-    ){
-        _actions.at(ComponentEventType::HOVER)();
-    }
+void Component::executeEventActions(){
+    shouldExecuteEvent(ComponentEventType::HOVER);
+    shouldExecuteEvent(ComponentEventType::CLICK);
 }

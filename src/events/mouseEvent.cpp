@@ -12,11 +12,11 @@ MouseEvent::MouseEvent(){
 void MouseEvent::handlerMouseEvent(SDL_Event *event){
     switch(event->type){
         case SDL_MOUSEBUTTONDOWN:
-            Mouse::takePosition(event);
+            Mouse::setPosition(event);
             updateState(MouseEventType::MOUSE_BUTTON_DOWN, true);
             break;
         case SDL_MOUSEMOTION:
-            Mouse::takePosition(event);
+            Mouse::setPosition(event);
             updateState(MouseEventType::MOUSE_MOVE, true);
             break;
         default:
