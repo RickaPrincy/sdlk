@@ -4,15 +4,17 @@
 using namespace Sdlk;
 int main(int argc, char const *argv[]){
   App app("MyGame", Size(500));
-
   Box container({
     { Attribute::COLOR, "r: 255, g: 0, b: 200" },
     { Attribute::SIZE, "w: 100, h: 100"},
     { Attribute::POSITION, "x: 5, y : 9"}
   });
 
-  container.onClick([](){
-    Utils::clog("Clicked");
+  container.onClick([&](){
+
+    container.updateStyle({
+      { Attribute::COLOR, "r: 255, g: 0, b:0" }
+    });
   });
 
   app.appendChild(&container);

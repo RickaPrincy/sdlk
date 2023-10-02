@@ -12,7 +12,6 @@
     namespace Sdlk{
         class Event{
             public:
-                static Mouse _mouse;
                 static MouseEvent _mouseEvents;
                 static WindowEvent _windowEvents;
                 static void handlerAllEvents();

@@ -1,8 +1,8 @@
 #ifndef _SDLK_MOUSE__
 #define _SDLK_MOUSE__
 
-    #include "../types/position.hpp"
     #include "SDL2/SDL.h"
+    #include "../types/position.hpp"
 
     namespace Sdlk{
         class Mouse{

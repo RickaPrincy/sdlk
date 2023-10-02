@@ -3,6 +3,7 @@
 
     #include <vector>
     #include <functional>
+    #include <map>
     #include <SDL2/SDL.h>
     #include "../utils/program.hpp"
     #include "../utils/check.hpp"
@@ -10,15 +11,21 @@
     #include "../types/style.hpp" 
     #include "../events/event.hpp" 
     #include "../events/mouse.hpp" 
+    #include "../events/componentEvent.hpp" 
+
     namespace Sdlk{
         class Component{
             protected:
                 Style _style;
                 Component *_parent = nullptr;
                 std::vector<Component*> _childrens;
-                std::function<void()> _onClickFunction;
                 Position _realPosition;
+                std::map<ComponentEventType,std::function<void()>> _actions;
+                void handlerClick();
+                void handlerHover();
+                void executeEventActions();
             public:
+                ComponentEvent _events;                
                 SDL_Texture *_texture = nullptr;
 
                 Component();
@@ -34,7 +41,9 @@
                 Position getRealPosition();
 
                 void onClick(const std::function<void()> &onClickFunction);
-                void handlerEvent();
+                void onHover(const std::function<void()> &onClickFunction);
+                void handlerAllEvent();
+                void resetAllEvent();
 
                 virtual void render(SDL_Renderer *renderer);
 

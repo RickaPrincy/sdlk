@@ -1,4 +1,5 @@
 #include "../include/events/mouseEvent.hpp"
+
 using namespace Sdlk;
 
 MouseEvent::MouseEvent(){
@@ -11,6 +12,7 @@ MouseEvent::MouseEvent(){
 void MouseEvent::handlerMouseEvent(SDL_Event *event){
     switch(event->type){
         case SDL_MOUSEBUTTONDOWN:
+            Mouse::takePosition(event);
             updateState(MouseEventType::MOUSE_BUTTON_DOWN, true);
             break;
         case SDL_MOUSEMOTION:

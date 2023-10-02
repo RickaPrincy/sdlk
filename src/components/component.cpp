@@ -15,13 +15,12 @@ Component::~Component(){
 
 //----------------------------------------------------------------
 void Component::updateStyle(StyleArg style){ 
+    setTexture(nullptr);
     Position temp = _style.getPosition();
     _style.updateStyle(style);
 
     if(temp._x != _style.getPosition()._x || temp._y != _style.getPosition()._y){
-        for(const auto &child: _childrens){
-            child->calcRealPosition();
-        }
+        calcRealPosition();
     }
 }
 
@@ -36,14 +35,13 @@ void Component::setTexture(SDL_Texture *texture){
 void Component::appendChild(Component *child){ 
     if(child != this){
         child->_parent = this;
+        child->calcRealPosition();
         _childrens.push_back(child); 
     }
 }
 
 //----------------------------------------------------------------
 void  Component::render(SDL_Renderer *renderer){
-    handlerEvent();
-    
     if(Check::isNull(renderer)){
         Utils::cerr("Cannot render component without renderer");
         return;
@@ -79,8 +77,20 @@ Position Component::getRealPosition(){
 }
 
 void Component::calcRealPosition(){
-    _realPosition = Position(
-        _parent->getRealPosition()._x + _style.getPosition()._x,
-        _parent->getRealPosition()._y + _style.getPosition()._y
-    );
+    if(!Check::isNull(_parent)){
+        _realPosition = Position(
+            _parent->getRealPosition()._x + _style.getPosition()._x,
+            _parent->getRealPosition()._y + _style.getPosition()._y
+        );
+    }
+    else{
+        _realPosition = Position(
+            _style.getPosition()._x,
+            _style.getPosition()._y
+        );
+    }
+
+    for(const auto &child: _childrens){
+        child->calcRealPosition();
+    }
 }

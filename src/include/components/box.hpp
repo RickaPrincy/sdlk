@@ -13,7 +13,6 @@
 
                 //overrided function
                 void render(SDL_Renderer *renderer) override{
-                    handlerEvent();
                     if(Check::isNull(_texture)){
                         _texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, _style.getSize()._w,_style.getSize()._h);
                         if (Check::isNull(_texture)){

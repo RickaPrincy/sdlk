@@ -19,8 +19,11 @@ void Window::render(){
         });
         _box.setTexture(nullptr);
     }
+
+    _box.handlerAllEvent();
     _box.render(_renderer);
     SDL_RenderPresent(_renderer);
+    _box.resetAllEvent();
 }
 
 Window::Window(std::string title, Size size, Position position, Uint32 flags){

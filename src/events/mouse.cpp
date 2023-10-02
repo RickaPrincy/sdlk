@@ -1,7 +1,8 @@
+#include "../include/utils/utils.hpp"
 #include "../include/events/mouse.hpp"
 
-Position Mouse::_position;
 using namespace Sdlk;
+Position Mouse::_position;
 
 void Mouse::takePosition(SDL_Event *event){
     Mouse::_position._x = event->button.x;
