@@ -24,6 +24,9 @@
 
     namespace Sdlk{
         class App{
+            protected:
+                void limitFps(unsigned int limit);
+                int _fps_limit = 16;
             public:
                 Window *_window = nullptr;
                 App(

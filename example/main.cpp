@@ -3,21 +3,53 @@
 
 using namespace Sdlk;
 int main(int argc, char const *argv[]){
-  App app("MyGame", Size(500));
-  Box container({
-    { Attribute::COLOR, "r: 255, g: 0, b: 200" },
-    { Attribute::SIZE, "w: 100, h: 100"},
-    { Attribute::POSITION, "x: 5, y : 9"}
+  Box leftBox({
+    { Attribute::COLOR, "r: 255, g: 0, b: 0" },
+    { Attribute::SIZE, "w: 50, h: 50"}
   });
 
-  container.onClick([&](){
+  Box centerBox({
+    { Attribute::COLOR, "r: 0, g: 0, b: 255" },
+    { Attribute::SIZE, "w: 50, h: 50"},
+    { Attribute::POSITION, "x: 250, y: 250"}
+  });
 
-    container.updateStyle({
-      { Attribute::COLOR, "r: 255, g: 0, b:0" }
+  Box rightBox({
+    { Attribute::SIZE, leftBox.getOneStyle<Size>(Attribute::SIZE)},
+    { Attribute::POSITION, "x: 450, y: 0"}
+  });
+
+  Box navbar({
+    {Attribute::SIZE, Size(500, 100)},
+    {Attribute::COLOR, Rgb(0,255,0)}
+  });
+
+  leftBox.onClick([&](){
+    navbar.updateStyle({
+      { Attribute::COLOR, leftBox.getOneStyle<Rgb>(Attribute::COLOR) },
+    });
+    Utils::clog("Hello");
+  });
+
+  rightBox.onClick([&](){
+    navbar.updateStyle({
+      { Attribute::COLOR, rightBox.getOneStyle<Rgb>(Attribute::COLOR) },
     });
   });
 
-  app.appendChild(&container);
+  centerBox.onHover([&](){
+    navbar.updateStyle({
+      { Attribute::COLOR, centerBox.getOneStyle<Rgb>(Attribute::COLOR) },
+    });
+  });
+
+  navbar.appendChild(&leftBox);
+  navbar.appendChild(&rightBox);
+
+  App app("MyGame", Size(500));
+  app.appendChild(&navbar);
+  app.appendChild(&centerBox);
+
   app.run();
   return 0;
 }

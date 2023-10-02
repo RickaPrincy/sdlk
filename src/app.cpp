@@ -7,15 +7,30 @@ void App::run(){
     if(!Check::isNull(_window)){
         while(Program::getStatus()){
             Event::handlerAllEvents();
+
             _window->render();
+
             Event::_mouseEvents.resetAll();
             Event::_windowEvents.resetAll();
+
+            limitFps(SDL_GetTicks());
         }
     }
 }
 
 void App::appendChild(Component *child){
     _window->_box.appendChild(child);
+}
+
+void App::limitFps(unsigned int limit){
+    unsigned int ticks = SDL_GetTicks();
+
+    if(limit < ticks)
+        return; 
+    else if(limit > ticks + _fps_limit)
+        SDL_Delay(_fps_limit);
+    else 
+        SDL_Delay(limit - ticks);
 }
 
 void App::initSdl(Uint32 flags){
