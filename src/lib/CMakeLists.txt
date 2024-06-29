@@ -13,8 +13,8 @@ endif()
 target_include_directories(
   ${SDLK_LIB_NAME} PRIVATE $<BUILD_INTERFACE:${SDLK_SOURCE_DIR}/include>)
 
-# target_link
-#target_link_libraries(${SDLK_LIB_NAME} PUBLIC rcli)
+#target_link
+target_link_libraries(${SDLK_LIB_NAME} PUBLIC SDL2)
 
 # set properties
 set_target_properties(
