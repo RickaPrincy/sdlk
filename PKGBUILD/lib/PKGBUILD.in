@@ -1,0 +1,20 @@
+# Author: RickaPrincy <rckprincy@gmail.com>
+pkgname=sdlk
+pkgver=@SDLK_LIB_VERSION@
+pkgrel=1
+pkgdesc="SDL2 Kit (SDL2 Wrapper)"
+arch=('x86_64')
+depends=()
+url="https://github.com/RickaPrincy/sdlk"
+license=('MIT')
+source=("sdlk@$pkgver.tar.gz::https://github.com/RickaPrincy/sdlk/releases/download/v@SDLK_VERSION@/sdlk@$pkgver.tar.gz")
+
+sha256sums=("SHASUM")
+
+package() {
+    echo "Installing to \"$pkgdir/usr/\""
+    mkdir -p "$pkgdir/usr/include"
+    mkdir -p "$pkgdir/usr/lib"
+    cp -r "sdlk@$pkgver/include" "$pkgdir/usr"
+    cp -r "sdlk@$pkgver/lib" "$pkgdir/usr"
+}
