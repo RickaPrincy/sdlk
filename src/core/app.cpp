@@ -1,7 +1,16 @@
+#include <csignal>
+#include <iostream>
 #include <sdlk/core/app.hpp>
 #include <stdexcept>
 
 #include "../utils/check.hpp"
+
+// TO handle ctrl + c or something else that can stop the application
+static bool is_running = true;
+static void signal_handler(int signal)
+{
+	is_running = false;
+}
 
 void sdlk::App::limit_fps(unsigned int limit)
 {
@@ -50,6 +59,7 @@ sdlk::App::App(std::string title, Size size, Position position, Uint32 flags)
 
 sdlk::App::~App()
 {
+	std::cout << "destroy app" << std::endl;
 	if (!sdlk::check::is_null(p_window))
 	{
 		delete p_window;
@@ -60,7 +70,7 @@ sdlk::App::~App()
 
 void sdlk::App::run()
 {
-	bool is_running = true;
+	std::signal(SIGINT, signal_handler);
 	SDL_Event event;
 
 	while (is_running)
@@ -70,7 +80,7 @@ void sdlk::App::run()
 			switch (event.type)
 			{
 				case SDL_QUIT: is_running = false; break;
-				default: break;
+				default: break;	 // TODO: add event listener here
 			}
 		}
 

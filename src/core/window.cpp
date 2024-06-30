@@ -1,3 +1,4 @@
+#include <iostream>
 #include <sdlk/core/window.hpp>
 #include <stdexcept>
 
@@ -22,6 +23,7 @@ sdlk::Window::Window(std::string title, sdlk::Size size, sdlk::Position position
 	{
 		throw std::runtime_error("Cannot create SDL Window");
 	}
+	SDL_SetWindowFullscreen(p_sdl_window, 0);  // default not fullscreen
 
 	p_sdl_renderer = SDL_CreateRenderer(p_sdl_window, -1, SDL_RENDERER_ACCELERATED);
 	if (check::is_null(p_sdl_renderer))
@@ -37,6 +39,7 @@ void sdlk::Window::render()
 
 sdlk::Window::~Window()
 {
+	std::cout << "destroy window" << std::endl;
 	if (!sdlk::check::is_null(p_sdl_renderer))
 	{
 		SDL_DestroyRenderer(p_sdl_renderer);
