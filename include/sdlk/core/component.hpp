@@ -25,6 +25,9 @@ namespace sdlk
 
 	public:
 		virtual void append_child(Component *component);
+		virtual void add_event_listener(EventType event_type,
+			EventCallback callback,
+			bool stop_propagation = false) override;
 		Component(Component *parent, Size size, Position position = Position(), SDL_Texture *texture = nullptr);
 	};
 }  // namespace sdlk

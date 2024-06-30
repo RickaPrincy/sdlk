@@ -12,7 +12,7 @@ namespace sdlk
 
 	public:
 		Observer() = default;
-		void add_event_listener(EventType event_type, EventCallback callback, bool stop_propagation = false);
+		virtual void add_event_listener(EventType event_type, EventCallback callback, bool stop_propagation = false);
 
 		friend class App;
 	};

@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <sdlk/core/component.hpp>
+#include <sdlk/core/events/types.hpp>
 #include <stdexcept>
 
 #include "../utils/check.hpp"
@@ -10,7 +11,6 @@ sdlk::Component::Component(Component *parent, Size size, Position position, SDL_
 	if (!sdlk::check::is_null(parent))
 	{
 		p_parent = parent;
-		p_event_listener = parent->p_event_listener;
 		p_parent->append_child(this);
 	}
 }
@@ -49,6 +49,7 @@ void sdlk::Component::append_child(sdlk::Component *component)
 {
 	this->p_childs.push_back(component);
 	component->p_parent = this;
+	component->p_event_listener = p_event_listener;
 	component->calc_real_position();
 }
 
@@ -64,4 +65,14 @@ void sdlk::Component::calc_real_position()
 		m_real_position = Position(m_real_position.get_x(), m_real_position.get_y());
 	}
 	std::for_each(p_childs.begin(), p_childs.end(), [&](auto *child) { child->calc_real_position(); });
+}
+
+void sdlk::Component::add_event_listener(sdlk::EventType event_type, sdlk::EventCallback callabck, bool stop_propation)
+{
+	Observer::add_event_listener(event_type,
+		[&](const auto &event)
+		{
+			callabck(event);
+			this->active_renderer_childs_state();
+		});
 }

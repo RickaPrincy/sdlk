@@ -16,6 +16,7 @@ namespace sdlk
 		virtual ~EventListener() = default;
 		EventListener() = default;
 		virtual void notify_event(const SDL_Event &event);
+		static EventType get_event_type_value(const SDL_Event &event);
 
 		friend class Observer;
 	};

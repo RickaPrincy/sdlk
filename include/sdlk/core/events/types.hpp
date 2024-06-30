@@ -7,8 +7,18 @@
 
 namespace sdlk
 {
-	// TODO: create custom enum
-	using EventType = Uint32;
+	enum class EventType
+	{
+		KEY_DOWN,
+		KEY_UP,
+		WINDOW_EVENT,
+		MOUSE_MOTION,
+		MOUSE_WHEEL,
+		MOUSE_BUTTON_DOWN,
+		MOUSE_BUTTON_UP,
+		NOT_SUPPORTED,
+	};
+
 	using EventCallback = std::function<void(const SDL_Event &event)>;
 
 	struct EventAction
