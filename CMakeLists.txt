@@ -84,16 +84,9 @@ execute_process(
 # clang-format configuration
 find_program(CLANG_FORMAT_EXECUTABLE NAMES clang-format)
 if(CLANG_FORMAT_EXECUTABLE)
-  file(
-    GLOB_RECURSE
-    ALL_SOURCE_FILES
-    "${SDLK_SOURCE_DIR}/src"
-    "${SDLK_SOURCE_DIR}/src/*/*.cpp"
-    "${SDLK_SOURCE_DIR}/src/*/*/*.cpp"
-    "${SDLK_SOURCE_DIR}/include/sdlk/*.hpp"
-    "${SDLK_SOURCE_DIR}/include/sdlk/*/*.hpp"
-    "${SDLK_SOURCE_DIR}/include/sdlk/*/*/*.hpp"
-    "${SDLK_SOURCE_DIR}/examples/*.cpp")
+  file(GLOB_RECURSE ALL_SOURCE_FILES "${SDLK_SOURCE_DIR}/src/*.cpp"
+       "${SDLK_SOURCE_DIR}/include/sdlk/*.hpp"
+       "${SDLK_SOURCE_DIR}/examples/*.cpp")
 
   add_custom_target(
     clang-format

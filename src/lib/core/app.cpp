@@ -63,7 +63,7 @@ sdlk::App::App(std::string title, Size size, Uint32 flags)
 	}
 	catch (const std::runtime_error &error)
 	{
-        //TODO: refactor
+		// TODO: refactor
 		std::cerr << error.what() << std::endl;
 		delete p_window;
 		SDL_Quit();
