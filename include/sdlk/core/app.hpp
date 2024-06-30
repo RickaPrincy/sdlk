@@ -26,7 +26,7 @@ namespace sdlk
 		void limit_fps(unsigned int limit);
 
 	public:
-		CP_GETTER(Window, window)
+		Window *get_window();
 		void run();
 		void init_sdl_flags(Uint32 flags);
 		void quit_sdl_flags(Uint32 flags);

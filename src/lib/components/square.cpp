@@ -1,4 +1,3 @@
-#include <iostream>
 #include <sdlk/components/square.hpp>
 #include <stdexcept>
 
@@ -30,6 +29,7 @@ void sdlk::Square::render(SDL_Renderer *renderer)
 	Component::render(renderer);
 }
 
-sdlk::Square::Square(sdlk::Size size, sdlk::Position position) : sdlk::Component(size, position)
+sdlk::Square::Square(sdlk::Component *parent, sdlk::Size size, sdlk::Position position)
+	: sdlk::Component(parent, size, position)
 {
 }

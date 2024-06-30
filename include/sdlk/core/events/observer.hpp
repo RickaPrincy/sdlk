@@ -8,6 +8,6 @@ namespace sdlk
 	{
 	public:
 		virtual ~Observer() = default;
-		virtual void on_event(const SDL_Event &event) = 0;
+		virtual void on_event(SDL_Event& event) = 0;
 	};
 }  // namespace sdlk

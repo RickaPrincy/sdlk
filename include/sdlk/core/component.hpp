@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SDL2/SDL_events.h>
+
 #include <sdlk/core/renderable.hpp>
 #include <vector>
 
@@ -21,6 +23,6 @@ namespace sdlk
 
 	public:
 		virtual void append_child(Component *component);
-		Component(Size size, Position position = Position(), SDL_Texture *texture = nullptr);
+		Component(Component *parent, Size size, Position position = Position(), SDL_Texture *texture = nullptr);
 	};
 }  // namespace sdlk

@@ -78,7 +78,7 @@ void sdlk::App::add_observer(Observer *observer)
 
 void sdlk::App::notify_observers(const SDL_Event &event)
 {
-	std::for_each(m_observers.begin(), m_observers.end(), [&](const auto observer) { observer->on_event(event); });
+	std::for_each(m_observers.begin(), m_observers.end(), [&](const auto observer) { /*TODO: what here ?*/; });
 }
 
 void sdlk::App::run()
@@ -105,4 +105,9 @@ void sdlk::App::run()
 void sdlk::App::append_child(sdlk::Component *component)
 {
 	this->p_window->append_child(component);
+}
+
+sdlk::Window *sdlk::App::get_window()
+{
+	return p_window;
 }

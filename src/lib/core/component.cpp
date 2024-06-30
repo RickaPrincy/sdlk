@@ -4,8 +4,14 @@
 
 #include "../utils/check.hpp"
 
-sdlk::Component::Component(Size size, Position position, SDL_Texture *texture) : Renderable(size, position, texture)
+sdlk::Component::Component(Component *parent, Size size, Position position, SDL_Texture *texture)
+	: Renderable(size, position, texture)
 {
+	if (!sdlk::check::is_null(parent))
+	{
+		p_parent = parent;
+		p_parent->append_child(this);
+	}
 }
 
 void sdlk::Component::render(SDL_Renderer *renderer)

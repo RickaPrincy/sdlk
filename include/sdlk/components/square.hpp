@@ -6,8 +6,10 @@ namespace sdlk
 {
 	class Square : public Component
 	{
-	public:
+	protected:
 		virtual void render(SDL_Renderer *renderer) override;
-		Square(Size size, Position position = Position());
+
+	public:
+		Square(Component *parent, Size size, Position position = Position());
 	};
 }  // namespace sdlk

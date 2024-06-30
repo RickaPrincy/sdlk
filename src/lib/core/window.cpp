@@ -4,7 +4,7 @@
 
 #include "../utils/check.hpp"
 
-sdlk::Window::Window(std::string title, sdlk::Size size, Uint32 flags) : sdlk::Component(size)
+sdlk::Window::Window(std::string title, sdlk::Size size, Uint32 flags) : sdlk::Component(nullptr, size)
 {
 	p_sdl_window = SDL_CreateWindow(
 		title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, size.get_width(), size.get_height(), flags);
