@@ -1,5 +1,11 @@
 #pragma once
 
-namespace sdlk{
-    int sum(int a, int b);
-}
+#include <SDL2/SDL.h>
+
+namespace sdlk
+{
+	class App
+	{
+	private:
+	};
+}  // namespace sdlk
