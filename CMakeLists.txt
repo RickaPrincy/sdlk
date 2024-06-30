@@ -13,7 +13,7 @@ find_package(SDL2 REQUIRED)
 set(SDLK_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(SDLK_IS_MAIN_PROJECT OFF)
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
-  set(SDLK_IS_MAIN_PROJECT ON)
+    set(SDLK_IS_MAIN_PROJECT ON)
 endif()
 
 # target names
@@ -28,34 +28,40 @@ option(BUILD_SHARED_LIBS "Build rcli as a shared library"
        ${SDLK_IS_MAIN_PROJECT})
 option(SDLK_LIB_BUILD "Build sdlk lib" ON)
 option(SDLK_LIB_INSTALL "Install sdlk lib" ${SDLK_IS_MAIN_PROJECT})
+option(SDLK_EXAMPLES_BUILD "Build examples" ${SDLK_IS_MAIN_PROJECT})
 
 # configure build type
 if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE "Debug")
+    set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
 if(WIN32)
-  add_compile_options(WIN32)
+    add_compile_options(WIN32)
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
-  set(SDLK_TEST OFF)
+    set(SDLK_TEST OFF)
+    set(SDLK_EXAMPLES_BUILD OFF)
 endif()
 
 if(SDLK_IS_MAIN_PROJECT)
-  configure_file(${SDLK_SOURCE_DIR}/PKGBUILD/lib/PKGBUILD.in
-                 ${SDLK_SOURCE_DIR}/PKGBUILD/lib/PKGBUILD @ONLY)
+    configure_file(${SDLK_SOURCE_DIR}/PKGBUILD/lib/PKGBUILD.in
+                    ${SDLK_SOURCE_DIR}/PKGBUILD/lib/PKGBUILD @ONLY)
 
-  configure_file(${SDLK_SOURCE_DIR}/release_config/create_release.sh
-                 ${SDLK_SOURCE_DIR}/create_release.sh @ONLY)
+    configure_file(${SDLK_SOURCE_DIR}/release_config/create_release.sh
+                    ${SDLK_SOURCE_DIR}/create_release.sh @ONLY)
 
-  configure_file(
-    ${SDLK_SOURCE_DIR}/${SDLK_LIB_NAME}Config.hpp.in
-    ${SDLK_SOURCE_DIR}/include/${SDLK_LIB_NAME}/${SDLK_LIB_NAME}Config.hpp
-    @ONLY)
+    configure_file(
+        ${SDLK_SOURCE_DIR}/${SDLK_LIB_NAME}Config.hpp.in
+        ${SDLK_SOURCE_DIR}/include/${SDLK_LIB_NAME}/${SDLK_LIB_NAME}Config.hpp
+        @ONLY)
 endif()
 
 add_subdirectory(src)
+
+if(SDLK_EXAMPLES_BUILD)
+    add_subdirectory(examples)
+endif()
 
 # # Test configuration
 # if(SDLK_TEST)
@@ -81,28 +87,32 @@ add_subdirectory(src)
 # endif()
 
 execute_process(
-  COMMAND git --version
-  RESULT_VARIABLE GIT_RESULT
-  OUTPUT_QUIET)
-
-if(NOT GIT_RESULT EQUAL 0)
-  message(FATAL_ERROR "git is required")
-endif()
+    COMMAND git --version
+    RESULT_VARIABLE GIT_RESULT
+    OUTPUT_QUIET)
 
 # clang-format configuration
 find_program(CLANG_FORMAT_EXECUTABLE NAMES clang-format)
-if(CLANG_FORMAT_EXECUTABLE)
-  file(GLOB_RECURSE ALL_SOURCE_FILES "${SDLK_SOURCE_DIR}/src/lib/*.cpp"
-       "${SDLK_SOURCE_DIR}/src/cli/*.cpp"
-       "${SDLK_SOURCE_DIR}/include/sdlk/*.hpp")
-  add_custom_target(
-    clang-format
-    COMMAND ${CLANG_FORMAT_EXECUTABLE} -i -style=file ${ALL_SOURCE_FILES}
-    COMMENT "Running clang-format")
-else()
-  message(
-    WARNING "clang-format not found. Clang-format target will not be available."
-  )
+    if(CLANG_FORMAT_EXECUTABLE)
+        file(GLOB_RECURSE ALL_SOURCE_FILES "${SDLK_SOURCE_DIR}/src/*/*.cpp"
+           "${SDLK_SOURCE_DIR}/src/*/*/*.cpp"
+           "${SDLK_SOURCE_DIR}/include/sdlk/*.hpp"
+           "${SDLK_SOURCE_DIR}/include/sdlk/*/*.hpp"
+           "${SDLK_SOURCE_DIR}/examples/*.cpp") 
+      
+        add_custom_target(
+            clang-format
+            COMMAND ${CLANG_FORMAT_EXECUTABLE} -i -style=file ${ALL_SOURCE_FILES}
+            COMMENT "Running clang-format")
+
+        add_custom_target(
+            clang-format-check
+            COMMAND ${CLANG_FORMAT_EXECUTABLE} --dry-run -Werror -style=file ${ALL_SOURCE_FILES}
+            COMMENT "Checking clang-format compliance")
+    else()
+        message(
+            WARNING "clang-format not found. Clang-format target will not be available."
+        )
 endif()
 
 # CPack configuration
