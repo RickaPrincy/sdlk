@@ -2,12 +2,14 @@
 
 #include <SDL2/SDL_events.h>
 
+#include <sdlk/core/events/event_listener.hpp>
+#include <sdlk/core/events/observer.hpp>
 #include <sdlk/core/renderable.hpp>
 #include <vector>
 
 namespace sdlk
 {
-	class Component : public Renderable
+	class Component : public Renderable, public Observer
 	{
 	protected:
 		bool m_should_renderer_childs = true;

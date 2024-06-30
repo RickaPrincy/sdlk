@@ -11,6 +11,8 @@ set(LIB_SOURCES
     core/properties/size.cpp
     core/renderable.cpp
     core/component.cpp
+    core/events/observer.cpp
+    core/events/event_listener.cpp
     components/square.cpp
     utils/check.hpp)
 

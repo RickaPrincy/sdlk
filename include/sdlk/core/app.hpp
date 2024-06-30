@@ -3,22 +3,18 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_events.h>
 
-#include <sdlk/core/events/observer.hpp>
+#include <sdlk/core/component.hpp>
+#include <sdlk/core/events/event_listener.hpp>
 #include <sdlk/core/preprocessor/getter_setter.hpp>
 #include <sdlk/core/window.hpp>
 #include <string>
-#include <vector>
-
-#include "sdlk/core/component.hpp"
 
 namespace sdlk
 {
 	class App
 	{
 	private:
-		std::vector<Observer *> m_observers{};
-		void add_observer(Observer *observer);
-		void notify_observers(const SDL_Event &event);
+		EventListener m_event_listener;
 
 	protected:
 		const static short FPS_LIMIT = 16;

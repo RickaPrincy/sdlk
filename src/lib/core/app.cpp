@@ -1,7 +1,7 @@
 #include <SDL2/SDL_events.h>
 
-#include <algorithm>
 #include <csignal>
+#include <cstdlib>
 #include <iostream>
 #include <sdlk/core/app.hpp>
 #include <stdexcept>
@@ -57,7 +57,20 @@ sdlk::App::App(std::string title, Size size, Uint32 flags)
 		throw std::runtime_error("Cannot init sdl");
 	}
 
-	p_window = new Window(title, size, flags);
+	try
+	{
+		p_window = new Window(title, size, flags);
+	}
+	catch (const std::runtime_error &error)
+	{
+        //TODO: refactor
+		std::cerr << error.what() << std::endl;
+		delete p_window;
+		SDL_Quit();
+		exit(EXIT_FAILURE);
+	}
+
+	p_window->p_event_listener = &m_event_listener;
 }
 
 sdlk::App::~App()
@@ -69,16 +82,6 @@ sdlk::App::~App()
 	}
 
 	SDL_Quit();
-}
-
-void sdlk::App::add_observer(Observer *observer)
-{
-	this->m_observers.push_back(observer);
-}
-
-void sdlk::App::notify_observers(const SDL_Event &event)
-{
-	std::for_each(m_observers.begin(), m_observers.end(), [&](const auto observer) { /*TODO: what here ?*/; });
 }
 
 void sdlk::App::run()
@@ -93,7 +96,7 @@ void sdlk::App::run()
 			switch (event.type)
 			{
 				case SDL_QUIT: is_running = false; break;
-				default: this->notify_observers(event); break;
+				default: m_event_listener.notify_event(event); break;
 			}
 		}
 

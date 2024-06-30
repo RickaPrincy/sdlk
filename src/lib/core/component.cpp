@@ -10,6 +10,7 @@ sdlk::Component::Component(Component *parent, Size size, Position position, SDL_
 	if (!sdlk::check::is_null(parent))
 	{
 		p_parent = parent;
+		p_event_listener = parent->p_event_listener;
 		p_parent->append_child(this);
 	}
 }
