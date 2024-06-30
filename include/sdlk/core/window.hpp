@@ -11,13 +11,15 @@ namespace sdlk
 	class Window
 	{
 	protected:
-		SDL_Renderer *m_sdl_renderer = nullptr;
-		SDL_Window *m_sdl_window = nullptr;
+		SDL_Renderer *p_sdl_renderer = nullptr;
+		SDL_Window *p_sdl_window = nullptr;
 
 	public:
 		Size get_size() const;
-		GETTER(SDL_Window *, sdl_window)
-		GETTER(SDL_Renderer *, sdl_renderer)
+		CP_GETTER(SDL_Window, sdl_window)
+		CP_GETTER(SDL_Renderer, sdl_renderer)
+
+		void render();
 
 		Window(std::string title,
 			Size size,
