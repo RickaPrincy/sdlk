@@ -50,14 +50,14 @@ void sdlk::App::quit_sdl_flags(Uint32 flags)
 	SDL_QuitSubSystem(flags);
 }
 
-sdlk::App::App(std::string title, Size size, Position position, Uint32 flags)
+sdlk::App::App(std::string title, Size size, Uint32 flags)
 {
 	if (SDL_WasInit(flags) != 0 && SDL_Init(flags) != 0)
 	{
 		throw std::runtime_error("Cannot init sdl");
 	}
 
-	p_window = new Window(title, size, position, flags);
+	p_window = new Window(title, size, flags);
 }
 
 sdlk::App::~App()
@@ -100,4 +100,9 @@ void sdlk::App::run()
 		this->p_window->render();
 		this->limit_fps(SDL_GetTicks());
 	}
+}
+
+void sdlk::App::append_child(sdlk::Component *component)
+{
+	this->p_window->append_child(component);
 }

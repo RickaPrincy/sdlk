@@ -1,5 +1,5 @@
 if(SDLK_LIB_BUILD)
-  add_subdirectory(core)
+  add_subdirectory(lib)
 endif()
 
 # another lib or target

@@ -18,7 +18,7 @@ namespace sdlk
 
 		virtual void render(SDL_Renderer *renderer);
 
-		Renderable(SDL_Texture *texture);
+		Renderable(Size size, Position position = Position(), SDL_Texture *texture = nullptr);
 		virtual ~Renderable();
 	};
 }  // namespace sdlk

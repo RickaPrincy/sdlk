@@ -4,22 +4,10 @@
 
 #include "../utils/check.hpp"
 
-sdlk::Size sdlk::Window::get_size() const
+sdlk::Window::Window(std::string title, sdlk::Size size, Uint32 flags) : sdlk::Component(size)
 {
-	int width = 0, height = 0;
-	if (!sdlk::check::is_null(p_sdl_window))
-	{
-		SDL_GetWindowSize(p_sdl_window, &width, &height);
-	}
-	return Size(width, height);
-}
-
-sdlk::Window::Window(std::string title, sdlk::Size size, sdlk::Position position, Uint32 flags)
-{
-	m_position = position;
-	m_size = m_size;
-	p_sdl_window =
-		SDL_CreateWindow(title.c_str(), position.get_x(), position.get_y(), size.get_width(), size.get_height(), flags);
+	p_sdl_window = SDL_CreateWindow(
+		title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, size.get_width(), size.get_height(), flags);
 
 	if (check::is_null(p_sdl_window))
 	{
@@ -27,7 +15,7 @@ sdlk::Window::Window(std::string title, sdlk::Size size, sdlk::Position position
 	}
 	SDL_SetWindowFullscreen(p_sdl_window, 0);  // default not fullscreen
 
-	p_sdl_renderer = SDL_CreateRenderer(p_sdl_window, -1, SDL_RENDERER_ACCELERATED);
+	p_sdl_renderer = SDL_CreateRenderer(p_sdl_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (check::is_null(p_sdl_renderer))
 	{
 		throw std::runtime_error("Cannot create SDL Renderer");
@@ -43,7 +31,7 @@ sdlk::Window::Window(std::string title, sdlk::Size size, sdlk::Position position
 
 void sdlk::Window::render()
 {
-	Renderable::render(p_sdl_renderer);
+	Component::render(p_sdl_renderer);
 	SDL_RenderPresent(p_sdl_renderer);
 }
 

@@ -9,6 +9,8 @@
 #include <string>
 #include <vector>
 
+#include "sdlk/core/component.hpp"
+
 namespace sdlk
 {
 	class App
@@ -28,11 +30,9 @@ namespace sdlk
 		void run();
 		void init_sdl_flags(Uint32 flags);
 		void quit_sdl_flags(Uint32 flags);
+		void append_child(Component *component);
 
-		App(std::string title,
-			Size size,
-			Position position = Position(SDL_WINDOWPOS_CENTERED),
-			Uint32 flags = SDL_INIT_EVERYTHING);
+		App(std::string title, Size size, Uint32 flags = SDL_INIT_EVERYTHING);
 		virtual ~App();
 	};
 }  // namespace sdlk

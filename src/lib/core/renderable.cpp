@@ -6,12 +6,8 @@
 
 #include "../utils/check.hpp"
 
-sdlk::Renderable::Renderable(SDL_Texture *texture)
+sdlk::Renderable::Renderable(sdlk::Size size, sdlk::Position position, SDL_Texture *texture) : sdlk::Box(size, position)
 {
-	if (sdlk::check::is_null(texture))
-	{
-		throw std::runtime_error("texture cannot be null");
-	}
 	p_sdl_texture = texture;
 }
 
@@ -31,7 +27,7 @@ void sdlk::Renderable::render(SDL_Renderer *renderer)
 
 sdlk::Renderable::~Renderable()
 {
-	std::cout << "Destroy texture" << std::endl;
+	std::cout << "destroy texture" << std::endl;
 	if (!sdlk::check::is_null(p_sdl_texture))
 	{
 		SDL_DestroyTexture(p_sdl_texture);
