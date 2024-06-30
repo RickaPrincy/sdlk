@@ -1,3 +1,6 @@
+#include <SDL2/SDL_events.h>
+
+#include <algorithm>
 #include <csignal>
 #include <iostream>
 #include <sdlk/core/app.hpp>
@@ -68,6 +71,16 @@ sdlk::App::~App()
 	SDL_Quit();
 }
 
+void sdlk::App::add_observer(Observer *observer)
+{
+	this->m_observers.push_back(observer);
+}
+
+void sdlk::App::notify_observers(const SDL_Event &event)
+{
+	std::for_each(m_observers.begin(), m_observers.end(), [&](const auto observer) { observer->on_event(event); });
+}
+
 void sdlk::App::run()
 {
 	std::signal(SIGINT, signal_handler);
@@ -80,7 +93,7 @@ void sdlk::App::run()
 			switch (event.type)
 			{
 				case SDL_QUIT: is_running = false; break;
-				default: break;	 // TODO: add event listener here
+				default: this->notify_observers(event); break;
 			}
 		}
 

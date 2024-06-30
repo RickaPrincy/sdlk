@@ -16,6 +16,8 @@ sdlk::Size sdlk::Window::get_size() const
 
 sdlk::Window::Window(std::string title, sdlk::Size size, sdlk::Position position, Uint32 flags)
 {
+	m_position = position;
+	m_size = m_size;
 	p_sdl_window =
 		SDL_CreateWindow(title.c_str(), position.get_x(), position.get_y(), size.get_width(), size.get_height(), flags);
 
@@ -30,10 +32,18 @@ sdlk::Window::Window(std::string title, sdlk::Size size, sdlk::Position position
 	{
 		throw std::runtime_error("Cannot create SDL Renderer");
 	}
+
+	p_sdl_texture = SDL_CreateTexture(
+		p_sdl_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, m_size.get_width(), m_size.get_height());
+	if (sdlk::check::is_null(p_sdl_texture))
+	{
+		throw std::runtime_error("Cannot create SDL Texture");
+	}
 }
 
 void sdlk::Window::render()
 {
+	Renderable::render(p_sdl_renderer);
 	SDL_RenderPresent(p_sdl_renderer);
 }
 

@@ -3,7 +3,7 @@ project(
   VERSION ${SDLK_LIB_VERSION}
   LANGUAGES CXX)
 
-set(LIB_SOURCES app.cpp window.cpp box.cpp properties/position.cpp properties/size.cpp)
+set(LIB_SOURCES app.cpp window.cpp box.cpp properties/position.cpp properties/size.cpp renderable.cpp)
 
 # Create the library
 if(BUILD_SHARED_LIBS)

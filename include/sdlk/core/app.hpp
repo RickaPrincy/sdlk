@@ -1,15 +1,23 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_events.h>
 
+#include <sdlk/core/events/observer.hpp>
 #include <sdlk/core/preprocessor/getter_setter.hpp>
 #include <sdlk/core/window.hpp>
 #include <string>
+#include <vector>
 
 namespace sdlk
 {
 	class App
 	{
+	private:
+		std::vector<Observer *> m_observers{};
+		void add_observer(Observer *observer);
+		void notify_observers(const SDL_Event &event);
+
 	protected:
 		const static short FPS_LIMIT = 16;
 		Window *p_window = nullptr;
