@@ -2,10 +2,4 @@
 
 #include <SDL2/SDL.h>
 
-namespace sdlk
-{
-	class App
-	{
-	private:
-	};
-}  // namespace sdlk
+#include <sdlk/core/app.hpp>
