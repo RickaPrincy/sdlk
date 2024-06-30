@@ -1,7 +1,8 @@
-#include <iostream>
+#include <sdlk/sdlk.hpp>
 
 int main(int argc, char *argv[])
 {
-	std::cout << "Hello world" << std::endl;
+	sdlk::App myApp("R_Chess", sdlk::Size(500));
+	myApp.run();
 	return 0;
 }
