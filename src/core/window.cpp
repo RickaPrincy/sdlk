@@ -2,16 +2,6 @@
 #include <sdlk/utils/check.hpp>
 #include <stdexcept>
 
-SDL_Renderer *sdlk::Window::get_sdl_renderer() const
-{
-	return m_sdl_renderer;
-}
-
-SDL_Window *sdlk::Window::get_sdl_window() const
-{
-	return m_sdl_window;
-}
-
 sdlk::Size sdlk::Window::get_size() const
 {
 	int width = 0, height = 0;
@@ -24,7 +14,8 @@ sdlk::Size sdlk::Window::get_size() const
 
 sdlk::Window::Window(std::string title, sdlk::Size size, sdlk::Position position, Uint32 flags)
 {
-	m_sdl_window = SDL_CreateWindow(title.c_str(), position.m_y, position.m_y, size.m_width, size.m_height, flags);
+	m_sdl_window =
+		SDL_CreateWindow(title.c_str(), position.get_x(), position.get_y(), size.get_width(), size.get_height(), flags);
 
 	if (check::is_null(m_sdl_window))
 	{

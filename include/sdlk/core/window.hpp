@@ -3,20 +3,21 @@
 #include <SDL2/SDL.h>
 
 #include <sdlk/core/box.hpp>
+#include <sdlk/core/preprocessor/getter_setter.hpp>
 #include <string>
 
 namespace sdlk
 {
 	class Window
 	{
-	private:
+	protected:
 		SDL_Renderer *m_sdl_renderer = nullptr;
 		SDL_Window *m_sdl_window = nullptr;
 
 	public:
-		SDL_Renderer *get_sdl_renderer() const;
-		SDL_Window *get_sdl_window() const;
 		Size get_size() const;
+		GETTER(SDL_Window *, sdl_window)
+		GETTER(SDL_Renderer *, sdl_renderer)
 
 		Window(std::string title,
 			Size size,

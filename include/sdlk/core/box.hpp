@@ -1,3 +1,4 @@
+#include <sdlk/core/preprocessor/data_definition.hpp>
 #include <sdlk/core/properties/position.hpp>
 #include <sdlk/core/properties/size.hpp>
 
@@ -5,9 +6,13 @@ namespace sdlk
 {
 	class Box
 	{
-	public:
+	protected:
 		Size m_size;
 		Position m_position;
+
+	public:
+		GETTER_SETTER(Position, position)
+		GETTER_SETTER(Size, size)
 
 		virtual int get_x() const;
 		virtual int get_y() const;
@@ -19,9 +24,9 @@ namespace sdlk
 		virtual void set_width(int width);
 		virtual void set_height(int width);
 
-		Box() = default;
-		Box(Size size, Position position);
 		Box(Size size);
+		Box(Size size, Position position);
 		Box(int width, int height, int x, int y);
+		DATA_DEFINITION(Box)
 	};
 }  // namespace sdlk

@@ -1,2 +1,2 @@
 # your_config here
-# ex: find_package(rcli)
+# find_package(SDL2 REQUIRED)
