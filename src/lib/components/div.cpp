@@ -1,9 +1,9 @@
-#include <sdlk/components/square.hpp>
+#include <sdlk/components/div.hpp>
 #include <stdexcept>
 
 #include "../utils/check.hpp"
 
-void sdlk::Square::render(SDL_Renderer *renderer)
+void sdlk::Div::render(SDL_Renderer *renderer)
 {
 	if (sdlk::check::is_null(this->p_sdl_texture))
 	{
@@ -29,7 +29,7 @@ void sdlk::Square::render(SDL_Renderer *renderer)
 	Component::render(renderer);
 }
 
-sdlk::Square::Square(sdlk::Component *parent, sdlk::Size size, sdlk::Position position)
+sdlk::Div::Div(sdlk::Component *parent, sdlk::Size size, sdlk::Position position)
 	: sdlk::Component(parent, size, position)
 {
 }

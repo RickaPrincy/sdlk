@@ -13,7 +13,7 @@ set(LIB_SOURCES
     core/component.cpp
     core/events/observer.cpp
     core/events/event_listener.cpp
-    components/square.cpp
+    components/div.cpp
     utils/check.hpp)
 
 # Create the library
