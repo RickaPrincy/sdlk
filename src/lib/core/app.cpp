@@ -4,9 +4,8 @@
 #include <cstdlib>
 #include <iostream>
 #include <sdlk/core/app.hpp>
+#include <sdlk/utils/basic_wrapper.hpp>
 #include <stdexcept>
-
-#include "../utils/check.hpp"
 
 // TO handle ctrl + c or something else that can stop the application
 static bool is_running = true;
@@ -33,11 +32,7 @@ void sdlk::App::init_sdl_flags(Uint32 flags)
 	{
 		return;
 	}
-
-	if (SDL_InitSubSystem(flags) != 0)
-	{
-		throw std::runtime_error("Cannot init sdl");
-	}
+	sdlk::throw_if_not_success(SDL_InitSubSystem(flags), "Cannot init SDL");
 }
 
 void sdlk::App::quit_sdl_flags(Uint32 flags)
@@ -52,9 +47,9 @@ void sdlk::App::quit_sdl_flags(Uint32 flags)
 
 sdlk::App::App(std::string title, Size size, Uint32 flags)
 {
-	if (SDL_WasInit(flags) != 0 && SDL_Init(flags) != 0)
+	if (SDL_WasInit(flags) != 0)
 	{
-		throw std::runtime_error("Cannot init sdl");
+		sdlk::throw_if_not_success(SDL_Init(flags), "Cannot init SDL");
 	}
 
 	try

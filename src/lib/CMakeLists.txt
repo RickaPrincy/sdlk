@@ -13,8 +13,8 @@ set(LIB_SOURCES
     core/component.cpp
     core/events/observer.cpp
     core/events/event_listener.cpp
-    components/div.cpp
-    utils/check.hpp)
+    utils/basic_wrapper.cpp
+    components/div.cpp)
 
 # Create the library
 if(BUILD_SHARED_LIBS)

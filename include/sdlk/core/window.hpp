@@ -16,6 +16,7 @@ namespace sdlk
 		SDL_Window *p_sdl_window = nullptr;
 
 		void render();
+		virtual void clean_texture(SDL_Renderer *renderer) override;
 
 	public:
 		CP_GETTER(SDL_Window, sdl_window)

@@ -1,9 +1,8 @@
-#pragma once
-
-#include <cstddef>
+#include <string>
 
 namespace sdlk
 {
+	void throw_if_not_success(int response, std::string message);
 	namespace check
 	{
 		template<typename T>
@@ -11,5 +10,7 @@ namespace sdlk
 		{
 			return ptr == NULL || ptr == nullptr;
 		}
+
+		bool is_success(int response);
 	}  // namespace check
 }  // namespace sdlk

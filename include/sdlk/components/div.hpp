@@ -7,7 +7,7 @@ namespace sdlk
 	class Div : public Component
 	{
 	protected:
-		virtual void render(SDL_Renderer *renderer) override;
+		virtual void clean_texture(SDL_Renderer *renderer) override;
 
 	public:
 		Div(Component *parent, Size size, Position position = Position());

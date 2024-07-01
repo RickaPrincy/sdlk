@@ -17,17 +17,19 @@ namespace sdlk
 		std::vector<Component *> p_childs{};
 		Component *p_parent = nullptr;
 
-		virtual void render(SDL_Renderer *renderer) override;
-		void active_renderer_childs_state();
 		void calc_real_position();
+		virtual void render(SDL_Renderer *renderer) override;
+		virtual void clean_texture(SDL_Renderer *renderer) = 0;
 
 		Component() = default;
 
 	public:
+		virtual void set_x(int x) override;
+		virtual void set_y(int x) override;
+		virtual void set_position(Position position) override;
+
+		virtual void active_renderer_childs_state();
 		virtual void append_child(Component *component);
-		virtual void add_event_listener(EventType event_type,
-			EventCallback callback,
-			bool stop_propagation = false) override;
 		Component(Component *parent, Size size, Position position = Position(), SDL_Texture *texture = nullptr);
 	};
 }  // namespace sdlk

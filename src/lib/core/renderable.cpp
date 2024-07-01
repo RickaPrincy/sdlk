@@ -2,9 +2,8 @@
 
 #include <iostream>
 #include <sdlk/core/renderable.hpp>
+#include <sdlk/utils/basic_wrapper.hpp>
 #include <stdexcept>
-
-#include "../utils/check.hpp"
 
 sdlk::Renderable::Renderable(sdlk::Size size, sdlk::Position position, SDL_Texture *texture) : sdlk::Box(size, position)
 {
@@ -19,10 +18,8 @@ void sdlk::Renderable::render(SDL_Renderer *renderer)
 	}
 
 	SDL_Rect rect = { this->get_x(), this->get_y(), this->get_width(), this->get_height() };
-	if (SDL_RenderCopy(renderer, p_sdl_texture, NULL, &rect) != 0)
-	{
-		throw std::runtime_error("Error occured when try to render a Renderable");
-	}
+	sdlk::throw_if_not_success(
+		SDL_RenderCopy(renderer, p_sdl_texture, NULL, &rect), "Error occured when try to render a Renderable");
 }
 
 sdlk::Renderable::~Renderable()

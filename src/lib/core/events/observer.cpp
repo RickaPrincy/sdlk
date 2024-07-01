@@ -1,6 +1,5 @@
 #include <sdlk/core/events/observer.hpp>
-
-#include "../../utils/check.hpp"
+#include <sdlk/utils/basic_wrapper.hpp>
 
 void sdlk::Observer::add_event_listener(sdlk::EventType event_type, sdlk::EventCallback callback, bool stop_propagation)
 {

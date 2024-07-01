@@ -1,9 +1,8 @@
 #include <algorithm>
 #include <sdlk/core/component.hpp>
 #include <sdlk/core/events/types.hpp>
+#include <sdlk/utils/basic_wrapper.hpp>
 #include <stdexcept>
-
-#include "../utils/check.hpp"
 
 sdlk::Component::Component(Component *parent, Size size, Position position, SDL_Texture *texture)
 	: Renderable(size, position, texture)
@@ -19,6 +18,7 @@ void sdlk::Component::render(SDL_Renderer *renderer)
 {
 	if (m_should_renderer_childs)
 	{
+		this->clean_texture(renderer);
 		std::for_each(p_childs.begin(), p_childs.end(), [&](auto *child) { child->render(renderer); });
 	}
 
@@ -28,11 +28,8 @@ void sdlk::Component::render(SDL_Renderer *renderer)
 	}
 
 	Renderable::render(renderer);
+	sdlk::throw_if_not_success(SDL_SetRenderTarget(renderer, NULL), "Cannot reset render target");
 
-	if (SDL_SetRenderTarget(renderer, NULL) != 0)
-	{
-		throw std::runtime_error("Cannot reset render target");
-	}
 	m_should_renderer_childs = false;
 }
 
@@ -67,12 +64,20 @@ void sdlk::Component::calc_real_position()
 	std::for_each(p_childs.begin(), p_childs.end(), [&](auto *child) { child->calc_real_position(); });
 }
 
-void sdlk::Component::add_event_listener(sdlk::EventType event_type, sdlk::EventCallback callabck, bool stop_propation)
+void sdlk::Component::set_x(int x)
 {
-	Observer::add_event_listener(event_type,
-		[&](const auto &event)
-		{
-			callabck(event);
-			this->active_renderer_childs_state();
-		});
+	sdlk::Box::set_x(x);
+	this->calc_real_position();
+}
+
+void sdlk::Component::set_y(int y)
+{
+	sdlk::Box::set_y(y);
+	this->calc_real_position();
+}
+
+void sdlk::Component::set_position(Position position)
+{
+	sdlk::Box::set_position(position);
+	this->calc_real_position();
 }
