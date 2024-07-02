@@ -1,4 +1,5 @@
 #include <SDL2/SDL_events.h>
+#include <SDL2/SDL_image.h>
 
 #include <csignal>
 #include <cstdlib>
@@ -51,10 +52,13 @@ sdlk::App::App(std::string title, Size size, Uint32 flags)
 	{
 		sdlk::throw_if_not_success(SDL_Init(flags), "Cannot init SDL");
 	}
-
 	try
 	{
 		p_window = new Window(title, size, flags);
+		if (IMG_Init(IMG_INIT_PNG) == 0)
+		{
+			throw std::runtime_error("Cannot init sdl image");
+		}
 	}
 	catch (const std::runtime_error &error)
 	{
@@ -76,6 +80,7 @@ sdlk::App::~App()
 		delete p_window;
 	}
 
+	IMG_Quit();
 	SDL_Quit();
 }
 
