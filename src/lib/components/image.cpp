@@ -1,6 +1,5 @@
 #include <SDL2/SDL_image.h>
 
-#include <iostream>
 #include <sdlk/components/image.hpp>
 #include <sdlk/utils/basic_wrapper.hpp>
 #include <stdexcept>
@@ -13,7 +12,6 @@ sdlk::Image::Image(sdlk::Component *parent, std::string src, sdlk::Size size, sd
 
 sdlk::Image::~Image()
 {
-	std::cout << "destroy surface" << std::endl;
 	if (!sdlk::check::is_null(p_loaded_image))
 	{
 		SDL_FreeSurface(p_loaded_image);

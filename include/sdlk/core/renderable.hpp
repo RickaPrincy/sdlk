@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_render.h>
 
 #include <sdlk/core/box.hpp>
@@ -11,6 +12,7 @@ namespace sdlk
 	{
 	protected:
 		SDL_Texture *p_sdl_texture = nullptr;
+		SDL_Rect *p_src_rect = NULL;
 		Renderable() = default;
 
 	public:

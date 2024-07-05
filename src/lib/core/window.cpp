@@ -1,4 +1,3 @@
-#include <iostream>
 #include <sdlk/core/window.hpp>
 #include <sdlk/utils/basic_wrapper.hpp>
 #include <stdexcept>
@@ -29,7 +28,6 @@ void sdlk::Window::render()
 
 sdlk::Window::~Window()
 {
-	std::cout << "destroy window" << std::endl;
 	if (!sdlk::check::is_null(p_sdl_renderer))
 	{
 		SDL_DestroyRenderer(p_sdl_renderer);

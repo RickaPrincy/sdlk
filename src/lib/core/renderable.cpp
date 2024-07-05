@@ -1,6 +1,5 @@
 #include <SDL2/SDL_render.h>
 
-#include <iostream>
 #include <sdlk/core/renderable.hpp>
 #include <sdlk/utils/basic_wrapper.hpp>
 #include <stdexcept>
@@ -19,12 +18,11 @@ void sdlk::Renderable::render(SDL_Renderer *renderer)
 
 	SDL_Rect rect = { this->get_x(), this->get_y(), this->get_width(), this->get_height() };
 	sdlk::throw_if_not_success(
-		SDL_RenderCopy(renderer, p_sdl_texture, NULL, &rect), "Error occured when try to render a Renderable");
+		SDL_RenderCopy(renderer, p_sdl_texture, p_src_rect, &rect), "Error occured when try to render a Renderable");
 }
 
 sdlk::Renderable::~Renderable()
 {
-	std::cout << "destroy texture" << std::endl;
 	if (!sdlk::check::is_null(p_sdl_texture))
 	{
 		SDL_DestroyTexture(p_sdl_texture);

@@ -96,7 +96,6 @@ sdlk::App::App(std::string title, Size size, Uint32 flags)
 
 sdlk::App::~App()
 {
-	std::cout << "destroy app" << std::endl;
 	sdlk::quit_resources(p_window);
 }
 
@@ -124,7 +123,7 @@ void sdlk::App::run()
 	}
 	catch (const std::runtime_error &e)
 	{
-		std::cerr << "[ ERROR ] : " <<  e.what() << std::endl;
+		std::cerr << "[ ERROR ] : " << e.what() << std::endl;
 	}
 }
 

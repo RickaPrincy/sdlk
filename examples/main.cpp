@@ -3,6 +3,8 @@
 #include <sdlk/components/text.hpp>
 #include <sdlk/sdlk.hpp>
 
+#include "sdlk/core/events/types.hpp"
+
 using namespace sdlk;
 
 int main(int argc, char *argv[])
@@ -14,8 +16,10 @@ int main(int argc, char *argv[])
 		Size(500, 150),
 		Position(60, 0));
 
+	my_image.add_event_listener(
+		sdlk::EventType::KEY_DOWN, [&](const SDL_Event &event) { std::cout << "Key down" << std::endl; });
+
 	auto arial = TTF_OpenFont("/home/ricka/Ricka/project/2024/sdlk/examples/assets/font/arial.ttf", 25);
-	std::cout << TTF_GetError() << std::endl;
 	Text my_text(R_Chess.get_window(), "Hello world", { 0, 255, 255 }, arial);
 
 	R_Chess.run();

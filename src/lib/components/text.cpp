@@ -1,7 +1,6 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
-#include <iostream>
 #include <sdlk/components/text.hpp>
 #include <sdlk/utils/basic_wrapper.hpp>
 #include <stdexcept>
@@ -42,7 +41,6 @@ void sdlk::Text::clean_texture(SDL_Renderer *renderer)
 
 sdlk::Text::~Text()
 {
-	std::cout << "destroy text" << std::endl;
 	if (sdlk::check::is_null(p_font_family))
 	{
 		TTF_CloseFont(p_font_family);
