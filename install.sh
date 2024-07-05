@@ -1,5 +1,5 @@
 #! /bin/bash
-git clone -b v0.0.1 https://github.com/RickaPrincy/sdlk 
+git clone https://github.com/RickaPrincy/sdlk 
 cd sdlk 
 mkdir build
 cd build
