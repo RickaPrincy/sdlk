@@ -1,5 +1,7 @@
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_render.h>
+#include <SDL2/SDL_ttf.h>
 
 #include <csignal>
 #include <cstdlib>
@@ -7,6 +9,7 @@
 #include <sdlk/core/app.hpp>
 #include <sdlk/utils/basic_wrapper.hpp>
 #include <stdexcept>
+#include <string>
 
 // TO handle ctrl + c or something else that can stop the application
 static bool is_running = true;
@@ -14,6 +17,21 @@ static void signal_handler(int signal)
 {
 	is_running = false;
 }
+
+namespace sdlk
+{
+	static void quit_resources(sdlk::Window *window)
+	{
+		if (!sdlk::check::is_null(window))
+		{
+			delete window;
+		}
+
+		TTF_Quit();
+		IMG_Quit();
+		SDL_Quit();
+	}
+}  // namespace sdlk
 
 void sdlk::App::limit_fps(unsigned int limit)
 {
@@ -59,13 +77,17 @@ sdlk::App::App(std::string title, Size size, Uint32 flags)
 		{
 			throw std::runtime_error("Cannot init sdl image");
 		}
+
+		if (TTF_Init() == -1)
+		{
+			throw std::runtime_error("Cannot init sdl ttf");
+		}
 	}
 	catch (const std::runtime_error &error)
 	{
 		// TODO: refactor
 		std::cerr << error.what() << std::endl;
-		delete p_window;
-		SDL_Quit();
+		sdlk::quit_resources(p_window);
 		exit(EXIT_FAILURE);
 	}
 
@@ -75,13 +97,7 @@ sdlk::App::App(std::string title, Size size, Uint32 flags)
 sdlk::App::~App()
 {
 	std::cout << "destroy app" << std::endl;
-	if (!sdlk::check::is_null(p_window))
-	{
-		delete p_window;
-	}
-
-	IMG_Quit();
-	SDL_Quit();
+	sdlk::quit_resources(p_window);
 }
 
 void sdlk::App::run()
@@ -89,19 +105,26 @@ void sdlk::App::run()
 	std::signal(SIGINT, signal_handler);
 	SDL_Event event;
 
-	while (is_running)
+	try
 	{
-		while (SDL_PollEvent(&event))
+		while (is_running)
 		{
-			switch (event.type)
+			while (SDL_PollEvent(&event))
 			{
-				case SDL_QUIT: is_running = false; break;
-				default: m_event_listener.notify_event(event); break;
+				switch (event.type)
+				{
+					case SDL_QUIT: is_running = false; break;
+					default: m_event_listener.notify_event(event); break;
+				}
 			}
-		}
 
-		this->p_window->render();
-		this->limit_fps(SDL_GetTicks());
+			this->p_window->render();
+			this->limit_fps(SDL_GetTicks());
+		}
+	}
+	catch (const std::runtime_error &e)
+	{
+		std::cerr << "[ ERROR ] : " <<  e.what() << std::endl;
 	}
 }
 

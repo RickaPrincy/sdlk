@@ -14,8 +14,8 @@ set(LIB_SOURCES
     core/events/observer.cpp
     core/events/event_listener.cpp
     utils/basic_wrapper.cpp
-    components/image.cpp
-    components/div.cpp)
+    components/text.cpp
+    components/image.cpp)
 
 # Create the library
 if(BUILD_SHARED_LIBS)
@@ -31,6 +31,7 @@ target_include_directories(
 # target_link
 target_link_libraries(${SDLK_LIB_NAME} PUBLIC SDL2)
 target_link_libraries(${SDLK_LIB_NAME} PUBLIC SDL2_image)
+target_link_libraries(${SDLK_LIB_NAME} PUBLIC SDL2_ttf)
 
 # set properties
 set_target_properties(
