@@ -4,7 +4,6 @@
 
 #include <sdlk/core/component.hpp>
 #include <sdlk/core/preprocessor/getter_setter.hpp>
-#include <sdlk/core/renderable.hpp>
 #include <string>
 
 namespace sdlk

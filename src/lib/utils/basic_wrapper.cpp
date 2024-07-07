@@ -36,3 +36,22 @@ SDL_Texture *sdlk::load_image(SDL_Renderer *renderer, const std::string path)
 
 	return texture;
 }
+
+SDL_Texture *sdlk::create_target_texture(SDL_Renderer *renderer, SDL_Texture *texture, int width, int height)
+{
+	int texture_width{ 0 }, texture_height{ 0 };
+	sdlk::throw_if_not_success(
+		SDL_QueryTexture(texture, nullptr, nullptr, &texture_width, &texture_height), "Cannot get texture size");
+
+	SDL_Texture *new_texture = SDL_CreateTexture(renderer,
+		SDL_PIXELFORMAT_RGBA8888,
+		SDL_TEXTUREACCESS_TARGET,
+		width <= 0 ? texture_width : width,
+		height <= 0 ? texture_height : height);
+
+	SDL_Rect rect = { 0, 0, texture_width, texture_height };
+	sdlk::throw_if_not_success(SDL_SetRenderTarget(renderer, new_texture), "Cannot set the target");
+	sdlk::throw_if_not_success(SDL_RenderCopy(renderer, texture, nullptr, &rect), "Cannot set the target");
+	sdlk::throw_if_not_success(SDL_SetRenderTarget(renderer, nullptr), "Cannot reset the target");
+	return new_texture;
+}
