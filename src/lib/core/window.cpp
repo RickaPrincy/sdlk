@@ -24,6 +24,8 @@ void sdlk::Window::render()
 {
 	Component::render(p_sdl_renderer);
 	SDL_RenderPresent(p_sdl_renderer);
+	// maybe there is better way ???
+	m_do_re_render = true;
 }
 
 sdlk::Window::~Window()

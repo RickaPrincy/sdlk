@@ -119,8 +119,8 @@ void sdlk::App::run()
 					default: m_event_listener.notify_event(event); break;
 				}
 			}
-            this->p_window->render();
-            this->limit_fps(SDL_GetTicks());
+			this->p_window->render();
+			this->limit_fps(SDL_GetTicks());
 		}
 	}
 	catch (const std::runtime_error &e)

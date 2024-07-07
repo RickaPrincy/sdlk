@@ -20,22 +20,23 @@ void sdlk::TexturedComponent::render(SDL_Renderer *renderer)
 	{
 		this->re_create_texture(renderer);
 		sdlk::throw_if_not_success(
-			SDL_SetRenderTarget(renderer, p_sdl_texture), "Cannot set renderer target to textured_component");
+			SDL_SetRenderTarget(renderer, p_sdl_texture), "Cannot set target to texturedComponent it self");
 		Component::render(renderer);
+		sdlk::throw_if_not_success(SDL_SetRenderTarget(renderer, NULL), "Cannot reset target from component it self");
 	}
 
-	sdlk::throw_if_not_success(SDL_SetRenderTarget(renderer, NULL), "Cannot reset renderer target");
 	if (!sdlk::check::is_null(p_parent))
 	{
 		if (auto parent = dynamic_cast<TexturedComponent *>(p_parent))
 		{
-			sdlk::throw_if_not_success(
-				SDL_SetRenderTarget(renderer, parent->p_sdl_texture), "Cannot set renderer target to parent");
+			sdlk::throw_if_not_success(SDL_SetRenderTarget(renderer, parent->p_sdl_texture),
+				"Cannot set renderer target to textured_component");
 		}
 	}
 
-	SDL_Rect rect = { this->get_x(), this->get_y(), this->get_width(), this->get_height() };
-	sdlk::throw_if_not_success(
-		SDL_RenderCopy(renderer, p_sdl_texture, p_src_rect, &rect), "Cannot copy textured component to the target");
-	sdlk::throw_if_not_success(SDL_SetRenderTarget(renderer, NULL), "Cannot reset render target");
+	SDL_Rect rect = { m_real_position.get_x(), m_real_position.get_y(), this->get_width(), this->get_height() };
+	bool copy_all_image = m_src_rect.w < 0 || m_src_rect.h < 0;
+	sdlk::throw_if_not_success(SDL_RenderCopy(renderer, p_sdl_texture, copy_all_image ? NULL : &m_src_rect, &rect),
+		"Cannot copy textured component to the target");
+	sdlk::throw_if_not_success(SDL_SetRenderTarget(renderer, nullptr), "Cannot reset render target");
 }

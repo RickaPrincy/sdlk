@@ -11,7 +11,7 @@ namespace sdlk
 	class Renderable : public Box
 	{
 	protected:
-		SDL_Rect *p_src_rect = NULL;
+		SDL_Rect m_src_rect{ 0, 0, -1, -1 };
 		Renderable() = default;
 
 	public:

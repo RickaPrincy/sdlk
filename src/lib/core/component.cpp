@@ -7,8 +7,7 @@ sdlk::Component::Component(Component *parent, Size size, Position position) : Re
 {
 	if (!sdlk::check::is_null(parent))
 	{
-		p_parent = parent;
-		p_parent->append_child(this);
+		parent->append_child(this);
 	}
 }
 
@@ -26,8 +25,8 @@ void sdlk::Component::render(SDL_Renderer *renderer)
 	if (m_do_re_render)
 	{
 		std::for_each(p_childs.begin(), p_childs.end(), [&](auto *child) { child->render(renderer); });
-		m_do_re_render = false;
 	}
+	m_do_re_render = false;
 }
 
 void sdlk::Component::append_child(sdlk::Component *component)
