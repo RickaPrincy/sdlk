@@ -1,18 +1,18 @@
 #pragma once
 
-#include <sdlk/core/component.hpp>
 #include <sdlk/core/preprocessor/getter_setter.hpp>
+#include <sdlk/core/textured_component.hpp>
 #include <string>
 
 namespace sdlk
 {
-	class Image : public Component
+	class Image : public TexturedComponent
 	{
 	protected:
 		SDL_Surface *p_loaded_image = nullptr;	// to avoid a loading image again and again on update...
 		std::string m_src{};
 
-		virtual void clean_texture(SDL_Renderer *renderer) override;
+		virtual void re_create_texture(SDL_Renderer *renderer) override;
 
 	public:
 		GETTER(std::string, src)

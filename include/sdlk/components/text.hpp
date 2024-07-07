@@ -2,13 +2,13 @@
 
 #include <SDL2/SDL_ttf.h>
 
-#include <sdlk/core/component.hpp>
 #include <sdlk/core/preprocessor/getter_setter.hpp>
+#include <sdlk/core/textured_component.hpp>
 #include <string>
 
 namespace sdlk
 {
-	class Text : public Component
+	class Text : public TexturedComponent
 	{
 	protected:
 		SDL_Surface *p_loaded_image = nullptr;	// to avoid a loading image again and again on update...
@@ -16,7 +16,7 @@ namespace sdlk
 		SDL_Color m_color = { 0, 0, 0 };
 		std::string m_text_content{};
 
-		virtual void clean_texture(SDL_Renderer *renderer) override;
+		virtual void re_create_texture(SDL_Renderer *renderer) override;
 
 	public:
 		Text(Component *parent,

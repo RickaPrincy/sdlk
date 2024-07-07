@@ -2,10 +2,8 @@
 #include <sdlk/core/component.hpp>
 #include <sdlk/core/events/types.hpp>
 #include <sdlk/utils/basic_wrapper.hpp>
-#include <stdexcept>
 
-sdlk::Component::Component(Component *parent, Size size, Position position, SDL_Texture *texture)
-	: Renderable(size, position, texture)
+sdlk::Component::Component(Component *parent, Size size, Position position) : Renderable(size, position)
 {
 	if (!sdlk::check::is_null(parent))
 	{
@@ -14,31 +12,21 @@ sdlk::Component::Component(Component *parent, Size size, Position position, SDL_
 	}
 }
 
-void sdlk::Component::render(SDL_Renderer *renderer)
+void sdlk::Component::do_re_render()
 {
-	if (m_should_renderer_childs)
-	{
-		this->clean_texture(renderer);
-		std::for_each(p_childs.begin(), p_childs.end(), [&](auto *child) { child->render(renderer); });
-	}
-
-	if (!sdlk::check::is_null(p_parent) && SDL_SetRenderTarget(renderer, p_parent->p_sdl_texture) != 0)
-	{
-		throw std::runtime_error("Cannot set the target to the component the parent");
-	}
-
-	Renderable::render(renderer);
-	sdlk::throw_if_not_success(SDL_SetRenderTarget(renderer, NULL), "Cannot reset render target");
-
-	m_should_renderer_childs = false;
-}
-
-void sdlk::Component::active_renderer_childs_state()
-{
-	m_should_renderer_childs = true;
+	m_do_re_render = true;
 	if (!sdlk::check::is_null(p_parent))
 	{
-		p_parent->active_renderer_childs_state();
+		p_parent->do_re_render();
+	}
+}
+
+void sdlk::Component::render(SDL_Renderer *renderer)
+{
+	if (m_do_re_render)
+	{
+		std::for_each(p_childs.begin(), p_childs.end(), [&](auto *child) { child->render(renderer); });
+		m_do_re_render = false;
 	}
 }
 

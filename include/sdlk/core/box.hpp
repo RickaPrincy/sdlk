@@ -1,3 +1,5 @@
+#pragma once
+
 #include <sdlk/core/preprocessor/data_definition.hpp>
 #include <sdlk/core/properties/position.hpp>
 #include <sdlk/core/properties/size.hpp>

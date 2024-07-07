@@ -5,7 +5,7 @@
 #include <stdexcept>
 
 sdlk::Image::Image(sdlk::Component *parent, std::string src, sdlk::Size size, sdlk::Position position)
-	: sdlk::Component(parent, size, position),
+	: sdlk::TexturedComponent(parent, size, position),
 	  m_src(src)
 {
 }
@@ -18,7 +18,7 @@ sdlk::Image::~Image()
 	}
 }
 
-void sdlk::Image::clean_texture(SDL_Renderer *renderer)
+void sdlk::Image::re_create_texture(SDL_Renderer *renderer)
 {
 	if (sdlk::check::is_null(p_loaded_image))
 	{

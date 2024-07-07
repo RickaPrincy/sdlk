@@ -73,7 +73,10 @@ sdlk::App::App(std::string title, Size size, Uint32 flags)
 	try
 	{
 		p_window = new Window(title, size, flags);
-		if (IMG_Init(IMG_INIT_PNG) == 0)
+		const auto image_init_status =
+			IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_JXL | IMG_INIT_TIF | IMG_INIT_WEBP | IMG_INIT_AVIF);
+
+		if (image_init_status == 0)
 		{
 			throw std::runtime_error("Cannot init sdl image");
 		}
@@ -116,9 +119,8 @@ void sdlk::App::run()
 					default: m_event_listener.notify_event(event); break;
 				}
 			}
-
-			this->p_window->render();
-			this->limit_fps(SDL_GetTicks());
+            this->p_window->render();
+            this->limit_fps(SDL_GetTicks());
 		}
 	}
 	catch (const std::runtime_error &e)

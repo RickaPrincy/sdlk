@@ -10,14 +10,14 @@ sdlk::Text::Text(sdlk::Component *parent,
 	SDL_Color color,
 	TTF_Font *font_family,
 	sdlk::Position position)
-	: sdlk::Component(parent, Size(), position),
+	: sdlk::TexturedComponent(parent, Size(), position),
 	  m_color(color),
 	  p_font_family(font_family),
 	  m_text_content(text_content)
 {
 }
 
-void sdlk::Text::clean_texture(SDL_Renderer *renderer)
+void sdlk::Text::re_create_texture(SDL_Renderer *renderer)
 {
 	if (sdlk::check::is_null(p_font_family) && !sdlk::check::is_null(p_parent))
 	{

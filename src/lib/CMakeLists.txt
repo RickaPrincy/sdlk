@@ -11,6 +11,7 @@ set(LIB_SOURCES
     core/properties/size.cpp
     core/renderable.cpp
     core/component.cpp
+    core/textured_component.cpp
     core/events/observer.cpp
     core/events/event_listener.cpp
     utils/basic_wrapper.cpp
@@ -29,9 +30,11 @@ target_include_directories(
   ${SDLK_LIB_NAME} PRIVATE $<BUILD_INTERFACE:${SDLK_SOURCE_DIR}/include>)
 
 # target_link
-target_link_libraries(${SDLK_LIB_NAME} PUBLIC SDL2)
-target_link_libraries(${SDLK_LIB_NAME} PUBLIC SDL2_image)
-target_link_libraries(${SDLK_LIB_NAME} PUBLIC SDL2_ttf)
+target_link_libraries(
+  ${SDLK_LIB_NAME}
+  PUBLIC SDL2
+  PUBLIC SDL2_image
+  PUBLIC SDL2_ttf)
 
 # set properties
 set_target_properties(

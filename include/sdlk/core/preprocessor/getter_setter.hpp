@@ -1,9 +1,9 @@
 #pragma once
 
-#define CP_GETTER(type, name)              \
-	virtual const type *get_##name() const \
-	{                                      \
-		return p_##name;                   \
+#define CP_GETTER(type, name)        \
+	virtual type *get_##name() const \
+	{                                \
+		return p_##name;             \
 	}
 
 #define GETTER(type, name)          \
