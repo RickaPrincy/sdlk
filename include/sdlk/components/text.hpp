@@ -12,7 +12,8 @@ namespace sdlk
 	class Text : public TexturedComponent
 	{
 	protected:
-		SDL_Texture *p_loaded_text = nullptr;  // to avoid a loading image again and again on update...
+		SDL_Texture *p_loaded_text =
+			nullptr;  // to avoid a loading image again and again on update...
 		TTF_Font *p_font_family = nullptr;
 		SDL_Color m_color = { 0, 0, 0 };
 		std::string m_text_content{};

@@ -20,7 +20,9 @@ namespace sdlk
 		CP_GETTER(SDL_Window, sdl_window)
 		CP_GETTER(SDL_Renderer, sdl_renderer)
 
-		Window(std::string title, Size size, Uint32 flags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN);
+		Window(std::string title,
+			Size size,
+			Uint32 flags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN);
 		virtual ~Window();
 
 		friend class App;

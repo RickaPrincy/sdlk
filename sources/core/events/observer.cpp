@@ -1,7 +1,9 @@
 #include <sdlk/core/events/observer.hpp>
 #include <sdlk/utils/basic_wrapper.hpp>
 
-void sdlk::Observer::add_event_listener(sdlk::EventType event_type, sdlk::EventCallback callback, bool stop_propagation)
+void sdlk::Observer::add_event_listener(sdlk::EventType event_type,
+	sdlk::EventCallback callback,
+	bool stop_propagation)
 {
 	if (!sdlk::check::is_null(p_event_listener))
 	{

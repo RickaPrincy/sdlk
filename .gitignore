@@ -16,5 +16,4 @@ example/build
 .cache/
 *cmake-tools*
 out
-./src/build-templi_qt-Desktop-Debug/
 release

@@ -3,7 +3,8 @@
 #include <sdlk/core/events/types.hpp>
 #include <sdlk/utils/basic_wrapper.hpp>
 
-sdlk::Component::Component(Component *parent, Size size, Position position) : Renderable(size, position)
+sdlk::Component::Component(Component *parent, Size size, Position position)
+	: Renderable(size, position)
 {
 	if (!sdlk::check::is_null(parent))
 	{
@@ -24,7 +25,8 @@ void sdlk::Component::render(SDL_Renderer *renderer)
 {
 	if (m_do_re_render)
 	{
-		std::for_each(p_childs.begin(), p_childs.end(), [&](auto *child) { child->render(renderer); });
+		std::for_each(
+			p_childs.begin(), p_childs.end(), [&](auto *child) { child->render(renderer); });
 	}
 	m_do_re_render = false;
 }
@@ -48,7 +50,8 @@ void sdlk::Component::calc_real_position()
 	{
 		m_real_position = Position(m_real_position.get_x(), m_real_position.get_y());
 	}
-	std::for_each(p_childs.begin(), p_childs.end(), [&](auto *child) { child->calc_real_position(); });
+	std::for_each(
+		p_childs.begin(), p_childs.end(), [&](auto *child) { child->calc_real_position(); });
 }
 
 void sdlk::Component::set_x(int x)

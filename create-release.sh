@@ -23,7 +23,7 @@ create_tar_release(){
 
 create_lib_release(){
 
-    local RELEASE_NAME=sdlk@@SDLK_LIB_VERSION@
+    local RELEASE_NAME=sdlk@0.0.1
     release_path+=("${RELEASE_NAME}")
     
     mkdir -p "${RELEASE_NAME}"
@@ -35,11 +35,11 @@ create_lib_release(){
     cp -r ../build/cmake "${RELEASE_NAME}/lib/cmake/sdlk"
     cp -r ../include/sdlk "${RELEASE_NAME}/include/sdlk"
 
-    create_tar_release "${RELEASE_NAME}" "../PKGBUILD/lib/PKGBUILD"
+    create_tar_release "${RELEASE_NAME}" "../PKGBUILD"
 }
 
 create_lib_release
 
 git add --all
-git commit -m "release: sdlk@@SDLK_LIB_VERSION@"
-git tag -a v@SDLK_VERSION@ -m "sdlk v@SDLK_VERSION@"
+git commit -m "release: sdlk@0.0.1"
+git tag -a v0.0.1 -m "sdlk v0.0.1"

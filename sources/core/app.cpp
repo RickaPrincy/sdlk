@@ -73,8 +73,8 @@ sdlk::App::App(std::string title, Size size, Uint32 flags)
 	try
 	{
 		p_window = new Window(title, size, flags);
-		const auto image_init_status =
-			IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_JXL | IMG_INIT_TIF | IMG_INIT_WEBP | IMG_INIT_AVIF);
+		const auto image_init_status = IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_JXL |
+												IMG_INIT_TIF | IMG_INIT_WEBP | IMG_INIT_AVIF);
 
 		if (image_init_status == 0)
 		{

@@ -9,7 +9,8 @@ namespace sdlk
 	class Image : public TexturedComponent
 	{
 	protected:
-		SDL_Texture *p_loaded_image = nullptr;	// to avoid a loading image again and again on update...
+		SDL_Texture *p_loaded_image =
+			nullptr;  // to avoid a loading image again and again on update...
 		std::string m_src{};
 
 		virtual void re_create_texture(SDL_Renderer *renderer) override;

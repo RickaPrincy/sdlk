@@ -2,18 +2,25 @@
 #include <sdlk/utils/basic_wrapper.hpp>
 #include <stdexcept>
 
-sdlk::Window::Window(std::string title, sdlk::Size size, Uint32 flags) : sdlk::Component(nullptr, size)
+sdlk::Window::Window(std::string title, sdlk::Size size, Uint32 flags)
+	: sdlk::Component(nullptr, size)
 {
-	p_sdl_window = SDL_CreateWindow(
-		title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, size.get_width(), size.get_height(), flags);
+	p_sdl_window = SDL_CreateWindow(title.c_str(),
+		SDL_WINDOWPOS_CENTERED,
+		SDL_WINDOWPOS_CENTERED,
+		size.get_width(),
+		size.get_height(),
+		flags);
 
 	if (check::is_null(p_sdl_window))
 	{
 		throw std::runtime_error("Cannot create SDL Window");
 	}
-	sdlk::throw_if_not_success(SDL_SetWindowFullscreen(p_sdl_window, 0), "Cannot set false fullscreen mode");
+	sdlk::throw_if_not_success(
+		SDL_SetWindowFullscreen(p_sdl_window, 0), "Cannot set false fullscreen mode");
 
-	p_sdl_renderer = SDL_CreateRenderer(p_sdl_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	p_sdl_renderer =
+		SDL_CreateRenderer(p_sdl_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (check::is_null(p_sdl_renderer))
 	{
 		throw std::runtime_error("Cannot create SDL Renderer");

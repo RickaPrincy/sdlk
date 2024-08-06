@@ -13,11 +13,9 @@ namespace sdlk
 {
 	class App
 	{
-	private:
-		EventListener m_event_listener;
-
 	protected:
 		const static short FPS_LIMIT = 16;
+		EventListener m_event_listener;
 		Window *p_window = nullptr;
 		void limit_fps(unsigned int limit);
 

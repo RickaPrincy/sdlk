@@ -26,7 +26,8 @@ void sdlk::Text::re_create_texture(SDL_Renderer *renderer)
 			throw std::runtime_error("Cannot render text when font is null");
 		}
 
-		SDL_Surface *text_surface = TTF_RenderText_Solid(p_font_family, m_text_content.c_str(), m_color);
+		SDL_Surface *text_surface =
+			TTF_RenderText_Solid(p_font_family, m_text_content.c_str(), m_color);
 		this->set_size(Size(text_surface->w, text_surface->h));
 		p_loaded_text = SDL_CreateTextureFromSurface(renderer, text_surface);
 		SDL_FreeSurface(text_surface);
@@ -41,7 +42,8 @@ void sdlk::Text::re_create_texture(SDL_Renderer *renderer)
 	{
 		SDL_DestroyTexture(p_sdl_texture);
 	}
-	this->p_sdl_texture = sdlk::create_target_texture(renderer, p_loaded_text, this->get_width(), this->get_height());
+	this->p_sdl_texture =
+		sdlk::create_target_texture(renderer, p_loaded_text, this->get_width(), this->get_height());
 }
 
 sdlk::Text::~Text()

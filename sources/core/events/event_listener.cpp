@@ -4,7 +4,8 @@
 
 void sdlk::EventListener::notify_event(const SDL_Event &event)
 {
-	const auto event_actions = m_event_listeners.find(sdlk::EventListener::get_event_type_value(event));
+	const auto event_actions =
+		m_event_listeners.find(sdlk::EventListener::get_event_type_value(event));
 	if (event_actions == m_event_listeners.end())
 	{
 		return;

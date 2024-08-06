@@ -1,7 +1,4 @@
-project(
-  ${SDLK_LIB_NAME}
-  VERSION ${SDLK_LIB_VERSION}
-  LANGUAGES CXX)
+project(${SDLK_LIB_NAME} VERSION ${SDLK_LIB_VERSION} LANGUAGES CXX)
 
 set(LIB_SOURCES
     core/app.cpp
@@ -71,7 +68,6 @@ if(SDLK_LIB_INSTALL)
 
   configure_file(${SDLK_SOURCE_DIR}/cmake/${SDLK_LIB_NAME}Config.cmake.in
                  ${CMAKE_BINARY_DIR}/cmake/${SDLK_LIB_NAME}Config.cmake @ONLY)
-
   # Install the Config, ConfigVersion, and custom Find module files
   install(FILES ${CMAKE_BINARY_DIR}/cmake/${SDLK_LIB_NAME}Config.cmake
                 ${CMAKE_BINARY_DIR}/cmake/${SDLK_LIB_NAME}Version.cmake

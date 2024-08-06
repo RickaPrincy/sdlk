@@ -4,7 +4,10 @@
 #include <sdlk/utils/basic_wrapper.hpp>
 #include <stdexcept>
 
-sdlk::Image::Image(sdlk::Component *parent, std::string src, sdlk::Size size, sdlk::Position position)
+sdlk::Image::Image(sdlk::Component *parent,
+	std::string src,
+	sdlk::Size size,
+	sdlk::Position position)
 	: sdlk::TexturedComponent(parent, size, position),
 	  m_src(src)
 {
@@ -40,5 +43,6 @@ void sdlk::Image::re_create_texture(SDL_Renderer *renderer)
 		SDL_DestroyTexture(p_sdl_texture);
 	}
 
-	p_sdl_texture = sdlk::create_target_texture(renderer, p_loaded_image, this->get_width(), this->get_height());
+	p_sdl_texture = sdlk::create_target_texture(
+		renderer, p_loaded_image, this->get_width(), this->get_height());
 }
