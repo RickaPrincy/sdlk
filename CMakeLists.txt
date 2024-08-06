@@ -64,7 +64,7 @@ add_subdirectory(sources)
 find_program(CLANG_FORMAT_EXECUTABLE NAMES clang-format)
 if(CLANG_FORMAT_EXECUTABLE)
   file(GLOB_RECURSE ALL_SOURCE_FILES "${SDLK_SOURCE_DIR}/sources/*.cpp"
-       "${sdlk_SOURCE_DIR}/examples/*.cpp"
+       "${sdlk_SOURCE_DIR}/examples/*.cpp" "${sdlk_SOURCE_DIR}/sources/*.hpp"
        "${SDLK_SOURCE_DIR}/include/sdlk/*.hpp")
   add_custom_target(
     clang-format

@@ -50,7 +50,7 @@ sdlk::Box::Box(Size size, Position position) : m_size(size), m_position(position
 
 sdlk::Box::Box(int width, int height, int x, int y)
 	: m_size(Size(width, height)),
-	  m_position(Position(x, y)) {};
+	  m_position(Position(x, y)){};
 
 bool sdlk::Box::operator==(const Box& other) const
 {

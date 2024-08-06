@@ -12,6 +12,9 @@ jobs:
     name: build with cmake
     steps:
     - uses: actions/checkout@v4
+    
+    - name: install deps
+      run: sudo apt install libsdl2-2.0-0 libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
 
     - name: configure 
       run: cmake -DCMAKE_BUILD_TYPE=Release -S . -B build
@@ -25,7 +28,7 @@ jobs:
     strategy:
       matrix:
         path:
-          - 'src'
+          - 'sources'
           - 'include'
           - 'examples'
     steps:
