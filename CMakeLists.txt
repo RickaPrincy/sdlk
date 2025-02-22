@@ -72,7 +72,7 @@ endif()
 # clang-format configuration
 find_program(CLANG_FORMAT_EXECUTABLE NAMES clang-format)
 if(CLANG_FORMAT_EXECUTABLE)
-  file(GLOB_RECURSE ALL_SOURCE_FILES "${SDLK_SOURCE_DIR}/sources/*.cpp"
+  file(GLOB_RECURSE ALL_SOURCE_FILES "${SDLK_SOURCE_DIR}/sources/*.hpp"
        "${SDLK_SOURCE_DIR}/include/sdlk/*.hpp"
        "${SDLK_SOURCE_DIR}/examples/*.cpp")
   add_custom_target(
