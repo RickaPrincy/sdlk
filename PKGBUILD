@@ -9,7 +9,7 @@ url="https://github.com/RickaPrincy/sdlk"
 license=('MIT')
 source=("sdlk@$pkgver.tar.gz::https://github.com/RickaPrincy/sdlk/releases/download/v0.0.1/sdlk@$pkgver.tar.gz")
 
-sha256sums=("SHASUM")
+sha256sums=("7750ebde2de18f8d4406c2ff2f9dbe761258e99bf3eb9f201249bbc880f8df38")
 
 package() {
     echo "Installing to \"$pkgdir/usr/\""
