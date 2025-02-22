@@ -25,6 +25,7 @@ set(SDLK_LIB_VERSION 0.0.1)
 set(SDLK_LIB_VERSION_MAJOR 0)
 set(SDLK_VERSION ${PROJECT_VERSION})
 set(SDLK_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+set(SDLK_BUILD_EXAMPLE ON)
 
 # list of options
 option(BUILD_SHARED_LIBS "Build rcli as a shared library"
@@ -43,11 +44,15 @@ endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
   set(SDLK_TEST OFF)
+  set(SDLK_BUILD_EXAMPLE OFF)
 endif()
 
 if(SDLK_IS_MAIN_PROJECT)
   configure_file(${SDLK_SOURCE_DIR}/.templates/PKGBUILD.in
                  ${SDLK_SOURCE_DIR}/PKGBUILD @ONLY)
+
+  configure_file(${SDLK_SOURCE_DIR}/.templates/install.sh.in
+                 ${SDLK_SOURCE_DIR}/install.sh @ONLY)
 
   configure_file(${SDLK_SOURCE_DIR}/.templates/create-release.sh.in
                  ${SDLK_SOURCE_DIR}/create-release.sh @ONLY)
@@ -60,12 +65,16 @@ endif()
 
 add_subdirectory(sources)
 
+if(SDLK_BUILD_EXAMPLE)
+  add_subdirectory(examples)
+endif()
+
 # clang-format configuration
 find_program(CLANG_FORMAT_EXECUTABLE NAMES clang-format)
 if(CLANG_FORMAT_EXECUTABLE)
   file(GLOB_RECURSE ALL_SOURCE_FILES "${SDLK_SOURCE_DIR}/sources/*.cpp"
-       "${sdlk_SOURCE_DIR}/examples/*.cpp" "${sdlk_SOURCE_DIR}/sources/*.hpp"
-       "${SDLK_SOURCE_DIR}/include/sdlk/*.hpp")
+       "${SDLK_SOURCE_DIR}/include/sdlk/*.hpp"
+       "${SDLK_SOURCE_DIR}/examples/*.cpp")
   add_custom_target(
     clang-format
     COMMAND ${CLANG_FORMAT_EXECUTABLE} -i -style=file ${ALL_SOURCE_FILES}

@@ -5,9 +5,9 @@ pkgrel=1
 pkgdesc="SDL2 Kit (SDL2 Wrapper)"
 arch=('x86_64')
 depends=('sdl2' 'sdl2_image' 'sdl2_ttf')
-url="https://github.com/RickaPrincy/sdlk.git"
+url="https://github.com/RickaPrincy/sdlk"
 license=('MIT')
-source=("sdlk@$pkgver.tar.gz::https://github.com/RickaPrincy/sdlk.git/releases/download/v0.0.1/sdlk@$pkgver.tar.gz")
+source=("sdlk@$pkgver.tar.gz::https://github.com/RickaPrincy/sdlk/releases/download/v0.0.1/sdlk@$pkgver.tar.gz")
 
 sha256sums=("SHASUM")
 
