@@ -48,7 +48,7 @@ void sdlk::Component::calc_real_position()
 	}
 	else
 	{
-		m_real_position = Position(m_real_position.get_x(), m_real_position.get_y());
+		m_real_position = Position(m_position.get_x(), m_position.get_y());
 	}
 	std::for_each(
 		p_childs.begin(), p_childs.end(), [&](auto *child) { child->calc_real_position(); });
