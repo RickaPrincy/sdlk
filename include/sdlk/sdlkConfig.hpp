@@ -1,1 +1,1 @@
-#define SDLK_VERSION "0.0.1"
+#define SDLK_VERSION "0.0.2"

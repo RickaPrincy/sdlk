@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.18)
 
-project(sdlk_tools VERSION 0.0.1)
+project(sdlk_tools VERSION 0.0.2)
 
 # c++ 17 by default
 set(CMAKE_CXX_STANDARD 17)
@@ -21,7 +21,7 @@ endif()
 
 # target names
 set(SDLK_LIB_NAME sdlk)
-set(SDLK_LIB_VERSION 0.0.1)
+set(SDLK_LIB_VERSION 0.0.2)
 set(SDLK_LIB_VERSION_MAJOR 0)
 set(SDLK_VERSION ${PROJECT_VERSION})
 set(SDLK_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
