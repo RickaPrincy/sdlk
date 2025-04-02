@@ -13,6 +13,7 @@ find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 
+set(SDLK_TEST_NAME sdlkTest)
 set(SDLK_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(SDLK_IS_MAIN_PROJECT OFF)
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
@@ -32,6 +33,7 @@ option(BUILD_SHARED_LIBS "Build rcli as a shared library"
        ${SDLK_IS_MAIN_PROJECT})
 option(SDLK_LIB_BUILD "Build sdlk lib" ON)
 option(SDLK_LIB_INSTALL "Install sdlk lib" ${SDLK_IS_MAIN_PROJECT})
+option(SDLK_TEST "Build SDLK test" ${SDLK_IS_MAIN_PROJECT})
 
 # configure build type
 if(NOT CMAKE_BUILD_TYPE)
@@ -67,6 +69,28 @@ add_subdirectory(sources)
 
 if(SDLK_BUILD_EXAMPLE)
   add_subdirectory(examples)
+endif()
+
+if(SDLK_TEST)
+  set(SUBMODULES depedencies/googletest)
+  find_package(Git REQUIRED)
+
+  foreach(submodule ${SUBMODULES})
+    execute_process(
+      COMMAND ${GIT_EXECUTABLE} submodule update --init ${submodule}
+      WORKING_DIRECTORY ${SDLK_SOURCE_DIR}
+      RESULT_VARIABLE GIT_SUBMOD_RESULT)
+
+    if(NOT GIT_SUBMOD_RESULT EQUAL "0")
+      message(
+        FATAL_ERROR
+          "git submodule update --init  ${submodule} failed with ${GIT_SUBMOD_RESULT}, please checkout submodules"
+      )
+    endif()
+  endforeach()
+
+  add_subdirectory(depedencies/googletest)
+  add_subdirectory(tests)
 endif()
 
 # clang-format configuration
