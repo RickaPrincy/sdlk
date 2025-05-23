@@ -37,9 +37,7 @@ void sdlk::TexturedComponent::render(SDL_Renderer *renderer)
 		}
 	}
 
-	SDL_Rect rect = {
-		m_real_position.get_x(), m_real_position.get_y(), this->get_width(), this->get_height()
-	};
+	SDL_Rect rect = { this->get_x(), this->get_y(), this->get_width(), this->get_height() };
 	bool copy_all_image = m_src_rect.w < 0 || m_src_rect.h < 0;
 	sdlk::throw_if_not_success(
 		SDL_RenderCopy(renderer, p_sdl_texture, copy_all_image ? NULL : &m_src_rect, &rect),

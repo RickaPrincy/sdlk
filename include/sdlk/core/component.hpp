@@ -13,11 +13,9 @@ namespace sdlk
 	{
 	protected:
 		bool m_do_re_render = true;
-		Position m_real_position;
 		std::vector<Component *> p_childs{};
 		Component *p_parent = nullptr;
 
-		virtual void calc_real_position();
 		virtual void render(SDL_Renderer *renderer) override;
 		Component() = default;
 

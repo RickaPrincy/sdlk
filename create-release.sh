@@ -23,7 +23,7 @@ create_tar_release(){
 
 create_lib_release(){
 
-    local RELEASE_NAME=sdlk@0.0.2
+    local RELEASE_NAME=sdlk@0.0.3
     release_path+=("${RELEASE_NAME}")
     
     mkdir -p "${RELEASE_NAME}"
@@ -41,5 +41,5 @@ create_lib_release(){
 create_lib_release
 
 git add --all
-git commit -m "release: sdlk@0.0.2"
-git tag -a v0.0.2 -m "sdlk v0.0.2"
+git commit -m "release: sdlk@0.0.3"
+git tag -a v0.0.3 -m "sdlk v0.0.3"

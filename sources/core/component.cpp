@@ -36,38 +36,19 @@ void sdlk::Component::append_child(sdlk::Component *component)
 	this->p_childs.push_back(component);
 	component->p_parent = this;
 	component->p_event_listener = p_event_listener;
-	component->calc_real_position();
-}
-
-void sdlk::Component::calc_real_position()
-{
-	if (!sdlk::check::is_null(p_parent))
-	{
-		m_real_position = Position(p_parent->m_real_position.get_x() + m_position.get_x(),
-			p_parent->m_real_position.get_y() + m_position.get_y());
-	}
-	else
-	{
-		m_real_position = Position(m_position.get_x(), m_position.get_y());
-	}
-	std::for_each(
-		p_childs.begin(), p_childs.end(), [&](auto *child) { child->calc_real_position(); });
 }
 
 void sdlk::Component::set_x(int x)
 {
 	sdlk::Box::set_x(x);
-	this->calc_real_position();
 }
 
 void sdlk::Component::set_y(int y)
 {
 	sdlk::Box::set_y(y);
-	this->calc_real_position();
 }
 
 void sdlk::Component::set_position(Position position)
 {
 	sdlk::Box::set_position(position);
-	this->calc_real_position();
 }
