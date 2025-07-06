@@ -1,7 +1,9 @@
 #include "utils.hpp"
 
 #include <algorithm>
+#include <array>
 #include <iterator>
+#include <sdlk/core/types.hpp>
 #include <vector>
 
 namespace sdlk
@@ -26,5 +28,19 @@ namespace sdlk
 			[&](const glm::vec2 &vertex) { return pixel_to_ndc(vertex, window_size); });
 
 		return result;
+	}
+
+	auto pixels_to_polygon_without_ring(const std::vector<glm::vec2> &points) -> polygon
+	{
+		polygon polygon{};
+
+		polygon.reserve(points.size());
+		polygon.emplace_back();
+		for (const auto &p : points)
+		{
+			polygon[0].push_back({ p.x, p.y });
+		}
+
+		return polygon;
 	}
 }  // namespace sdlk

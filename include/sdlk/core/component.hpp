@@ -10,9 +10,11 @@ namespace sdlk
 	class component
 	{
 	protected:
-		GLuint m_vao{}, m_vbo{};
-		std::vector<glm::vec2> m_ndc_vertex{};
 		component *p_parent = nullptr;
+
+		GLuint m_vao{}, m_vbo{}, m_ebo{};
+		std::vector<glm::vec2> m_ndc_vertices{};
+		std::vector<unsigned int> m_indices{};
 
 	private:
 		glm::vec2 _window_size{};
