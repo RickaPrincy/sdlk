@@ -1,6 +1,6 @@
 project(${SDLK_LIB_NAME} VERSION ${SDLK_LIB_VERSION} LANGUAGES CXX)
 
-set(LIB_SOURCES core/app.cpp core/events/event_listener.cpp core/events/observer.cpp)
+set(LIB_SOURCES core/app.cpp core/events/event_listener.cpp core/events/observer.cpp core/glad.cpp)
 
 # Create the library
 if(BUILD_SHARED_LIBS)

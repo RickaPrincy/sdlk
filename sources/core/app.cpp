@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_video.h>
+#include <glad/glad.h>
 
 #include <csignal>
 #include <cstdlib>
@@ -11,7 +12,8 @@
 
 namespace sdlk
 {
-	const static short FPS_LIMIT = 16;
+	static constexpr int TARGET_FPS = 30;
+	static constexpr int FRAME_DELAY_MS = 1000 / TARGET_FPS;
 
 	// TO handle ctrl + c or something else that can stop the application
 	static bool is_running = true;
@@ -20,22 +22,53 @@ namespace sdlk
 		is_running = false;
 	}
 
-	void sdlk::app::limit_fps(unsigned int limit)
+	auto app::limit_fps() -> void
 	{
-		unsigned int ticks = SDL_GetTicks();
+		Uint32 frame_time = SDL_GetTicks() - this->_frame_start;
 
-		if (limit < ticks)
+		if (frame_time < FRAME_DELAY_MS)
 		{
-			return;
+			SDL_Delay(FRAME_DELAY_MS - frame_time);
 		}
-		else if (limit > ticks + FPS_LIMIT)
+
+		this->_frame_start = SDL_GetTicks();
+	}
+
+	auto app::run(int argc, char **argv) -> int
+	{
+		std::signal(SIGINT, signal_handler);
+		SDL_Event event;
+
+		glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
+		try
 		{
-			SDL_Delay(FPS_LIMIT);
+			while (is_running)
+			{
+				// Event
+				while (SDL_PollEvent(&event))
+				{
+					switch (event.type)
+					{
+						case SDL_QUIT: is_running = false; break;
+						default: this->m_event_listener.notify_event(event); break;
+					}
+				}
+
+				// Update
+				glClear(GL_COLOR_BUFFER_BIT);
+				SDL_GL_SwapWindow(this->m_window.get());
+
+				// FPS Limit
+				this->limit_fps();
+			}
 		}
-		else
+		catch (const std::runtime_error &e)
 		{
-			SDL_Delay(limit - ticks);
+			std::cerr << "[ ERROR ] : " << e.what() << "\n";
+			return EXIT_FAILURE;
 		}
+
+		return EXIT_SUCCESS;
 	}
 
 	app::app(std::string window_title, size window_size, Uint32 window_init_flags)
@@ -59,35 +92,17 @@ namespace sdlk
 		this->m_size = window_size;
 		this->m_title = std::move(window_title);
 		this->m_window = make_sdl_resource_shared(window, SDL_DestroyWindow);
+		this->m_opengl_context = SDL_GL_CreateContext(this->m_window.get());
+
+		if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress))
+		{
+			SDL_GL_DeleteContext(this->m_opengl_context);
+			throw std::runtime_error("Failed to initialize GLAD");
+		}
 	}
 
-	auto app::run(int argc, char **argv) -> int
+	app::~app()
 	{
-		std::signal(SIGINT, signal_handler);
-		SDL_Event event;
-
-		try
-		{
-			while (is_running)
-			{
-				while (SDL_PollEvent(&event))
-				{
-					switch (event.type)
-					{
-						case SDL_QUIT: is_running = false; break;
-						default: this->m_event_listener.notify_event(event); break;
-					}
-				}
-
-				this->limit_fps(SDL_GetTicks());
-			}
-		}
-		catch (const std::runtime_error &e)
-		{
-			std::cerr << "[ ERROR ] : " << e.what() << "\n";
-			return EXIT_FAILURE;
-		}
-
-		return EXIT_SUCCESS;
+		SDL_GL_DeleteContext(this->m_opengl_context);
 	}
 }  // namespace sdlk

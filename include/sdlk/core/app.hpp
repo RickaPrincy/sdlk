@@ -14,11 +14,15 @@ namespace sdlk
 {
 	class app
 	{
+	private:
+		Uint32 _frame_start = 0;
+
 	protected:
 		size m_size{};
 		std::string m_title{};
 		event_listener m_event_listener{};
 		std::shared_ptr<SDL_Window> m_window = nullptr;
+		SDL_GLContext m_opengl_context = nullptr;
 
 	public:
 		app(std::string window_title,
@@ -26,6 +30,8 @@ namespace sdlk
 			Uint32 sdl_init_flags = SDL_INIT_EVERYTHING);
 
 		auto run(int argc, char **argv) -> int;
-		virtual auto limit_fps(unsigned int limit) -> void;
+		virtual auto limit_fps() -> void;
+
+		virtual ~app();
 	};
 };	// namespace sdlk
