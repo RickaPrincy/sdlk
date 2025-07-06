@@ -11,7 +11,9 @@ endif()
 
 # Set include directories for the library
 target_include_directories(
-  ${SDLK_LIB_NAME} PRIVATE $<BUILD_INTERFACE:${SDLK_SOURCE_DIR}/include>)
+  ${SDLK_LIB_NAME} PUBLIC $<BUILD_INTERFACE:${SDLK_SOURCE_DIR}/include>)
+
+target_include_directories(${SDLK_LIB_NAME} PUBLIC $<BUILD_INTERFACE:${SDLK_SOURCE_DIR}/external/glm>)
 
 # target_link
 target_link_libraries(
