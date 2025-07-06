@@ -7,6 +7,7 @@ set(LIB_SOURCES
   core/glad.cpp 
   core/component.cpp 
   core/utils.cpp
+  core/types.cpp
 )
 
 # Create the library

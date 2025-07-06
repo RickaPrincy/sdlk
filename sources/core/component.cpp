@@ -2,37 +2,37 @@
 
 #include <iostream>
 #include <mapbox/earcut.hpp>
+#include <sdlk/core/app.hpp>
 #include <sdlk/core/component.hpp>
-#include <stdexcept>
-
-#include "utils.hpp"
 
 namespace sdlk
 {
-	component::component(std::vector<glm::vec2> pixel_vertices, component *parent)
-		: sdlk::component(std::move(pixel_vertices), parent->_window_size)
+	component::component(app &app, sdlk::polygon polygon) : m_polygon(std::move(polygon))
 	{
-		if (!parent)
-		{
-			throw std::runtime_error("Parent cannot be null");
-		}
+		app.append_child(this);
+		this->_init();
+	}
 
-		this->p_parent = parent;
+	component::component(component *parent, sdlk::polygon polygon)
+		: p_parent(parent),
+		  m_polygon(std::move(polygon))
+	{
+		this->_init();
+	}
 
+	auto component::_init() -> void
+	{
 		if (this->p_parent)
 		{
 			this->p_parent->append_child(this);
 		}
-	}
 
-	component::component(std::vector<glm::vec2> pixel_vertices, const glm::vec2 &window_size)
-		: p_parent(nullptr),
-		  _window_size(window_size)
-	{
-		auto polygon = pixels_to_polygon_without_ring(pixel_vertices);
-		this->m_indices = mapbox::earcut<uint32_t>(polygon);
+		// Triangulation
+		auto indices = mapbox::earcut<uint32_t>(this->m_polygon.data());
+		this->m_indices_count = static_cast<GLsizei>(indices.size());
 
-		this->m_ndc_vertices = pixels_to_ndc(pixel_vertices, window_size);
+		// Convert polygon (point = array<float, 2>) to glm::vec2 ndc
+		auto vertices = this->m_polygon.flattened_as_ndc(this->_window_width, this->_window_height);
 
 		glGenVertexArrays(1, &this->m_vao);
 		glGenBuffers(1, &this->m_vbo);
@@ -40,15 +40,13 @@ namespace sdlk
 
 		glBindVertexArray(this->m_vao);
 		glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo);
-		glBufferData(GL_ARRAY_BUFFER,
-			this->m_ndc_vertices.size() * sizeof(glm::vec2),
-			this->m_ndc_vertices.data(),
-			GL_STATIC_DRAW);
+		glBufferData(
+			GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec2), vertices.data(), GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->m_ebo);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-			this->m_indices.size() * sizeof(uint32_t),
-			this->m_indices.data(),
+			indices.size() * sizeof(uint32_t),
+			indices.data(),
 			GL_STATIC_DRAW);
 
 		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(glm::vec2), (void *)0);
@@ -58,8 +56,20 @@ namespace sdlk
 
 	auto component::draw() -> void const
 	{
+		if (!this->m_indices_count)
+		{
+			return;
+		}
+
 		glBindVertexArray(this->m_vao);
-		glDrawElements(GL_TRIANGLES, this->m_indices.size(), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, this->m_indices_count, GL_UNSIGNED_INT, 0);
+	}
+
+	auto component::append_child(component *child) -> void
+	{
+		child->_window_width = this->_window_width;
+		child->_window_height = this->_window_height;
+		child->p_parent = this;
 	}
 
 	component::~component()
@@ -80,10 +90,5 @@ namespace sdlk
 		}
 
 		std::cout << "clean component\n";
-	}
-
-	auto component::append_child(component *child) -> void
-	{
-		child->p_parent = this;
 	}
 }  // namespace sdlk

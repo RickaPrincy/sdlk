@@ -6,9 +6,10 @@
 
 namespace sdlk
 {
-	auto pixel_to_ndc(const glm::vec2& pixel, const glm::vec2& window_size) -> glm::vec2;
-	auto pixels_to_ndc(const std::vector<glm::vec2>& pixels, const glm::vec2& window_size)
-		-> std::vector<glm::vec2>;
+	auto pixel_to_ndc(const glm::vec2& pixel, const int& window_width, const int& window_height)
+		-> glm::vec2;
 
-	auto pixels_to_polygon_without_ring(const std::vector<glm::vec2>& points) -> polygon;
+	auto pixels_to_ndc(const std::vector<glm::vec2>& pixels,
+		const int& window_width,
+		const int& window_height) -> std::vector<glm::vec2>;
 }  // namespace sdlk

@@ -139,7 +139,7 @@ void main()
 		return EXIT_SUCCESS;
 	}
 
-	app::app(std::string window_title, glm::vec2 window_size, Uint32 window_init_flags)
+	app::app(std::string window_title, int width, int height, Uint32 window_init_flags)
 	{
 		if (SDL_Init(window_init_flags) != 0)
 		{
@@ -153,11 +153,12 @@ void main()
 		this->p_window = SDL_CreateWindow(window_title.c_str(),
 			SDL_WINDOWPOS_CENTERED,
 			SDL_WINDOWPOS_CENTERED,
-			window_size.x,
-			window_size.y,
+			width,
+			height,
 			SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN);
 
-		this->m_size = window_size;
+		this->m_width = std::move(width);
+		this->m_height = std::move(height);
 		this->m_title = std::move(window_title);
 		this->m_opengl_context = SDL_GL_CreateContext(this->p_window);
 
@@ -173,13 +174,24 @@ void main()
 
 	auto app::append_child(component *child) -> void
 	{
-		child->_window_size = this->m_size;
+		child->_window_width = this->m_width;
+		child->_window_height = this->m_height;
 		this->p_childs.push_back(child);
+	}
+
+	auto app::get_width() -> int const
+	{
+		return this->m_width;
+	}
+
+	auto app::get_height() -> int const
+	{
+		return this->m_height;
 	}
 
 	app::~app()
 	{
-		if (this->m_shader_program != 0)
+		if (this->m_shader_program)
 		{
 			glDeleteProgram(this->m_shader_program);
 		}
