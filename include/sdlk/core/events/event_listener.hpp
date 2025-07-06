@@ -7,17 +7,18 @@
 
 namespace sdlk
 {
-	class EventListener
+	class event_listener
 	{
 	private:
-		std::map<EventType, std::vector<EventAction>> m_event_listeners;
+		std::map<event_type, std::vector<event_action>> m_event_listeners;
 
 	public:
-		virtual ~EventListener() = default;
-		EventListener() = default;
-		virtual void notify_event(const SDL_Event &event);
-		static EventType get_event_type_value(const SDL_Event &event);
+		event_listener() = default;
 
-		friend class Observer;
+		virtual void notify_event(const SDL_Event &event);
+
+		static auto get_event_type_value(const SDL_Event &event) -> event_type;
+
+		friend class observer;
 	};
 }  // namespace sdlk

@@ -1,19 +1,6 @@
 project(${SDLK_LIB_NAME} VERSION ${SDLK_LIB_VERSION} LANGUAGES CXX)
 
-set(LIB_SOURCES
-    core/app.cpp
-    core/window.cpp
-    core/box.cpp
-    core/properties/position.cpp
-    core/properties/size.cpp
-    core/renderable.cpp
-    core/component.cpp
-    core/textured_component.cpp
-    core/events/observer.cpp
-    core/events/event_listener.cpp
-    utils/basic_wrapper.cpp
-    components/text.cpp
-    components/image.cpp)
+set(LIB_SOURCES core/app.cpp core/events/event_listener.cpp core/events/observer.cpp)
 
 # Create the library
 if(BUILD_SHARED_LIBS)

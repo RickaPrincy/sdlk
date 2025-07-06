@@ -3,11 +3,12 @@
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_stdinc.h>
 
+#include <cstdint>
 #include <functional>
 
 namespace sdlk
 {
-	enum class EventType
+	enum class event_type : std::uint8_t
 	{
 		KEY_DOWN,
 		KEY_UP,
@@ -19,11 +20,11 @@ namespace sdlk
 		NOT_SUPPORTED,
 	};
 
-	using EventCallback = std::function<void(const SDL_Event &event)>;
+	using event_callback = std::function<void(const SDL_Event &event)>;
 
-	struct EventAction
+	struct event_action
 	{
-		EventCallback m_callback;
+		event_callback m_callback;
 		bool m_stop_propagation;
 	};
 
