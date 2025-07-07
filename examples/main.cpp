@@ -5,13 +5,15 @@
 
 using namespace sdlk;
 
+static const constexpr int WINDOW_WIDTH = 500;
+static const constexpr int WINDOW_HEIGHT = 500;
+
 auto main(int argc, char **argv) -> int
 {
-	app myapp("Hello World", 500, 500);
+	app myapp("Hello World", WINDOW_WIDTH, WINDOW_HEIGHT);
 
 	polygon arrow_vertex({ {
-		// Shaft rectangle (starting from origin)
-		{ 0, 40 },	// bottom-left
+		{ 0, 40 },
 		{ 100, 40 },
 
 		{ 100, 0 },
@@ -22,7 +24,9 @@ auto main(int argc, char **argv) -> int
 		{ 0, 60 },
 	} });
 
-	component arrow(myapp, std::move(arrow_vertex));
+	shape arrow(std::move(arrow_vertex), myapp.get_width(), myapp.get_height());
+
+	myapp.append_child(&arrow);
 
 	return myapp.run(argc, argv);
 }

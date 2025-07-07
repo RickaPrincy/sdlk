@@ -172,10 +172,8 @@ void main()
 		this->m_shader_program = create_shader_program(vertex_shader_src, fragment_shader_src);
 	}
 
-	auto app::append_child(component *child) -> void
+	auto app::append_child(shape *child) -> void
 	{
-		child->_window_width = this->m_width;
-		child->_window_height = this->m_height;
 		this->p_childs.push_back(child);
 	}
 

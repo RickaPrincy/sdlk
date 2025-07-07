@@ -7,29 +7,23 @@
 
 namespace sdlk
 {
-	class component
+	class shape
 	{
 	private:
 		polygon m_polygon{};
 		int m_indices_count{};
 
 	protected:
-		component *p_parent = nullptr;
-
 		GLuint m_vao{}, m_vbo{}, m_ebo{};
 
 	private:
 		int _window_width{}, _window_height{};
-		auto _init() -> void;
 
 	public:
-		component(class app &parent, sdlk::polygon polygon);
-		component(component *parent, sdlk::polygon polygon);
+		shape(sdlk::polygon polygon, const int &window_width, const int &window_height);
 
 		auto draw() -> void const;
-		auto append_child(component *component) -> void;
 
-		~component();
-		friend class app;
+		~shape();
 	};
 }  // namespace sdlk

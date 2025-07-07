@@ -3,30 +3,15 @@
 #include <iostream>
 #include <mapbox/earcut.hpp>
 #include <sdlk/core/app.hpp>
-#include <sdlk/core/component.hpp>
+#include <sdlk/core/shape.hpp>
 
 namespace sdlk
 {
-	component::component(app &app, sdlk::polygon polygon) : m_polygon(std::move(polygon))
+	shape::shape(sdlk::polygon polygon, const int &window_width, const int &window_height)
+		: m_polygon(std::move(polygon)),
+		  _window_width(window_width),
+		  _window_height(window_height)
 	{
-		app.append_child(this);
-		this->_init();
-	}
-
-	component::component(component *parent, sdlk::polygon polygon)
-		: p_parent(parent),
-		  m_polygon(std::move(polygon))
-	{
-		this->_init();
-	}
-
-	auto component::_init() -> void
-	{
-		if (this->p_parent)
-		{
-			this->p_parent->append_child(this);
-		}
-
 		// Triangulation
 		auto indices = mapbox::earcut<uint32_t>(this->m_polygon.data());
 		this->m_indices_count = static_cast<GLsizei>(indices.size());
@@ -54,7 +39,7 @@ namespace sdlk
 		glBindVertexArray(0);
 	}
 
-	auto component::draw() -> void const
+	auto shape::draw() -> void const
 	{
 		if (!this->m_indices_count)
 		{
@@ -65,14 +50,7 @@ namespace sdlk
 		glDrawElements(GL_TRIANGLES, this->m_indices_count, GL_UNSIGNED_INT, 0);
 	}
 
-	auto component::append_child(component *child) -> void
-	{
-		child->_window_width = this->_window_width;
-		child->_window_height = this->_window_height;
-		child->p_parent = this;
-	}
-
-	component::~component()
+	shape::~shape()
 	{
 		if (this->m_ebo)
 		{
@@ -89,6 +67,6 @@ namespace sdlk
 			glDeleteVertexArrays(1, &m_vao);
 		}
 
-		std::cout << "clean component\n";
+		std::cout << "clean shape\n";
 	}
 }  // namespace sdlk

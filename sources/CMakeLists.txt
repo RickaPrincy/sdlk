@@ -5,7 +5,7 @@ set(LIB_SOURCES
   core/events/event_listener.cpp 
   core/events/observer.cpp 
   core/glad.cpp 
-  core/component.cpp 
+  core/shape.cpp 
   core/utils.cpp
   core/types.cpp
 )
