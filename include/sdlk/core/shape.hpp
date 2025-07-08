@@ -16,9 +16,6 @@ namespace sdlk
 	protected:
 		GLuint m_vao{}, m_vbo{}, m_ebo{};
 
-	private:
-		int _window_width{}, _window_height{};
-
 	public:
 		shape(sdlk::polygon polygon, const int &window_width, const int &window_height);
 

@@ -24,8 +24,8 @@ namespace sdlk
 
 	struct event_action
 	{
-		event_callback m_callback;
-		bool m_stop_propagation;
+		event_callback m_callback{};
+		bool m_stop_propagation{ false };
 	};
 
 }  // namespace sdlk

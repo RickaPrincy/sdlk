@@ -122,7 +122,7 @@ void main()
 				glClear(GL_COLOR_BUFFER_BIT);
 				for (const auto &child : this->p_childs)
 				{
-					child->draw();
+					child->render();
 				}
 				SDL_GL_SwapWindow(this->p_window);
 
@@ -172,7 +172,7 @@ void main()
 		this->m_shader_program = create_shader_program(vertex_shader_src, fragment_shader_src);
 	}
 
-	auto app::append_child(shape *child) -> void
+	auto app::append_child(component *child) -> void
 	{
 		this->p_childs.push_back(child);
 	}
@@ -185,6 +185,11 @@ void main()
 	auto app::get_height() -> int const
 	{
 		return this->m_height;
+	}
+
+	auto app::get_event_listener() -> event_listener *const
+	{
+		return &this->m_event_listener;
 	}
 
 	app::~app()

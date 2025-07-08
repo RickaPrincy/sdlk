@@ -8,16 +8,14 @@
 namespace sdlk
 {
 	shape::shape(sdlk::polygon polygon, const int &window_width, const int &window_height)
-		: m_polygon(std::move(polygon)),
-		  _window_width(window_width),
-		  _window_height(window_height)
+		: m_polygon(std::move(polygon))
 	{
 		// Triangulation
 		auto indices = mapbox::earcut<uint32_t>(this->m_polygon.data());
 		this->m_indices_count = static_cast<GLsizei>(indices.size());
 
 		// Convert polygon (point = array<float, 2>) to glm::vec2 ndc
-		auto vertices = this->m_polygon.flattened_as_ndc(this->_window_width, this->_window_height);
+		auto vertices = this->m_polygon.flattened_as_ndc(window_width, window_height);
 
 		glGenVertexArrays(1, &this->m_vao);
 		glGenBuffers(1, &this->m_vbo);

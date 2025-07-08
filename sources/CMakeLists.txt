@@ -4,6 +4,7 @@ set(LIB_SOURCES
   core/app.cpp 
   core/events/event_listener.cpp 
   core/events/observer.cpp 
+  core/component.cpp
   core/glad.cpp 
   core/shape.cpp 
   core/utils.cpp
