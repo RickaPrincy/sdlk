@@ -1,7 +1,6 @@
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_ttf.h>
 
-#include <iostream>
 #include <sdlk/core/app.hpp>
 #include <sdlk/core/events/types.hpp>
 #include <sdlk/core/types.hpp>
@@ -31,11 +30,7 @@ auto main(int argc, char **argv) -> int
 	component arrow_component(&myapp, &arrow);
 
 	arrow_component.add_event_listener(event_type::MOUSE_BUTTON_DOWN,
-		[&](const SDL_Event &event)
-		{
-			std::cout << "Mouse Click at x=" << event.motion.xrel << " & y=" << event.motion.yrel
-					  << "\n";
-		});
+		[&](const SDL_Event &event) { arrow_component.translate({ 10.0, 0.0 }); });
 
 	return myapp.run(argc, argv);
 }

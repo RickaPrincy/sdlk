@@ -16,12 +16,15 @@ namespace sdlk
 
 	static const char *vertex_shader_src = R"glsl(
 #version 330 core
-
 layout(location = 0) in vec2 aPos;
+
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
 
 void main()
 {
-    gl_Position = vec4(aPos, 0.0, 1.0);
+    gl_Position = projection * view * model * vec4(aPos, 0.0, 1.0);
 }
 )glsl";
 
@@ -112,7 +115,15 @@ void main()
 					switch (event.type)
 					{
 						case SDL_QUIT: is_running = false; break;
-						default: this->m_event_listener.notify_event(event); break;
+						default:
+							if (event.type == SDL_WINDOWEVENT &&
+								event.window.event == SDL_WINDOWEVENT_RESIZED)
+							{
+								glViewport(0, 0, event.window.data1, event.window.data2);
+							}
+
+							this->m_event_listener.notify_event(event);
+							break;
 					}
 				}
 
@@ -122,7 +133,7 @@ void main()
 				glClear(GL_COLOR_BUFFER_BIT);
 				for (const auto &child : this->p_childs)
 				{
-					child->render();
+					child->render(&this->m_shader_program);
 				}
 				SDL_GL_SwapWindow(this->p_window);
 

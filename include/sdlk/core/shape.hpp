@@ -20,6 +20,7 @@ namespace sdlk
 		shape(sdlk::polygon polygon, const int &window_width, const int &window_height);
 
 		auto draw() -> void const;
+		auto bind() -> void const;
 
 		~shape();
 	};

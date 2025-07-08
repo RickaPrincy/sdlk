@@ -37,6 +37,11 @@ namespace sdlk
 		glBindVertexArray(0);
 	}
 
+	auto shape::bind() -> void const
+	{
+		glBindVertexArray(this->m_vao);
+	}
+
 	auto shape::draw() -> void const
 	{
 		if (!this->m_indices_count)
@@ -44,7 +49,6 @@ namespace sdlk
 			return;
 		}
 
-		glBindVertexArray(this->m_vao);
 		glDrawElements(GL_TRIANGLES, this->m_indices_count, GL_UNSIGNED_INT, 0);
 	}
 
