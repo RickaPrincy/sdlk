@@ -5,92 +5,17 @@
 #include <csignal>
 #include <cstdlib>
 #include <iostream>
-#include <sdlk/sdlk.hpp>
+#include <sdlk/core/app.hpp>
+#include <sdlk/core/opengl_utils.hpp>
 #include <stdexcept>
 #include <utility>
 
+#include "static_resource.hpp"
+
 namespace sdlk
 {
-	static constexpr int TARGET_FPS = 30;
-	static constexpr int FRAME_DELAY_MS = 1000 / TARGET_FPS;
-
-	static const char *vertex_shader_src = R"glsl(
-#version 330 core
-layout(location = 0) in vec2 aPos;
-
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
-
-void main()
-{
-    gl_Position = projection * view * model * vec4(aPos, 0.0, 1.0);
-}
-)glsl";
-
-	static const char *fragment_shader_src = R"glsl(
-#version 330 core
-out vec4 FragColor;
-
-void main()
-{
-    FragColor = vec4(0.4, 0.7, 0.9, 1.0);
-}
-)glsl";
-
-	GLuint compile_shader(GLenum type, const char *source)
-	{
-		GLuint shader = glCreateShader(type);
-		glShaderSource(shader, 1, &source, nullptr);
-		glCompileShader(shader);
-
-		GLint success{};
-		glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-		if (!success)
-		{
-			char infoLog[512];
-			glGetShaderInfoLog(shader, 512, nullptr, infoLog);
-			throw std::runtime_error(std::string("Shader compilation failed: ") + infoLog);
-		}
-		return shader;
-	}
-
-	GLuint create_shader_program(const char *vertex_src, const char *fragment_src)
-	{
-		GLuint vertexShader = compile_shader(GL_VERTEX_SHADER, vertex_src);
-		GLuint fragmentShader = compile_shader(GL_FRAGMENT_SHADER, fragment_src);
-
-		GLuint program = glCreateProgram();
-		glAttachShader(program, vertexShader);
-		glAttachShader(program, fragmentShader);
-		glLinkProgram(program);
-
-		GLint success{};
-		glGetProgramiv(program, GL_LINK_STATUS, &success);
-		if (!success)
-		{
-			char infoLog[512];
-			glGetProgramInfoLog(program, 512, nullptr, infoLog);
-			throw std::runtime_error(std::string("Program linking failed: ") + infoLog);
-		}
-
-		glDeleteShader(vertexShader);
-		glDeleteShader(fragmentShader);
-
-		return program;
-	}
-
-	auto app::limit_fps() -> void
-	{
-		Uint32 frame_time = SDL_GetTicks() - this->_frame_start;
-
-		if (frame_time < FRAME_DELAY_MS)
-		{
-			SDL_Delay(FRAME_DELAY_MS - frame_time);
-		}
-
-		this->_frame_start = SDL_GetTicks();
-	}
+	unsigned int app::s_window_width = 0;
+	unsigned int app::s_window_height = 0;
 
 	// TO handle ctrl + c or something else that can stop the application
 	static bool is_running = true;
@@ -119,6 +44,8 @@ void main()
 							if (event.type == SDL_WINDOWEVENT &&
 								event.window.event == SDL_WINDOWEVENT_RESIZED)
 							{
+								app::s_window_width = event.window.data1;
+								app::s_window_height = event.window.data2;
 								glViewport(0, 0, event.window.data1, event.window.data2);
 							}
 
@@ -150,8 +77,14 @@ void main()
 		return EXIT_SUCCESS;
 	}
 
-	app::app(std::string window_title, int width, int height, Uint32 window_init_flags)
+	app::app(std::string window_title,
+		int width,
+		int height,
+		app_options options,
+		Uint32 window_init_flags)
 	{
+		this->_frame_delay_ms = 1000 / options.fps;
+
 		if (SDL_Init(window_init_flags) != 0)
 		{
 			throw std::runtime_error("Cannot init sdl");
@@ -168,8 +101,9 @@ void main()
 			height,
 			SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN);
 
-		this->m_width = std::move(width);
-		this->m_height = std::move(height);
+		app::s_window_width = std::move(width);
+		app::s_window_height = std::move(height);
+
 		this->m_title = std::move(window_title);
 		this->m_opengl_context = SDL_GL_CreateContext(this->p_window);
 
@@ -180,7 +114,26 @@ void main()
 			throw std::runtime_error("Failed to initialize GLAD");
 		}
 
-		this->m_shader_program = create_shader_program(vertex_shader_src, fragment_shader_src);
+		options.vertex_source =
+			options.vertex_source.empty() ? resource::s_vertex_source : options.vertex_source;
+
+		options.fragment_source =
+			options.fragment_source.empty() ? resource::s_fragment_source : options.fragment_source;
+
+		this->m_shader_program = create_shader_program(
+			std::move(options.vertex_source), std::move(options.fragment_source));
+	}
+
+	auto app::limit_fps() -> void
+	{
+		auto frame_time = SDL_GetTicks() - this->_frame_start;
+
+		if (frame_time < this->_frame_delay_ms)
+		{
+			SDL_Delay(this->_frame_delay_ms - frame_time);
+		}
+
+		this->_frame_start = SDL_GetTicks();
 	}
 
 	auto app::append_child(component *child) -> void
@@ -190,12 +143,12 @@ void main()
 
 	auto app::get_width() -> int const
 	{
-		return this->m_width;
+		return app::s_window_width;
 	}
 
 	auto app::get_height() -> int const
 	{
-		return this->m_height;
+		return app::s_window_height;
 	}
 
 	auto app::get_event_listener() -> event_listener *const

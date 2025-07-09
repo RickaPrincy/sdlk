@@ -1,8 +1,7 @@
+#include <sdlk/core/converter.hpp>
 #include <sdlk/core/types.hpp>
 #include <stdexcept>
 #include <string>
-
-#include "utils.hpp"
 
 namespace sdlk
 {
@@ -68,6 +67,6 @@ namespace sdlk
 			pixels.emplace_back(glm::vec2{ pt[0], pt[1] });
 		}
 
-		return pixels_position_to_ndc(pixels, window_width, window_height);
+		return converter::pixels_position_to_ndc(pixels, window_width, window_height);
 	}
 }  // namespace sdlk

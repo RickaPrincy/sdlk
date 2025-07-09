@@ -8,8 +8,10 @@ set(LIB_SOURCES
   core/transformation.cpp
   core/glad.cpp 
   core/shape.cpp 
-  core/utils.cpp
+  core/converter.cpp
+  core/opengl_utils.cpp
   core/types.cpp
+  core/static_resource.cpp
 )
 
 # Create the library

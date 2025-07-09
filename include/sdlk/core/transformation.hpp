@@ -20,7 +20,10 @@ namespace sdlk
 	public:
 		transformation() = default;
 
-		auto translate(glm::vec2 offset, SDL_Window *window) -> void;
+		auto translate(glm::vec2 offset) -> void;
+		auto scale(glm::vec2 pixel_scale) -> void;
+		auto rotate(float angle_radians) -> void;
+		auto set_model(glm::mat4 model) -> void;
 
 		auto load_uniforms(GLuint shader_program,
 			std::string model_name = "model",

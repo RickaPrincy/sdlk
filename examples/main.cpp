@@ -5,6 +5,8 @@
 #include <sdlk/core/events/types.hpp>
 #include <sdlk/core/types.hpp>
 
+#include "glm/trigonometric.hpp"
+
 using namespace sdlk;
 
 static const constexpr int WINDOW_WIDTH = 500;
@@ -27,10 +29,17 @@ auto main(int argc, char **argv) -> int
 	} });
 
 	shape arrow(std::move(arrow_vertex), myapp.get_width(), myapp.get_height());
+
+	// TODO: std::move(shape)
 	component arrow_component(&myapp, &arrow);
 
 	arrow_component.add_event_listener(event_type::MOUSE_BUTTON_DOWN,
-		[&](const SDL_Event &event) { arrow_component.translate({ 10.0, 0.0 }); });
+		[&](const SDL_Event &event)
+		{
+			// arrow_component.translate({ 10.0, 0.0 });
+			arrow_component.scale({ 200.0, 200.0 });
+			// arrow_component.rotate(glm::radians(90.0));
+		});
 
 	return myapp.run(argc, argv);
 }

@@ -14,7 +14,6 @@ namespace sdlk
 	protected:
 		shape *m_shape;
 		component *p_parent = nullptr;
-		SDL_Window *p_window = nullptr;
 		std::vector<component *> p_childs{};
 
 		transformation m_transformation{};
@@ -26,6 +25,10 @@ namespace sdlk
 		component(component *parent, sdlk::shape *shape);
 
 		virtual auto render(GLuint *program) -> void;
+
 		virtual auto translate(glm::vec2 pixel_offset) -> void;
+		virtual auto scale(glm::vec2 pixel_scale) -> void;
+		virtual auto rotate(float angle_radians) -> void;
+		virtual auto set_transformation_model(glm::mat4 transformation_model) -> void;
 	};
 }  // namespace sdlk

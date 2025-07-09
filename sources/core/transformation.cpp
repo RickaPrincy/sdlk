@@ -1,18 +1,35 @@
 #include <SDL2/SDL_video.h>
 
+#include <sdlk/core/app.hpp>
+#include <sdlk/core/converter.hpp>
 #include <sdlk/core/transformation.hpp>
-
-#include "utils.hpp"
 
 namespace sdlk
 {
-	auto transformation::translate(glm::vec2 pixel_offset, SDL_Window *window) -> void
+	auto transformation::translate(glm::vec2 pixel_offset) -> void
 	{
-		int window_width{ 0 }, window_height{ 0 };
-		SDL_GetWindowSize(window, &window_width, &window_height);
+		auto ndc_offset = converter::pixel_offset_to_ndc(
+			std::move(pixel_offset), app::get_width(), app::get_height());
 
-		auto ndc_offset = pixel_offset_to_ndc(std::move(pixel_offset), window_width, window_height);
 		this->m_model = glm::translate(m_model, glm::vec3(std::move(ndc_offset), 0.0));
+	}
+
+	auto transformation::rotate(float angle_radians) -> void
+	{
+		this->m_model = glm::rotate(m_model, std::move(angle_radians), glm::vec3(0.0f, 0.0f, 1.0f));
+	}
+
+	auto transformation::set_model(glm::mat4 model) -> void
+	{
+		this->m_model = std::move(model);
+	}
+
+	auto transformation::scale(glm::vec2 pixel_scale) -> void
+	{
+		auto ndc_scale = converter::pixel_scale_to_ndc(
+			std::move(pixel_scale), app::get_width(), app::get_height());
+
+		this->m_model = glm::scale(m_model, glm::vec3(std::move(ndc_scale), 1.0f));
 	}
 
 	auto transformation::load_uniforms(GLuint shader_program,

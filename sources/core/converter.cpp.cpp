@@ -1,11 +1,10 @@
-#include "utils.hpp"
-
 #include <algorithm>
 #include <iterator>
+#include <sdlk/core/converter.hpp>
 #include <sdlk/core/types.hpp>
 #include <vector>
 
-namespace sdlk
+namespace sdlk::converter
 {
 	auto pixel_position_to_ndc(const glm::vec2 &pixel,
 		const int &window_width,
@@ -41,4 +40,11 @@ namespace sdlk
 		float y_ndc = -offset.y / (window_height * 0.5f);
 		return { x_ndc, y_ndc };
 	}
-}  // namespace sdlk
+
+	auto pixel_scale_to_ndc(const glm::vec2 &pixel, const int &width, const int &height)
+		-> glm::vec2
+	{
+		return { pixel.x / static_cast<float>(width) * 2.0f,
+			pixel.y / static_cast<float>(height) * 2.0f };
+	}
+}  // namespace sdlk::converter
