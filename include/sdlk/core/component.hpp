@@ -25,7 +25,7 @@ namespace sdlk
 		component(class app *parent, sdlk::shape *shape);
 		component(component *parent, sdlk::shape *shape);
 
-		virtual auto render(GLuint *program) -> void;
+		virtual auto render(GLuint *program) -> void override;
 
 		virtual auto translate(glm::vec2 pixel_offset) -> void;
 		virtual auto scale(glm::vec2 pixel_scale) -> void;

@@ -5,5 +5,6 @@
 namespace sdlk
 {
 	polygon_shape::polygon_shape(polygon polygon)
-		: shape(polygon.flattened(), mapbox::earcut(polygon.data_as_float())) { };
+		: shape(polygon.flattened(), mapbox::earcut(polygon.data_as_float())),
+		  m_polygon(std::move(polygon)) { };
 }

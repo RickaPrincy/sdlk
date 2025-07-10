@@ -136,7 +136,7 @@ namespace sdlk
 		this->_frame_start = SDL_GetTicks();
 	}
 
-	auto app::append_child(component *child) -> void
+	auto app::append_child(renderable *child) -> void
 	{
 		this->p_childs.push_back(child);
 	}
