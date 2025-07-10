@@ -3,13 +3,14 @@
 #include <SDL2/SDL_video.h>
 
 #include <sdlk/core/events/observer.hpp>
+#include <sdlk/core/renderable.hpp>
 #include <sdlk/core/shape.hpp>
 #include <sdlk/core/transformation.hpp>
 #include <vector>
 
 namespace sdlk
 {
-	class component : public observer
+	class component : public observer, public renderable
 	{
 	protected:
 		shape *m_shape;

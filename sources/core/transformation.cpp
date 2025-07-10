@@ -6,6 +6,7 @@
 
 namespace sdlk
 {
+
 	auto transformation::translate(glm::vec2 pixel_offset) -> void
 	{
 		auto ndc_offset = converter::pixel_offset_to_ndc(

@@ -6,6 +6,7 @@ set(LIB_SOURCES
   core/events/observer.cpp 
   core/component.cpp
   core/transformation.cpp
+  core/polygon_shape.cpp
   core/glad.cpp 
   core/shape.cpp 
   core/converter.cpp

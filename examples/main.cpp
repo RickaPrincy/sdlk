@@ -1,11 +1,10 @@
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_ttf.h>
 
+#include <glm/trigonometric.hpp>
 #include <sdlk/core/app.hpp>
 #include <sdlk/core/events/types.hpp>
 #include <sdlk/core/types.hpp>
-
-#include "glm/trigonometric.hpp"
 
 using namespace sdlk;
 
@@ -28,7 +27,7 @@ auto main(int argc, char **argv) -> int
 		{ 0, 60 },
 	} });
 
-	shape arrow(std::move(arrow_vertex), myapp.get_width(), myapp.get_height());
+	polygon_shape arrow(std::move(arrow_vertex));
 
 	// TODO: std::move(shape)
 	component arrow_component(&myapp, &arrow);
@@ -36,9 +35,9 @@ auto main(int argc, char **argv) -> int
 	arrow_component.add_event_listener(event_type::MOUSE_BUTTON_DOWN,
 		[&](const SDL_Event &event)
 		{
-			// arrow_component.translate({ 10.0, 0.0 });
-			arrow_component.scale({ 200.0, 200.0 });
-			// arrow_component.rotate(glm::radians(90.0));
+			arrow_component.translate({ 10.0, 0.0 });
+			// arrow_component.scale({ 200.0, 200.0 });
+			//  arrow_component.rotate(glm::radians(90.0));
 		});
 
 	return myapp.run(argc, argv);

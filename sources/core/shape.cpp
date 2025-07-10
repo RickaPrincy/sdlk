@@ -3,19 +3,17 @@
 #include <iostream>
 #include <mapbox/earcut.hpp>
 #include <sdlk/core/app.hpp>
+#include <sdlk/core/converter.hpp>
 #include <sdlk/core/shape.hpp>
 
 namespace sdlk
 {
-	shape::shape(sdlk::polygon polygon, const int &window_width, const int &window_height)
-		: m_polygon(std::move(polygon))
+	shape::shape(std::vector<glm::vec2> pixel_vertices, std::vector<uint32_t> indices)
 	{
-		// Triangulation
-		auto indices = mapbox::earcut<uint32_t>(this->m_polygon.data());
-		this->m_indices_count = static_cast<GLsizei>(indices.size());
+		auto vertices =
+			converter::pixels_position_to_ndc(pixel_vertices, app::get_width(), app::get_height());
 
-		// Convert polygon (point = array<float, 2>) to glm::vec2 ndc
-		auto vertices = this->m_polygon.flattened_as_ndc(window_width, window_height);
+		this->m_indices_count = static_cast<unsigned int>(indices.size());
 
 		glGenVertexArrays(1, &this->m_vao);
 		glGenBuffers(1, &this->m_vbo);
@@ -42,7 +40,7 @@ namespace sdlk
 		glBindVertexArray(this->m_vao);
 	}
 
-	auto shape::draw() -> void const
+	auto shape::render(GLuint *program) -> void
 	{
 		if (!this->m_indices_count)
 		{
@@ -68,7 +66,6 @@ namespace sdlk
 		{
 			glDeleteVertexArrays(1, &m_vao);
 		}
-
 		std::cout << "clean shape\n";
 	}
 }  // namespace sdlk

@@ -20,8 +20,10 @@ namespace sdlk
 	auto component::render(GLuint *program) -> void
 	{
 		this->m_shape->bind();
+
 		this->m_transformation.load_uniforms(*program);
-		this->m_shape->draw();
+
+		this->m_shape->render(program);
 
 		for (const auto &child : this->p_childs)
 		{
