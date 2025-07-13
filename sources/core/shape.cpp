@@ -8,11 +8,10 @@
 
 namespace sdlk
 {
-	shape::shape(std::vector<glm::vec2> pixel_vertices, std::vector<uint32_t> indices)
+	shape::shape(polygon polygon, std::vector<uint32_t> indices, bool use_texture)
+		: m_polygon(polygon),
+		  m_use_texture(std::move(use_texture))
 	{
-		auto vertices =
-			converter::pixels_position_to_ndc(pixel_vertices, app::get_width(), app::get_height());
-
 		this->m_indices_count = static_cast<unsigned int>(indices.size());
 
 		glGenVertexArrays(1, &this->m_vao);
@@ -20,19 +19,12 @@ namespace sdlk
 		glGenBuffers(1, &this->m_ebo);
 
 		glBindVertexArray(this->m_vao);
-		glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo);
-		glBufferData(
-			GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec2), vertices.data(), GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->m_ebo);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER,
 			indices.size() * sizeof(uint32_t),
 			indices.data(),
 			GL_STATIC_DRAW);
-
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(glm::vec2), (void *)0);
-		glEnableVertexAttribArray(0);
-		glBindVertexArray(0);
 	}
 
 	auto shape::bind() -> void const
@@ -47,6 +39,13 @@ namespace sdlk
 			return;
 		}
 
+		auto use_texture_loc = glGetUniformLocation(*program, "u_useTexture");
+		if (use_texture_loc == -1)
+		{
+			std::cerr << "Warning: uniform u_useTexture not found or optimized out.\n";
+		}
+
+		glUniform1i(use_texture_loc, this->m_use_texture ? 1 : 0);
 		glDrawElements(GL_TRIANGLES, this->m_indices_count, GL_UNSIGNED_INT, 0);
 	}
 

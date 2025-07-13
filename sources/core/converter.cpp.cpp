@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <array>
 #include <iterator>
 #include <sdlk/core/converter.hpp>
 #include <sdlk/core/types.hpp>
@@ -6,28 +7,32 @@
 
 namespace sdlk::converter
 {
-	auto pixel_position_to_ndc(const glm::vec2 &pixel,
-		const int &window_width,
-		const int &window_height) -> glm::vec2
+	auto sdl_color_to_ndc(SDL_Color color) -> std::array<float, 4>
 	{
-		float x_ndc = (pixel.x / window_width) * 2.0f - 1.0f;
-		float y_ndc = 1.0f - (pixel.y / window_height) * 2.0f;
+		return { color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f };
+	}
+
+	auto pixel_point_to_ndc(const point &pixel, const int &window_width, const int &window_height)
+		-> point
+	{
+		float x_ndc = (pixel[0] / window_width) * 2.0f - 1.0f;
+		float y_ndc = 1.0f - (pixel[1] / window_height) * 2.0f;
 		return { x_ndc, y_ndc };
 	}
 
-	auto pixels_position_to_ndc(const std::vector<glm::vec2> &pixels,
+	auto pixels_points_to_ndcs(const std::vector<point> &pixels,
 		const int &window_width,
-		const int &window_height) -> std::vector<glm::vec2>
+		const int &window_height) -> std::vector<point>
 	{
-		std::vector<glm::vec2> result{};
+		std::vector<point> result{};
 
 		result.reserve(pixels.size());
 
 		std::transform(pixels.begin(),
 			pixels.end(),
 			std::back_inserter(result),
-			[&](const glm::vec2 &vertex)
-			{ return pixel_position_to_ndc(vertex, window_width, window_height); });
+			[&](const point &vertex)
+			{ return pixel_point_to_ndc(vertex, window_width, window_height); });
 
 		return result;
 	}

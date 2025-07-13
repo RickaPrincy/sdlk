@@ -21,30 +21,9 @@ namespace sdlk
 		return m_data;
 	}
 
-	auto polygon::data_as_float() const -> std::vector<std::vector<std::array<float, 2>>>
+	auto polygon::flattened() const -> std::vector<point>
 	{
-		std::vector<std::vector<std::array<float, 2>>> result;
-		result.reserve(m_data.size());
-
-		for (const auto& ring : m_data)
-		{
-			std::vector<std::array<float, 2>> ring_converted;
-			ring_converted.reserve(ring.size());
-
-			for (const auto& point : ring)
-			{
-				ring_converted.push_back({ point.x, point.y });
-			}
-
-			result.push_back(std::move(ring_converted));
-		}
-
-		return std::move(result);
-	}
-
-	auto polygon::flattened() const -> std::vector<glm::vec2>
-	{
-		std::vector<glm::vec2> result;
+		std::vector<point> result;
 		for (const auto& r : m_data)
 		{
 			result.insert(result.end(), r.begin(), r.end());

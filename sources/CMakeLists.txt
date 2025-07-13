@@ -1,18 +1,22 @@
 project(${SDLK_LIB_NAME} VERSION ${SDLK_LIB_VERSION} LANGUAGES CXX)
 
 set(LIB_SOURCES 
-  core/app.cpp 
   core/events/event_listener.cpp 
   core/events/observer.cpp 
-  core/component.cpp
-  core/transformation.cpp
-  core/polygon_shape.cpp
   core/glad.cpp 
-  core/shape.cpp 
-  core/converter.cpp
-  core/opengl_utils.cpp
+  core/quad.cpp
   core/types.cpp
+  core/transformation.cpp
+  core/opengl_utils.cpp
   core/static_resource.cpp
+  core/converter.cpp
+  core/app.cpp 
+  core/component.cpp
+  core/shape.cpp 
+  core/texture.cpp
+  core/image_shape.cpp
+  core/textured_shape.cpp
+  core/colored_shape.cpp
 )
 
 # Create the library

@@ -10,28 +10,31 @@
 
 using namespace sdlk;
 
-static const constexpr int WINDOW_WIDTH = 500;
-static const constexpr int WINDOW_HEIGHT = 500;
+static const constexpr int WINDOW_WIDTH = 700;
+static const constexpr int WINDOW_HEIGHT = 700;
 
 auto main(int argc, char **argv) -> int
 {
 	app myapp("Hello World", WINDOW_WIDTH, WINDOW_HEIGHT);
 
-	polygon arrow_vertex({ {} });
+	colored_shape arrow_shape(std::move(polygon({
+								  { 0, 40 },
+								  { 100, 40 },
 
-	polygon_shape arrow(std::move(polygon({
-		{ 0, 40 },
-		{ 100, 40 },
+								  { 100, 0 },
+								  { 140, 50 },
+								  { 100, 100 },
 
-		{ 100, 0 },
-		{ 140, 50 },
-		{ 100, 100 },
+								  { 100, 60 },
+								  { 0, 60 },
+							  })),
+		{ 200, 30, 78, 255 });
+	component arrow_component(&myapp, &arrow_shape);
 
-		{ 100, 60 },
-		{ 0, 60 },
-	})));
+	arrow_component.translate({ 50, 200 });
 
-	component component(&myapp, &arrow);
+	image_shape image("./assets/images/image.png", 287, 90);
+	component image_component(&myapp, &image);
 
 	return myapp.run(argc, argv);
 }
