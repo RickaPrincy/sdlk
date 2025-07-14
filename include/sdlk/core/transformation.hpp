@@ -13,9 +13,7 @@ namespace sdlk
 	class transformation
 	{
 	private:
-		glm::mat4 m_model{ 1.0f };
-		glm::mat4 m_view = glm::lookAt(glm::vec3(0, 0, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
-		glm::mat4 m_projection = glm::ortho(-1.f, 1.f, -1.f, 1.f, 0.1f, 100.f);
+		glm::mat4 m_model{ glm::mat4(1.0f) };
 
 	public:
 		transformation() = default;
@@ -25,9 +23,7 @@ namespace sdlk
 		auto rotate(float angle_radians) -> void;
 		auto set_model(glm::mat4 model) -> void;
 
-		auto load_uniforms(GLuint shader_program,
-			std::string model_name = "model",
-			std::string view_name = "view",
-			std::string proj_name = "projection") -> void const;
+		auto load_uniforms(GLuint *shader_program, std::string model_name = "model") const
+			-> void const;
 	};
 }  // namespace sdlk

@@ -5,7 +5,9 @@
 #include <SDL2/SDL_video.h>
 
 #include <glm/glm.hpp>
+#include <sdlk/core/camera.hpp>
 #include <sdlk/core/events/event_listener.hpp>
+#include <sdlk/core/events/observer.hpp>
 #include <sdlk/core/preprocessor/getter_setter.hpp>
 #include <sdlk/core/renderable.hpp>
 #include <string>
@@ -20,7 +22,7 @@ namespace sdlk
 		std::string fragment_source = "";
 	};
 
-	class app
+	class app : public observer
 	{
 	private:
 		Uint32 _frame_start = 0;
@@ -31,7 +33,7 @@ namespace sdlk
 	protected:
 		GLuint m_shader_program{};
 		std::string m_title{};
-		event_listener m_event_listener{};
+		camera m_camera;
 
 		std::vector<renderable *> p_childs{};
 
@@ -49,6 +51,8 @@ namespace sdlk
 
 		auto run(int argc, char **argv) -> int;
 		auto append_child(renderable *child) -> void;
+
+		[[nodiscard]] auto get_camera() -> camera *;
 
 		[[nodiscard]] static auto get_width() -> int const;
 		[[nodiscard]] static auto get_height() -> int const;

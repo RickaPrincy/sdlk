@@ -10,6 +10,7 @@ set(LIB_SOURCES
   core/opengl_utils.cpp
   core/static_resource.cpp
   core/converter.cpp
+  core/camera.cpp
   core/app.cpp 
   core/component.cpp
   core/shape.cpp 

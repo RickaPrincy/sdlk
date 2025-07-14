@@ -1,5 +1,4 @@
 #include <sdlk/core/app.hpp>
-#include <sdlk/core/converter.hpp>
 #include <sdlk/core/quad.hpp>
 #include <sdlk/core/shape.hpp>
 #include <sdlk/core/texture.hpp>

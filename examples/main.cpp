@@ -10,10 +10,10 @@
 
 using namespace sdlk;
 
-static const constexpr int WINDOW_WIDTH = 700;
-static const constexpr int WINDOW_HEIGHT = 700;
+static const constexpr int WINDOW_WIDTH = 1000;
+static const constexpr int WINDOW_HEIGHT = 1000;
 
-auto main(int argc, char **argv) -> int
+auto main(int argc, char** argv) -> int
 {
 	app myapp("Hello World", WINDOW_WIDTH, WINDOW_HEIGHT);
 
@@ -29,9 +29,57 @@ auto main(int argc, char **argv) -> int
 								  { 0, 60 },
 							  })),
 		{ 200, 30, 78, 255 });
+
 	component arrow_component(&myapp, &arrow_shape);
 
-	arrow_component.translate({ 50, 200 });
+	myapp.add_event_listener(event_type::MOUSE_WHEEL,
+		[&](const SDL_Event& event)
+		{
+			auto* cam = myapp.get_camera();
+
+			// Étape 1 : position souris en pixels
+			int mx, my;
+			SDL_GetMouseState(&mx, &my);
+			glm::vec2 mouse_screen = { static_cast<float>(mx), static_cast<float>(my) };
+
+			// Étape 2 : position dans le monde avant zoom
+			glm::vec2 world_before = mouse_screen / cam->get_zoom();
+
+			// Étape 3 : modifier le zoom (exponentiel pour plus fluide)
+			float zoom = cam->get_zoom();
+			float zoom_step = 1.1f;
+			if (event.wheel.y > 0)
+				zoom *= zoom_step;	// scroll up = zoom in
+			else if (event.wheel.y < 0)
+				zoom /= zoom_step;	// scroll down = zoom out
+
+			cam->set_zoom(zoom);
+
+			// Étape 4 : position dans le monde après zoom
+			glm::vec2 world_after = mouse_screen / cam->get_zoom();
+
+			// Étape 5 : ajuster position pour que la souris "reste sur le même point"
+			glm::vec2 delta = world_before - world_after;
+			cam->set_position(cam->get_position() + delta);
+		});
+
+	myapp.add_event_listener(event_type::MOUSE_MOTION,
+		[&](const SDL_Event& event)
+		{
+			float mouse_x = static_cast<float>(event.motion.x);
+			float mouse_y = static_cast<float>(event.motion.y);
+
+			auto cam = myapp.get_camera();
+
+			glm::vec2 zoomed_size = { static_cast<float>(app::get_width()),
+				static_cast<float>(app::get_height()) };
+
+			glm::vec2 world_mouse = glm::vec2(mouse_x, mouse_y) / cam->get_zoom();
+
+			glm::vec2 centered_camera_pos = world_mouse - (zoomed_size / cam->get_zoom()) * 0.5f;
+
+			cam->set_position(centered_camera_pos);
+		});
 
 	image_shape image("./assets/images/image.png", 287, 90);
 	component image_component(&myapp, &image);

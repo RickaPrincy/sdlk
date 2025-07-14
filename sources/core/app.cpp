@@ -49,7 +49,7 @@ namespace sdlk
 								glViewport(0, 0, event.window.data1, event.window.data2);
 							}
 
-							this->m_event_listener.notify_event(event);
+							this->p_event_listener->notify_event(event);
 							break;
 					}
 				}
@@ -58,6 +58,8 @@ namespace sdlk
 
 				// Update
 				glClear(GL_COLOR_BUFFER_BIT);
+
+				this->m_camera.load_uniforms(&this->m_shader_program);
 				for (const auto &child : this->p_childs)
 				{
 					child->render(&this->m_shader_program);
@@ -82,6 +84,8 @@ namespace sdlk
 		int height,
 		app_options options,
 		Uint32 window_init_flags)
+		: observer(nullptr),
+		  m_camera(std::move(camera(width, height)))
 	{
 		this->_frame_delay_ms = 1000 / options.fps;
 
@@ -122,6 +126,8 @@ namespace sdlk
 
 		this->m_shader_program = create_shader_program(
 			std::move(options.vertex_source), std::move(options.fragment_source));
+
+		this->p_event_listener = new event_listener();	// TODO: RAII
 	}
 
 	auto app::limit_fps() -> void
@@ -151,9 +157,14 @@ namespace sdlk
 		return app::s_window_height;
 	}
 
+	auto app::get_camera() -> camera *
+	{
+		return &this->m_camera;
+	}
+
 	auto app::get_event_listener() -> event_listener *const
 	{
-		return &this->m_event_listener;
+		return this->p_event_listener;
 	}
 
 	app::~app()
@@ -169,6 +180,7 @@ namespace sdlk
 		}
 
 		SDL_GL_DeleteContext(this->m_opengl_context);
+		delete this->p_event_listener;
 		std::cout << "clean app\n";
 	}
 }  // namespace sdlk

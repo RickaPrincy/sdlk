@@ -24,12 +24,10 @@ namespace sdlk
 		auto ndc_color = converter::sdl_color_to_ndc(std::move(color));
 
 		std::vector<float> vertices{};
-		auto ndc_positions = converter::pixels_points_to_ndcs(
-			std::move(positions), std::move(app::get_width()), std::move(app::get_height()));
-		for (size_t i = 0; i < ndc_positions.size(); i++)
+		for (size_t i = 0; i < positions.size(); i++)
 		{
-			vertices.push_back(ndc_positions[i][0]);
-			vertices.push_back(ndc_positions[i][1]);
+			vertices.push_back(positions[i][0]);
+			vertices.push_back(positions[i][1]);
 			vertices.push_back(ndc_color[0]);  // r
 			vertices.push_back(ndc_color[1]);  // g
 			vertices.push_back(ndc_color[2]);  // b
@@ -58,12 +56,10 @@ namespace sdlk
 		}
 
 		std::vector<float> vertices{};
-		auto ndc_positions = converter::pixels_points_to_ndcs(
-			std::move(positions), std::move(app::get_width()), std::move(app::get_height()));
-		for (size_t i = 0; i < ndc_positions.size(); i++)
+		for (size_t i = 0; i < positions.size(); i++)
 		{
-			vertices.push_back(ndc_positions[i][0]);
-			vertices.push_back(ndc_positions[i][1]);
+			vertices.push_back(positions[i][0]);
+			vertices.push_back(positions[i][1]);
 
 			auto ndc_color = converter::sdl_color_to_ndc(std::move(colors[i]));
 			vertices.push_back(ndc_color[0]);  // r
@@ -86,7 +82,7 @@ namespace sdlk
 		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0);
 		glEnableVertexAttribArray(0);
 
-		glDisableVertexAttribArray(1); // texture attribute
+		glDisableVertexAttribArray(1);	// texture attribute
 
 		glVertexAttribPointer(
 			2, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(2 * sizeof(float)));

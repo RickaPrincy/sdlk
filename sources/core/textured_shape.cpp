@@ -2,7 +2,6 @@
 #include <mapbox/earcut.hpp>
 #include <memory>
 #include <sdlk/core/app.hpp>
-#include <sdlk/core/converter.hpp>
 #include <sdlk/core/quad.hpp>
 #include <sdlk/core/shape.hpp>
 #include <stdexcept>
@@ -36,12 +35,10 @@ namespace sdlk
 		}
 
 		std::vector<float> vertices{};
-		auto ndc_positions = converter::pixels_points_to_ndcs(
-			std::move(positions), std::move(app::get_width()), std::move(app::get_height()));
-		for (size_t i = 0; i < ndc_positions.size(); i++)
+		for (size_t i = 0; i < positions.size(); i++)
 		{
-			vertices.push_back(ndc_positions[i][0]);
-			vertices.push_back(ndc_positions[i][1]);
+			vertices.push_back(positions[i][0]);
+			vertices.push_back(positions[i][1]);
 			vertices.push_back(uv[i][0]);
 			vertices.push_back(uv[i][1]);
 		}
