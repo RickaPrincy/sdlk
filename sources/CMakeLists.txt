@@ -16,7 +16,9 @@ set(LIB_SOURCES
   core/shape.cpp 
   core/texture.cpp
   core/image_shape.cpp
+  core/text_shape.cpp
   core/textured_shape.cpp
+  core/freetype_font.cpp
   core/colored_shape.cpp
 )
 
@@ -36,12 +38,15 @@ target_include_directories(
 target_include_directories(
   ${SDLK_LIB_NAME} PUBLIC $<BUILD_INTERFACE:${SDLK_SOURCE_DIR}/external/earcut/include>)
 
+target_include_directories(
+  ${SDLK_LIB_NAME} PUBLIC ${FREETYPE_INCLUDE_DIRS})
+
 # target_link
 target_link_libraries(
   ${SDLK_LIB_NAME}
   PUBLIC SDL2
   PUBLIC SDL2_image
-  PUBLIC SDL2_ttf)
+  PUBLIC Freetype::Freetype)
 
 # set properties
 set_target_properties(

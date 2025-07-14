@@ -38,13 +38,19 @@ in vec2 TexCoord;
 in vec4 OutColor;
 
 uniform sampler2D u_texture;
+uniform bool u_useTextRendering;
 uniform bool u_useTexture;
 
 void main()
 {
     if(u_useTexture)
     {
-        FragColor = texture(u_texture, TexCoord);
+        if(u_useTextRendering){
+            vec4 sampled = vec4(1.0, 1.0, 1.0, texture(u_texture, TexCoord).r);
+            FragColor = vec4(1.0, 0.0, 0.0, 1.0) * sampled;
+        }else{
+            FragColor = texture(u_texture, TexCoord);
+        }
     }else{
         FragColor = OutColor;
     }

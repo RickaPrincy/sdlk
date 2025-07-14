@@ -54,6 +54,13 @@ namespace sdlk
 
 	auto textured_shape::render(GLuint *program) -> void
 	{
+		auto use_text_rendering_loc = glGetUniformLocation(*program, "u_useTextRendering");
+		if (use_text_rendering_loc == -1)
+		{
+			std::cerr << "Warning: uniform u_useTextRendering not found or optimized out.\n";
+		}
+		glUniform1i(use_text_rendering_loc, 0);
+
 		auto u_texture_loc = glGetUniformLocation(*program, "u_texture");
 		if (u_texture_loc == -1)
 		{

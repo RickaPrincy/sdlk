@@ -1,5 +1,8 @@
 #pragma once
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_stdinc.h>
 #include <SDL2/SDL_video.h>
@@ -28,6 +31,7 @@ namespace sdlk
 		Uint32 _frame_start = 0;
 		unsigned int _frame_delay_ms = 0;
 
+		static FT_Library s_ft_library;
 		static unsigned int s_window_width, s_window_height;
 
 	protected:
@@ -56,6 +60,7 @@ namespace sdlk
 
 		[[nodiscard]] static auto get_width() -> int const;
 		[[nodiscard]] static auto get_height() -> int const;
+		[[nodiscard]] static auto get_ft_library() -> FT_Library &;
 
 		virtual auto limit_fps() -> void;
 

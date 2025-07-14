@@ -16,6 +16,7 @@ namespace sdlk
 {
 	unsigned int app::s_window_width = 0;
 	unsigned int app::s_window_height = 0;
+	FT_Library app::s_ft_library = 0;
 
 	// TO handle ctrl + c or something else that can stop the application
 	static bool is_running = true;
@@ -87,10 +88,16 @@ namespace sdlk
 		: observer(nullptr),
 		  m_camera(std::move(camera(width, height)))
 	{
+		if (FT_Init_FreeType(&app::s_ft_library))
+		{
+			throw std::runtime_error("ERROR::FREETYPE: Could not init FreeType Library");
+		}
+
 		this->_frame_delay_ms = 1000 / options.fps;
 
 		if (SDL_Init(window_init_flags) != 0)
 		{
+			FT_Done_FreeType(app::s_ft_library);
 			throw std::runtime_error("Cannot init sdl");
 		}
 
@@ -128,6 +135,8 @@ namespace sdlk
 			std::move(options.vertex_source), std::move(options.fragment_source));
 
 		this->p_event_listener = new event_listener();	// TODO: RAII
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 	auto app::limit_fps() -> void
@@ -145,6 +154,11 @@ namespace sdlk
 	auto app::append_child(renderable *child) -> void
 	{
 		this->p_childs.push_back(child);
+	}
+
+	auto app::get_ft_library() -> FT_Library &
+	{
+		return app::s_ft_library;
 	}
 
 	auto app::get_width() -> int const
@@ -180,7 +194,11 @@ namespace sdlk
 		}
 
 		SDL_GL_DeleteContext(this->m_opengl_context);
+
+		FT_Done_FreeType(app::s_ft_library);
+
 		delete this->p_event_listener;
+
 		std::cout << "clean app\n";
 	}
 }  // namespace sdlk

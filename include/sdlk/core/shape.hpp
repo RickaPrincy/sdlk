@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 
 #include <memory>
+#include <sdlk/core/freetype_font.hpp>
 #include <sdlk/core/renderable.hpp>
 #include <sdlk/core/texture.hpp>
 #include <sdlk/core/types.hpp>
@@ -28,6 +29,22 @@ namespace sdlk
 		virtual auto render(GLuint *program) -> void override;
 
 		virtual ~shape();
+	};
+
+	class text_shape : public shape
+	{
+	protected:
+		std::string m_text{};
+		std::shared_ptr<freetype_font> m_font = nullptr;
+
+	public:
+		[[nodiscard]] auto get_text() -> std::string;
+
+		virtual auto bind() -> void const override;
+		virtual auto render(GLuint *program) -> void override;
+
+		text_shape(std::string text, std::shared_ptr<freetype_font> font);
+		~text_shape() = default;
 	};
 
 	class colored_shape : public shape

@@ -1,10 +1,12 @@
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_ttf.h>
 
+#include <filesystem>
 #include <glm/trigonometric.hpp>
 #include <sdlk/core/app.hpp>
 #include <sdlk/core/component.hpp>
 #include <sdlk/core/events/types.hpp>
+#include <sdlk/core/freetype_font.hpp>
 #include <sdlk/core/shape.hpp>
 #include <sdlk/core/types.hpp>
 
@@ -83,6 +85,17 @@ auto main(int argc, char** argv) -> int
 
 	image_shape image("./assets/images/image.png", 287, 90);
 	component image_component(&myapp, &image);
+
+	image_component.translate({ 500, 0 });
+
+	auto font =
+		freetype_font::make(std::filesystem::absolute("assets/font/arial.ttf").string(), 20);
+
+	text_shape text("hello", font);
+	component text_component(&myapp, &text);
+
+	myapp.add_event_listener(
+		event_type::KEY_DOWN, [&](const SDL_Event& event) { text_component.translate({ 20, 0 }); });
 
 	return myapp.run(argc, argv);
 }
