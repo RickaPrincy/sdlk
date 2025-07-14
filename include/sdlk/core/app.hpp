@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SDL2/SDL_pixels.h>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
@@ -22,11 +23,13 @@ namespace sdlk
 		unsigned int fps = 30;
 		std::string vertex_source = "";
 		std::string fragment_source = "";
+		SDL_Color background_color = { 0, 0, 0, 255 };
 	};
 
 	class app : public observer
 	{
 	private:
+		app_options _options{};
 		Uint32 _frame_start = 0;
 		unsigned int _frame_delay_ms = 0;
 

@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <sdlk/core/app.hpp>
+#include <sdlk/core/converter.hpp>
 #include <sdlk/core/opengl_utils.hpp>
 #include <stdexcept>
 #include <utility>
@@ -30,7 +31,13 @@ namespace sdlk
 		std::signal(SIGINT, signal_handler);
 		SDL_Event event;
 
-		glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
+		auto ndc_background_color = converter::sdl_color_to_ndc(this->_options.background_color);
+
+		glClearColor(ndc_background_color[0],
+			ndc_background_color[1],
+			ndc_background_color[2],
+			ndc_background_color[3]);
+
 		try
 		{
 			while (is_running)
@@ -86,14 +93,15 @@ namespace sdlk
 		app_options options,
 		Uint32 window_init_flags)
 		: observer(nullptr),
-		  m_camera(std::move(camera(width, height)))
+		  m_camera(std::move(camera(width, height))),
+		  _options(std::move(options))
 	{
 		if (FT_Init_FreeType(&app::s_ft_library))
 		{
 			throw std::runtime_error("ERROR::FREETYPE: Could not init FreeType Library");
 		}
 
-		this->_frame_delay_ms = 1000 / options.fps;
+		this->_frame_delay_ms = 1000 / this->_options.fps;
 
 		if (SDL_Init(window_init_flags) != 0)
 		{
@@ -125,14 +133,16 @@ namespace sdlk
 			throw std::runtime_error("Failed to initialize GLAD");
 		}
 
-		options.vertex_source =
-			options.vertex_source.empty() ? resource::s_vertex_source : options.vertex_source;
+		this->_options.vertex_source = this->_options.vertex_source.empty()
+										   ? resource::s_vertex_source
+										   : this->_options.vertex_source;
 
-		options.fragment_source =
-			options.fragment_source.empty() ? resource::s_fragment_source : options.fragment_source;
+		this->_options.fragment_source = this->_options.fragment_source.empty()
+											 ? resource::s_fragment_source
+											 : this->_options.fragment_source;
 
 		this->m_shader_program = create_shader_program(
-			std::move(options.vertex_source), std::move(options.fragment_source));
+			std::move(this->_options.vertex_source), std::move(this->_options.fragment_source));
 
 		this->p_event_listener = new event_listener();	// TODO: RAII
 		glEnable(GL_BLEND);
