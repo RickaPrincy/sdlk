@@ -1,13 +1,16 @@
 #include <iostream>
+#include <sdlk/core/converter.hpp>
 #include <sdlk/core/quad.hpp>
 #include <sdlk/core/shape.hpp>
 
 namespace sdlk
 {
-	text_shape::text_shape(std::string text, std::shared_ptr<freetype_font> font)
+	text_shape::text_shape(std::string text, std::shared_ptr<freetype_font> font, SDL_Color color)
 		: shape(polygon(), {}, true),
 		  m_text(text),
-		  m_font(std::move(font))
+		  m_font(std::move(font)),
+		  m_color(color),
+		  _ndc_color(std::move(converter::sdl_color_to_ndc(std::move(color))))
 	{
 		glBindVertexArray(this->m_vao);
 		glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo);
@@ -33,8 +36,36 @@ namespace sdlk
 		glActiveTexture(GL_TEXTURE0);
 	}
 
+	auto text_shape::set_text(std::string text) -> void
+	{
+		m_text = std::move(text);
+	}
+
+	auto text_shape::set_color(SDL_Color color) -> void
+	{
+		this->m_color = color;
+		this->_ndc_color = std::move(converter::sdl_color_to_ndc(this->m_color));
+	}
+
+	auto text_shape::get_text() -> std::string
+	{
+		return m_text;
+	}
+
+	auto text_shape::get_color() -> SDL_Color
+	{
+		return m_color;
+	}
+
 	auto text_shape::render(GLuint *program) -> void
 	{
+		auto text_color_loc = glGetUniformLocation(*program, "text_color");
+		if (text_color_loc == -1)
+		{
+			std::cerr << "Warning: uniform text_color not found or optimized out.\n";
+		}
+		glUniform4fv(text_color_loc, 1, this->_ndc_color.data());
+
 		auto use_text_rendering_loc = glGetUniformLocation(*program, "u_useTextRendering");
 		if (use_text_rendering_loc == -1)
 		{

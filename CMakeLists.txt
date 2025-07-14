@@ -13,6 +13,34 @@ find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(Freetype REQUIRED)
 
+# Download git submodule
+set(GIT_SUBMODULES
+  "external/glm"
+  "external/earcut"
+)
+
+foreach(submodule IN LISTS GIT_SUBMODULES)
+  if(NOT EXISTS "${CMAKE_SOURCE_DIR}/${submodule}/.git")
+    message(STATUS "Init ${submodule} ...")
+    execute_process(
+      COMMAND git submodule update --init --recursive ${submodule}
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+      RESULT_VARIABLE res
+      OUTPUT_VARIABLE out
+      ERROR_VARIABLE err
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+      ERROR_STRIP_TRAILING_WHITESPACE
+    )
+    if(NOT res EQUAL 0)
+      message(WARNING "Failed to init submodule ${submodule} : ${err}")
+    else()
+      message(STATUS "Submodule ${submodule} updated.")
+    endif()
+  else()
+    message(STATUS "Submodule ${submodule} already initialized, skipping.")
+  endif()
+endforeach()
+
 set(SDLK_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(SDLK_IS_MAIN_PROJECT OFF)
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)

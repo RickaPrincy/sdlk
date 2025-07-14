@@ -7,9 +7,9 @@
 
 namespace sdlk
 {
-	image_shape::image_shape(std::string image_path, int width, int height)
+	image_shape::image_shape(std::string image_path, int width, int height, std::vector<point> uv)
 		: textured_shape(std::move(polygon(quad::make(std::move(width), std::move(height)))),
-			  std::move(quad::uv()),
+			  std::move(uv),
 			  std::move(texture::from_file(std::move(image_path))),
 			  std::move(quad::indices()))
 	{

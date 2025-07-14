@@ -11,8 +11,8 @@ namespace sdlk
 	class camera
 	{
 	protected:
-		glm::vec2 m_position{ 0.0f };
 		float m_zoom{ 1.0f };
+		glm::vec2 m_position{ 0.0f };
 
 		glm::mat4 m_projection{ 1.0f };
 		glm::mat4 m_view{ 1.0f };
@@ -26,6 +26,7 @@ namespace sdlk
 		[[nodiscard]] auto get_position() -> glm::vec2;
 
 		auto set_position(const glm::vec2& pos) -> void;
+		auto translate(const glm::vec2& delta) -> void;
 
 		auto set_zoom(float zoom) -> void;
 

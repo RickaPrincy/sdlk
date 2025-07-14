@@ -11,7 +11,6 @@
 #include <sdlk/core/camera.hpp>
 #include <sdlk/core/events/event_listener.hpp>
 #include <sdlk/core/events/observer.hpp>
-#include <sdlk/core/preprocessor/getter_setter.hpp>
 #include <sdlk/core/renderable.hpp>
 #include <string>
 #include <vector>

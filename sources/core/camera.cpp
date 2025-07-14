@@ -19,6 +19,12 @@ namespace sdlk
 		return this->m_view;
 	}
 
+	auto camera::translate(const glm::vec2& delta) -> void
+	{
+		m_position += delta;
+		this->update(app::get_width(), app::get_height());
+	}
+
 	auto camera::set_position(const glm::vec2& pos) -> void
 	{
 		m_position = pos;

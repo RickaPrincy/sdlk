@@ -1,5 +1,4 @@
 #include <sdlk/core/events/observer.hpp>
-#include <sdlk/utils/basic_wrapper.hpp>
 
 namespace sdlk
 {

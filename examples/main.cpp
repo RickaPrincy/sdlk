@@ -1,6 +1,4 @@
 #include <SDL2/SDL_events.h>
-#include <SDL2/SDL_ttf.h>
-
 #include <filesystem>
 #include <glm/trigonometric.hpp>
 #include <sdlk/core/app.hpp>
@@ -62,7 +60,7 @@ auto main(int argc, char** argv) -> int
 
 			// Étape 5 : ajuster position pour que la souris "reste sur le même point"
 			glm::vec2 delta = world_before - world_after;
-			cam->set_position(cam->get_position() + delta);
+			cam->set_position(cam->get_position() + delta / cam->get_zoom());
 		});
 
 	myapp.add_event_listener(event_type::MOUSE_MOTION,
@@ -91,7 +89,7 @@ auto main(int argc, char** argv) -> int
 	auto font =
 		freetype_font::make(std::filesystem::absolute("assets/font/arial.ttf").string(), 20);
 
-	text_shape text("hello", font);
+	text_shape text("hello", font, { 255, 255, 0, 255 });
 	component text_component(&myapp, &text);
 
 	myapp.add_event_listener(

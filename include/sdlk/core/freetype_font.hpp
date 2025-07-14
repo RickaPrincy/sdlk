@@ -33,8 +33,9 @@ namespace sdlk
 		[[nodiscard]] auto get_face() -> FT_Face &;
 		[[nodiscard]] auto get_character(const char &c) -> character &;
 		[[nodiscard]] auto get_ascender() const -> int;
-		[[nodiscard]] static auto make(std::string font_path, int font_size = 20, int char_to_load = 128)
-			-> std::shared_ptr<freetype_font>;
+		[[nodiscard]] static auto make(std::string font_path,
+			int font_size = 20,
+			int char_to_load = 128) -> std::shared_ptr<freetype_font>;
 
 		freetype_font(std::string font_path, int font_size = 20, int char_to_load = 128);
 		virtual ~freetype_font();
