@@ -15,7 +15,11 @@ namespace sdlk
 		}
 
 		FT_Set_Pixel_Sizes(this->m_face, 0, font_size);
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);	// disable byte-alignment restriction
+		GLint previous_alignment;
+		glGetIntegerv(GL_UNPACK_ALIGNMENT, &previous_alignment);
+
+		// Set the desired alignment (e.g., for tightly packed data)
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 		FT_Face &face = this->m_face;
 		for (unsigned char c = 0; c < char_to_load; c++)
@@ -56,6 +60,9 @@ namespace sdlk
 			this->_characters.insert(std::pair<char, character>(c, std::move(new_character)));
 			this->_ascender = this->m_face->size->metrics.ascender >> 6;
 		}
+
+		// Restore the previous alignment
+		glPixelStorei(GL_UNPACK_ALIGNMENT, previous_alignment);
 	};
 
 	auto freetype_font::get_ascender() const -> int

@@ -81,16 +81,16 @@ auto main(int argc, char** argv) -> int
 			cam->set_position(centered_camera_pos);
 		});
 
+	auto font =
+		freetype_font::make(std::filesystem::absolute("assets/font/arial.ttf").string(), 20);
+	text_shape text("hello", font, { 255, 255, 0, 255 });
+	component text_component(&myapp, &text);
 	image_shape image("./assets/images/image.png", 287, 90);
 	component image_component(&myapp, &image);
 
 	image_component.translate({ 500, 0 });
 
-	auto font =
-		freetype_font::make(std::filesystem::absolute("assets/font/arial.ttf").string(), 20);
 
-	text_shape text("hello", font, { 255, 255, 0, 255 });
-	component text_component(&myapp, &text);
 
 	myapp.add_event_listener(
 		event_type::KEY_DOWN, [&](const SDL_Event& event) { text_component.translate({ 20, 0 }); });
