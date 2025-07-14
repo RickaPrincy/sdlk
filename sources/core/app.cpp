@@ -1,140 +1,204 @@
-#include <SDL2/SDL_events.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_render.h>
-#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_video.h>
+#include <glad/glad.h>
 
 #include <csignal>
 #include <cstdlib>
 #include <iostream>
 #include <sdlk/core/app.hpp>
-#include <sdlk/utils/basic_wrapper.hpp>
+#include <sdlk/core/opengl_utils.hpp>
 #include <stdexcept>
-#include <string>
+#include <utility>
 
-// TO handle ctrl + c or something else that can stop the application
-static bool is_running = true;
-static void signal_handler(int signal)
-{
-	is_running = false;
-}
+#include "static_resource.hpp"
 
 namespace sdlk
 {
-	static void quit_resources(sdlk::Window *window)
+	unsigned int app::s_window_width = 0;
+	unsigned int app::s_window_height = 0;
+	FT_Library app::s_ft_library = 0;
+
+	// TO handle ctrl + c or something else that can stop the application
+	static bool is_running = true;
+	static void signal_handler(int signal)
 	{
-		if (!sdlk::check::is_null(window))
+		is_running = false;
+	}
+
+	auto app::run(int argc, char **argv) -> int
+	{
+		std::signal(SIGINT, signal_handler);
+		SDL_Event event;
+
+		glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
+		try
 		{
-			delete window;
+			while (is_running)
+			{
+				// Event
+				while (SDL_PollEvent(&event))
+				{
+					switch (event.type)
+					{
+						case SDL_QUIT: is_running = false; break;
+						default:
+							if (event.type == SDL_WINDOWEVENT &&
+								event.window.event == SDL_WINDOWEVENT_RESIZED)
+							{
+								app::s_window_width = event.window.data1;
+								app::s_window_height = event.window.data2;
+								glViewport(0, 0, event.window.data1, event.window.data2);
+							}
+
+							this->p_event_listener->notify_event(event);
+							break;
+					}
+				}
+
+				glUseProgram(this->m_shader_program);
+
+				// Update
+				glClear(GL_COLOR_BUFFER_BIT);
+
+				this->m_camera.load_uniforms(&this->m_shader_program);
+				for (const auto &child : this->p_childs)
+				{
+					child->render(&this->m_shader_program);
+				}
+				SDL_GL_SwapWindow(this->p_window);
+
+				// FPS Limit
+				this->limit_fps();
+			}
+		}
+		catch (const std::runtime_error &e)
+		{
+			std::cerr << "[ ERROR ] : " << e.what() << "\n";
+			return EXIT_FAILURE;
 		}
 
-		TTF_Quit();
-		IMG_Quit();
-		SDL_Quit();
+		return EXIT_SUCCESS;
+	}
+
+	app::app(std::string window_title,
+		int width,
+		int height,
+		app_options options,
+		Uint32 window_init_flags)
+		: observer(nullptr),
+		  m_camera(std::move(camera(width, height)))
+	{
+		if (FT_Init_FreeType(&app::s_ft_library))
+		{
+			throw std::runtime_error("ERROR::FREETYPE: Could not init FreeType Library");
+		}
+
+		this->_frame_delay_ms = 1000 / options.fps;
+
+		if (SDL_Init(window_init_flags) != 0)
+		{
+			FT_Done_FreeType(app::s_ft_library);
+			throw std::runtime_error("Cannot init sdl");
+		}
+
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+
+		this->p_window = SDL_CreateWindow(window_title.c_str(),
+			SDL_WINDOWPOS_CENTERED,
+			SDL_WINDOWPOS_CENTERED,
+			width,
+			height,
+			SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN);
+
+		app::s_window_width = std::move(width);
+		app::s_window_height = std::move(height);
+
+		this->m_title = std::move(window_title);
+		this->m_opengl_context = SDL_GL_CreateContext(this->p_window);
+
+		if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress))
+		{
+			SDL_DestroyWindow(this->p_window);
+			SDL_GL_DeleteContext(this->m_opengl_context);
+			throw std::runtime_error("Failed to initialize GLAD");
+		}
+
+		options.vertex_source =
+			options.vertex_source.empty() ? resource::s_vertex_source : options.vertex_source;
+
+		options.fragment_source =
+			options.fragment_source.empty() ? resource::s_fragment_source : options.fragment_source;
+
+		this->m_shader_program = create_shader_program(
+			std::move(options.vertex_source), std::move(options.fragment_source));
+
+		this->p_event_listener = new event_listener();	// TODO: RAII
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	}
+
+	auto app::limit_fps() -> void
+	{
+		auto frame_time = SDL_GetTicks() - this->_frame_start;
+
+		if (frame_time < this->_frame_delay_ms)
+		{
+			SDL_Delay(this->_frame_delay_ms - frame_time);
+		}
+
+		this->_frame_start = SDL_GetTicks();
+	}
+
+	auto app::append_child(renderable *child) -> void
+	{
+		this->p_childs.push_back(child);
+	}
+
+	auto app::get_ft_library() -> FT_Library &
+	{
+		return app::s_ft_library;
+	}
+
+	auto app::get_width() -> int const
+	{
+		return app::s_window_width;
+	}
+
+	auto app::get_height() -> int const
+	{
+		return app::s_window_height;
+	}
+
+	auto app::get_camera() -> camera *
+	{
+		return &this->m_camera;
+	}
+
+	auto app::get_event_listener() -> event_listener *const
+	{
+		return this->p_event_listener;
+	}
+
+	app::~app()
+	{
+		if (this->m_shader_program)
+		{
+			glDeleteProgram(this->m_shader_program);
+		}
+
+		if (this->p_window)
+		{
+			SDL_DestroyWindow(this->p_window);
+		}
+
+		SDL_GL_DeleteContext(this->m_opengl_context);
+
+		FT_Done_FreeType(app::s_ft_library);
+
+		delete this->p_event_listener;
+
+		std::cout << "clean app\n";
 	}
 }  // namespace sdlk
-
-void sdlk::App::limit_fps(unsigned int limit)
-{
-	unsigned int ticks = SDL_GetTicks();
-
-	if (limit < ticks)
-		return;
-	else if (limit > ticks + sdlk::App::FPS_LIMIT)
-		SDL_Delay(sdlk::App::FPS_LIMIT);
-	else
-		SDL_Delay(limit - ticks);
-}
-
-void sdlk::App::init_sdl_flags(Uint32 flags)
-{
-	if (SDL_WasInit(flags) == 0)
-	{
-		return;
-	}
-	sdlk::throw_if_not_success(SDL_InitSubSystem(flags), "Cannot init SDL");
-}
-
-void sdlk::App::quit_sdl_flags(Uint32 flags)
-{
-	if (SDL_WasInit(flags) != 0)
-	{
-		return;
-	}
-
-	SDL_QuitSubSystem(flags);
-}
-
-sdlk::App::App(std::string title, Size size, Uint32 flags)
-{
-	if (SDL_WasInit(flags) != 0)
-	{
-		sdlk::throw_if_not_success(SDL_Init(flags), "Cannot init SDL");
-	}
-	try
-	{
-		p_window = new Window(title, size, flags);
-		const auto image_init_status =
-			IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_WEBP | IMG_INIT_TIF);
-
-		if (image_init_status == 0)
-		{
-			throw std::runtime_error("Cannot init sdl image");
-		}
-
-		if (TTF_Init() == -1)
-		{
-			throw std::runtime_error("Cannot init sdl ttf");
-		}
-	}
-	catch (const std::runtime_error &error)
-	{
-		// TODO: refactor
-		std::cerr << error.what() << std::endl;
-		sdlk::quit_resources(p_window);
-		exit(EXIT_FAILURE);
-	}
-
-	p_window->p_event_listener = &m_event_listener;
-}
-
-sdlk::App::~App()
-{
-	sdlk::quit_resources(p_window);
-}
-
-void sdlk::App::run()
-{
-	std::signal(SIGINT, signal_handler);
-	SDL_Event event;
-
-	try
-	{
-		while (is_running)
-		{
-			while (SDL_PollEvent(&event))
-			{
-				switch (event.type)
-				{
-					case SDL_QUIT: is_running = false; break;
-					default: m_event_listener.notify_event(event); break;
-				}
-			}
-			this->p_window->render();
-			this->limit_fps(SDL_GetTicks());
-		}
-	}
-	catch (const std::runtime_error &e)
-	{
-		std::cerr << "[ ERROR ] : " << e.what() << std::endl;
-	}
-}
-
-void sdlk::App::append_child(sdlk::Component *component)
-{
-	this->p_window->append_child(component);
-}
-
-sdlk::Window *sdlk::App::get_window()
-{
-	return p_window;
-}

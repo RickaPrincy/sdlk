@@ -1,54 +1,58 @@
-#include <algorithm>
+#include <sdlk/core/app.hpp>
 #include <sdlk/core/component.hpp>
-#include <sdlk/core/events/types.hpp>
-#include <sdlk/utils/basic_wrapper.hpp>
 
-sdlk::Component::Component(Component *parent, Size size, Position position)
-	: Renderable(size, position)
+namespace sdlk
 {
-	if (!sdlk::check::is_null(parent))
+	component::component(app *app, sdlk::shape *shape)
+		: observer(app->get_event_listener()),
+		  m_shape(shape)
+	{
+		app->append_child(this);
+	}
+
+	component::component(component *parent, sdlk::shape *shape)
+		: observer(parent->p_event_listener),
+		  m_shape(shape)
 	{
 		parent->append_child(this);
 	}
-}
 
-void sdlk::Component::do_re_render()
-{
-	m_do_re_render = true;
-	if (!sdlk::check::is_null(p_parent))
+	auto component::render(GLuint *program) -> void
 	{
-		p_parent->do_re_render();
-	}
-}
+		this->m_shape->bind();
 
-void sdlk::Component::render(SDL_Renderer *renderer)
-{
-	if (m_do_re_render)
+		this->m_transformation.load_uniforms(program);
+
+		this->m_shape->render(program);
+
+		for (const auto &child : this->p_childs)
+		{
+			child->render(program);
+		}
+	}
+
+	auto component::translate(glm::vec2 pixel_offset) -> void
 	{
-		std::for_each(
-			p_childs.begin(), p_childs.end(), [&](auto *child) { child->render(renderer); });
+		this->m_transformation.translate(std::move(pixel_offset));
 	}
-	m_do_re_render = false;
-}
 
-void sdlk::Component::append_child(sdlk::Component *component)
-{
-	this->p_childs.push_back(component);
-	component->p_parent = this;
-	component->p_event_listener = p_event_listener;
-}
+	auto component::scale(glm::vec2 pixel_scale) -> void
+	{
+		this->m_transformation.scale(std::move(pixel_scale));
+	}
 
-void sdlk::Component::set_x(int x)
-{
-	sdlk::Box::set_x(x);
-}
+	auto component::rotate(float angle_radians) -> void
+	{
+		this->m_transformation.rotate(std::move(angle_radians));
+	}
 
-void sdlk::Component::set_y(int y)
-{
-	sdlk::Box::set_y(y);
-}
+	auto component::set_transformation_model(glm::mat4 transformation_model) -> void
+	{
+		this->m_transformation.set_model(std::move(transformation_model));
+	}
 
-void sdlk::Component::set_position(Position position)
-{
-	sdlk::Box::set_position(position);
-}
+	auto component::append_child(component *child) -> void
+	{
+		this->p_childs.push_back(child);
+	}
+}  // namespace sdlk

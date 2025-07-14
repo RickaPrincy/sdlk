@@ -1,19 +1,26 @@
 project(${SDLK_LIB_NAME} VERSION ${SDLK_LIB_VERSION} LANGUAGES CXX)
 
-set(LIB_SOURCES
-    core/app.cpp
-    core/window.cpp
-    core/box.cpp
-    core/properties/position.cpp
-    core/properties/size.cpp
-    core/renderable.cpp
-    core/component.cpp
-    core/textured_component.cpp
-    core/events/observer.cpp
-    core/events/event_listener.cpp
-    utils/basic_wrapper.cpp
-    components/text.cpp
-    components/image.cpp)
+set(LIB_SOURCES 
+  core/events/event_listener.cpp 
+  core/events/observer.cpp 
+  core/glad.cpp 
+  core/quad.cpp
+  core/types.cpp
+  core/transformation.cpp
+  core/opengl_utils.cpp
+  core/static_resource.cpp
+  core/converter.cpp
+  core/camera.cpp
+  core/app.cpp 
+  core/component.cpp
+  core/shape.cpp 
+  core/texture.cpp
+  core/image_shape.cpp
+  core/text_shape.cpp
+  core/textured_shape.cpp
+  core/freetype_font.cpp
+  core/colored_shape.cpp
+)
 
 # Create the library
 if(BUILD_SHARED_LIBS)
@@ -24,14 +31,22 @@ endif()
 
 # Set include directories for the library
 target_include_directories(
-  ${SDLK_LIB_NAME} PRIVATE $<BUILD_INTERFACE:${SDLK_SOURCE_DIR}/include>)
+  ${SDLK_LIB_NAME} PUBLIC $<BUILD_INTERFACE:${SDLK_SOURCE_DIR}/include>)
+
+target_include_directories(
+  ${SDLK_LIB_NAME} PUBLIC $<BUILD_INTERFACE:${SDLK_SOURCE_DIR}/external/glm>)
+target_include_directories(
+  ${SDLK_LIB_NAME} PUBLIC $<BUILD_INTERFACE:${SDLK_SOURCE_DIR}/external/earcut/include>)
+
+target_include_directories(
+  ${SDLK_LIB_NAME} PUBLIC ${FREETYPE_INCLUDE_DIRS})
 
 # target_link
 target_link_libraries(
   ${SDLK_LIB_NAME}
   PUBLIC SDL2
   PUBLIC SDL2_image
-  PUBLIC SDL2_ttf)
+  PUBLIC Freetype::Freetype)
 
 # set properties
 set_target_properties(

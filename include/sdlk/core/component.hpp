@@ -1,31 +1,35 @@
 #pragma once
 
-#include <SDL2/SDL_events.h>
+#include <SDL2/SDL_video.h>
 
-#include <sdlk/core/events/event_listener.hpp>
 #include <sdlk/core/events/observer.hpp>
 #include <sdlk/core/renderable.hpp>
+#include <sdlk/core/shape.hpp>
+#include <sdlk/core/transformation.hpp>
 #include <vector>
 
 namespace sdlk
 {
-	class Component : public Renderable, public Observer
+	class component : public observer, public renderable
 	{
 	protected:
-		bool m_do_re_render = true;
-		std::vector<Component *> p_childs{};
-		Component *p_parent = nullptr;
+		shape *m_shape;
+		component *p_parent = nullptr;
+		std::vector<component *> p_childs{};
 
-		virtual void render(SDL_Renderer *renderer) override;
-		Component() = default;
+		transformation m_transformation{};
+
+		auto append_child(component *child) -> void;
 
 	public:
-		virtual void set_x(int x) override;
-		virtual void set_y(int x) override;
-		virtual void set_position(Position position) override;
+		component(class app *parent, sdlk::shape *shape);
+		component(component *parent, sdlk::shape *shape);
 
-		virtual void do_re_render();
-		virtual void append_child(Component *component);
-		Component(Component *parent, Size size, Position position = Position());
+		virtual auto render(GLuint *program) -> void override;
+
+		virtual auto translate(glm::vec2 pixel_offset) -> void;
+		virtual auto scale(glm::vec2 pixel_scale) -> void;
+		virtual auto rotate(float angle_radians) -> void;
+		virtual auto set_transformation_model(glm::mat4 transformation_model) -> void;
 	};
 }  // namespace sdlk
