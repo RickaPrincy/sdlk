@@ -42,12 +42,12 @@ set(SDLK_LIB_VERSION ${PROJECT_VERSION})
 set(SDLK_LIB_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
 set(SDLK_VERSION ${PROJECT_VERSION})
 set(SDLK_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
-set(SDLK_BUILD_EXAMPLE ${SDLK_IS_MAIN_PROJECT})
+set(SDLK_BUILD_EXAMPLE OFF)
 
 # list of options
 option(BUILD_SHARED_LIBS "Build rcli as a shared library" ON)
 option(SDLK_LIB_BUILD "Build sdlk lib" ON)
-option(SDLK_LIB_INSTALL "Install sdlk lib" ${SDLK_IS_MAIN_PROJECT})
+option(SDLK_LIB_INSTALL "Install sdlk lib" OFF)
 
 # configure build type
 if(NOT CMAKE_BUILD_TYPE)
