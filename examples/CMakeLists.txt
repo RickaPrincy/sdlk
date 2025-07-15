@@ -9,4 +9,4 @@ target_link_libraries(example PUBLIC ${SDLK_LIB_NAME})
 set_target_properties(example PROPERTIES RUNTIME_OUTPUT_DIRECTORY
                                          "${CMAKE_BINARY_DIR}/bin")
 
-file(COPY ${CMAKE_SOURCE_DIR}/examples/assets DESTINATION ${CMAKE_BINARY_DIR}/bin)
+file(COPY ${SDLK_SOURCE_DIR}/examples/assets DESTINATION ${CMAKE_BINARY_DIR}/bin)

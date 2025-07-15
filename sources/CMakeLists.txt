@@ -1,5 +1,3 @@
-project(${SDLK_LIB_NAME} VERSION ${SDLK_LIB_VERSION} LANGUAGES CXX)
-
 set(LIB_SOURCES 
   core/events/event_listener.cpp 
   core/events/observer.cpp 
@@ -35,6 +33,7 @@ target_include_directories(
 
 target_include_directories(
   ${SDLK_LIB_NAME} PUBLIC $<BUILD_INTERFACE:${SDLK_SOURCE_DIR}/external/glm>)
+
 target_include_directories(
   ${SDLK_LIB_NAME} PUBLIC $<BUILD_INTERFACE:${SDLK_SOURCE_DIR}/external/earcut/include>)
 

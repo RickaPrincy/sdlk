@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.18)
 
-project(sdlk_tools VERSION 0.0.3)
+project(sdlk_tools VERSION 0.0.4)
 
 # c++ 17 by default
 set(CMAKE_CXX_STANDARD 17)
@@ -14,32 +14,21 @@ find_package(SDL2_image REQUIRED)
 find_package(Freetype REQUIRED)
 
 # Download git submodule
-set(GIT_SUBMODULES
-  "external/glm"
-  "external/earcut"
+message(STATUS "Updating all submodules recursively...")
+execute_process(
+  COMMAND git submodule update --init --recursive
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  RESULT_VARIABLE res
+  OUTPUT_VARIABLE out
+  ERROR_VARIABLE err
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+  ERROR_STRIP_TRAILING_WHITESPACE
 )
-
-foreach(submodule IN LISTS GIT_SUBMODULES)
-  if(NOT EXISTS "${CMAKE_SOURCE_DIR}/${submodule}/.git")
-    message(STATUS "Init ${submodule} ...")
-    execute_process(
-      COMMAND git submodule update --init --recursive ${submodule}
-      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-      RESULT_VARIABLE res
-      OUTPUT_VARIABLE out
-      ERROR_VARIABLE err
-      OUTPUT_STRIP_TRAILING_WHITESPACE
-      ERROR_STRIP_TRAILING_WHITESPACE
-    )
-    if(NOT res EQUAL 0)
-      message(WARNING "Failed to init submodule ${submodule} : ${err}")
-    else()
-      message(STATUS "Submodule ${submodule} updated.")
-    endif()
-  else()
-    message(STATUS "Submodule ${submodule} already initialized, skipping.")
-  endif()
-endforeach()
+if(NOT res EQUAL 0)
+  message(WARNING "Recursive submodule update failed: ${err}")
+else()
+  message(STATUS "All submodules updated recursively.")
+endif()
 
 set(SDLK_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(SDLK_IS_MAIN_PROJECT OFF)
@@ -49,15 +38,14 @@ endif()
 
 # target names
 set(SDLK_LIB_NAME sdlk)
-set(SDLK_LIB_VERSION 0.0.3)
-set(SDLK_LIB_VERSION_MAJOR 0)
+set(SDLK_LIB_VERSION ${PROJECT_VERSION})
+set(SDLK_LIB_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
 set(SDLK_VERSION ${PROJECT_VERSION})
 set(SDLK_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
-set(SDLK_BUILD_EXAMPLE ON)
+set(SDLK_BUILD_EXAMPLE ${SDLK_IS_MAIN_PROJECT})
 
 # list of options
-option(BUILD_SHARED_LIBS "Build rcli as a shared library"
-       ${SDLK_IS_MAIN_PROJECT})
+option(BUILD_SHARED_LIBS "Build rcli as a shared library" ON)
 option(SDLK_LIB_BUILD "Build sdlk lib" ON)
 option(SDLK_LIB_INSTALL "Install sdlk lib" ${SDLK_IS_MAIN_PROJECT})
 
@@ -95,22 +83,6 @@ add_subdirectory(sources)
 
 if(SDLK_BUILD_EXAMPLE)
   add_subdirectory(examples)
-endif()
-
-# clang-format configuration
-find_program(CLANG_FORMAT_EXECUTABLE NAMES clang-format)
-if(CLANG_FORMAT_EXECUTABLE)
-  file(GLOB_RECURSE ALL_SOURCE_FILES "${SDLK_SOURCE_DIR}/sources/*.hpp"
-       "${SDLK_SOURCE_DIR}/include/sdlk/*.hpp"
-       "${SDLK_SOURCE_DIR}/examples/*.cpp")
-  add_custom_target(
-    clang-format
-    COMMAND ${CLANG_FORMAT_EXECUTABLE} -i -style=file ${ALL_SOURCE_FILES}
-    COMMENT "Running clang-format")
-else()
-  message(
-    WARNING "clang-format not found. Clang-format target will not be available."
-  )
 endif()
 
 # CPack configuration
