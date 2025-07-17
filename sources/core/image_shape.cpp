@@ -14,4 +14,12 @@ namespace sdlk
 			  std::move(quad::indices()))
 	{
 	}
+
+	image_shape::image_shape(std::string image_path, int width, int height)
+		: image_shape(std::move(image_path),
+			  width,
+			  height,
+			  std::move(quad::make(std::move(width), std::move(height))))
+	{
+	}
 }  // namespace sdlk

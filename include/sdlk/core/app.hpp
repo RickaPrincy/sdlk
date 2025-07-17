@@ -56,7 +56,7 @@ namespace sdlk
 			Uint32 sdl_init_flags = SDL_INIT_EVERYTHING);
 
 		auto run(int argc, char **argv) -> int;
-		auto append_child(renderable *child) -> void;
+		auto add_renderable(renderable *child) -> void;
 
 		[[nodiscard]] auto get_camera() -> camera *;
 

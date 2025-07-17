@@ -70,6 +70,7 @@ namespace sdlk
 				this->m_camera.load_uniforms(&this->m_shader_program);
 				for (const auto &child : this->p_childs)
 				{
+					child->bind();
 					child->render(&this->m_shader_program);
 				}
 				SDL_GL_SwapWindow(this->p_window);
@@ -161,7 +162,7 @@ namespace sdlk
 		this->_frame_start = SDL_GetTicks();
 	}
 
-	auto app::append_child(renderable *child) -> void
+	auto app::add_renderable(renderable *child) -> void
 	{
 		this->p_childs.push_back(child);
 	}

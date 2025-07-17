@@ -29,11 +29,14 @@ namespace sdlk
 
 	auto shape::bind() -> void const
 	{
+		renderable::bind();
 		glBindVertexArray(this->m_vao);
 	}
 
 	auto shape::render(GLuint *program) -> void
 	{
+		renderable::render(program);
+
 		if (!this->m_indices_count)
 		{
 			return;

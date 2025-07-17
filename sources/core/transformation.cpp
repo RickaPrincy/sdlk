@@ -1,5 +1,6 @@
 #include <SDL2/SDL_video.h>
 
+#include <glm/gtc/type_ptr.hpp>
 #include <sdlk/core/app.hpp>
 #include <sdlk/core/transformation.hpp>
 

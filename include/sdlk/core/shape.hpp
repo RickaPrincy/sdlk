@@ -25,7 +25,7 @@ namespace sdlk
 		shape(polygon polygon, std::vector<uint32_t> indices, bool use_texture = false);
 
 	public:
-		virtual auto bind() -> void const;
+		virtual auto bind() -> void const override;
 
 		virtual auto render(GLuint *program) -> void override;
 
@@ -92,10 +92,8 @@ namespace sdlk
 	class image_shape : public textured_shape
 	{
 	public:
-		image_shape(std::string path,
-			int width,
-			int height,
-			std::vector<point> uv = std::move(quad::uv()));
+		image_shape(std::string path, int width, int height);
+		image_shape(std::string path, int width, int height, std::vector<point> uv);
 
 		virtual ~image_shape() = default;
 	};

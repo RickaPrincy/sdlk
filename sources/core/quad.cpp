@@ -13,9 +13,4 @@ namespace sdlk::quad
 	{
 		return { 0, 1, 2, 2, 3, 0 };
 	}
-
-	auto uv() -> std::vector<point>
-	{
-		return { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
-	}
 }  // namespace sdlk::quad

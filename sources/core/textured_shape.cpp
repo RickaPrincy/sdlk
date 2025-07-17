@@ -2,6 +2,7 @@
 #include <mapbox/earcut.hpp>
 #include <memory>
 #include <sdlk/core/app.hpp>
+#include <sdlk/core/converter.hpp>
 #include <sdlk/core/quad.hpp>
 #include <sdlk/core/shape.hpp>
 #include <stdexcept>
@@ -35,12 +36,14 @@ namespace sdlk
 		}
 
 		std::vector<float> vertices{};
+		auto ndc_uv = converter::pixel_uv_to_ndc(
+			uv, this->m_texture->get_width(), this->m_texture->get_height());
 		for (size_t i = 0; i < positions.size(); i++)
 		{
 			vertices.push_back(positions[i][0]);
 			vertices.push_back(positions[i][1]);
-			vertices.push_back(uv[i][0]);
-			vertices.push_back(uv[i][1]);
+			vertices.push_back(ndc_uv[i][0]);
+			vertices.push_back(ndc_uv[i][1]);
 		}
 
 		load_textured_vertices(&this->m_vao, &this->m_vbo, vertices);

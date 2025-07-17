@@ -3,6 +3,7 @@ set(LIB_SOURCES
   core/events/observer.cpp 
   core/glad.cpp 
   core/quad.cpp
+  core/renderable.cpp
   core/types.cpp
   core/transformation.cpp
   core/opengl_utils.cpp

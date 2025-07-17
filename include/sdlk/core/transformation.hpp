@@ -3,9 +3,8 @@
 #include <SDL2/SDL_video.h>
 #include <glad/glad.h>
 
-#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include <glm/vec2.hpp>
 #include <string>
 
 namespace sdlk
