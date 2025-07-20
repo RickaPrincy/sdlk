@@ -6,7 +6,7 @@ namespace sdlk
 {
 	camera::camera(int width, int height)
 	{
-		update(std::move(width), std::move(height));
+		this->update(std::move(width), std::move(height));
 	}
 
 	auto camera::get_projection() const -> const glm::mat4&
@@ -33,7 +33,7 @@ namespace sdlk
 
 	auto camera::set_zoom(float zoom) -> void
 	{
-		m_zoom = glm::max(zoom, 0.01f);	 // Avoid negative/zero zoom
+		this->m_zoom = glm::max(zoom, 0.01f);  // Avoid negative/zero zoom
 		this->update(app::get_width(), app::get_height());
 	}
 
@@ -45,7 +45,7 @@ namespace sdlk
 
 	auto camera::update(int width, int height) -> void
 	{
-		recalculate(std::move(width), std::move(height));
+		this->recalculate(std::move(width), std::move(height));
 	}
 
 	auto camera::recalculate(int width, int height) -> void

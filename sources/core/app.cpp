@@ -57,7 +57,7 @@ namespace sdlk
 								glViewport(0, 0, event.window.data1, event.window.data2);
 							}
 
-							this->p_event_listener->notify_event(event);
+							this->m_event_listener->notify_event(event);
 							break;
 					}
 				}
@@ -68,7 +68,7 @@ namespace sdlk
 				glClear(GL_COLOR_BUFFER_BIT);
 
 				this->m_camera.load_uniforms(&this->m_shader_program);
-				for (const auto &child : this->p_childs)
+				for (const auto &child : this->m_childs)
 				{
 					child->bind();
 					child->render(&this->m_shader_program);
@@ -124,11 +124,11 @@ namespace sdlk
 		app::s_window_width = std::move(width);
 		app::s_window_height = std::move(height);
 
-		this->m_title = std::move(window_title);
 		this->m_opengl_context = SDL_GL_CreateContext(this->p_window);
 
 		if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress))
 		{
+			FT_Done_FreeType(app::s_ft_library);
 			SDL_DestroyWindow(this->p_window);
 			SDL_GL_DeleteContext(this->m_opengl_context);
 			throw std::runtime_error("Failed to initialize GLAD");
@@ -145,7 +145,7 @@ namespace sdlk
 		this->m_shader_program = create_shader_program(
 			std::move(this->_options.vertex_source), std::move(this->_options.fragment_source));
 
-		this->p_event_listener = new event_listener();	// TODO: RAII
+		this->m_event_listener = std::make_shared<event_listener>();
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
@@ -164,7 +164,7 @@ namespace sdlk
 
 	auto app::add_renderable(renderable *child) -> void
 	{
-		this->p_childs.push_back(child);
+		this->m_childs.push_back(child);
 	}
 
 	auto app::get_ft_library() -> FT_Library &
@@ -187,9 +187,9 @@ namespace sdlk
 		return &this->m_camera;
 	}
 
-	auto app::get_event_listener() -> event_listener *const
+	auto app::get_event_listener() -> std::shared_ptr<event_listener> const
 	{
-		return this->p_event_listener;
+		return this->m_event_listener;
 	}
 
 	app::~app()
@@ -207,8 +207,6 @@ namespace sdlk
 		SDL_GL_DeleteContext(this->m_opengl_context);
 
 		FT_Done_FreeType(app::s_ft_library);
-
-		delete this->p_event_listener;
 
 		std::cout << "clean app\n";
 	}

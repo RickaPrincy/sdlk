@@ -17,7 +17,7 @@ auto main(int argc, char** argv) -> int
 {
 	app myapp("Hello World", WINDOW_WIDTH, WINDOW_HEIGHT);
 
-	auto image = texture::from_file("./assets/images/image.png");
+	auto image = texture::from_file("./resources/assets/images/image.png");
 	textured_shape shape(
 		std::move(polygon(quad::make(image->get_width() / 2, image->get_height() / 2))),
 		quad::make(image->get_width() / 2, image->get_height() / 2),
@@ -40,6 +40,15 @@ auto main(int argc, char** argv) -> int
 
 	myapp.add_renderable(&shape);
 	myapp.add_renderable(&shape2);
+
+	myapp.add_event_listener(
+		event_type::KEY_DOWN, [&](const SDL_Event& event) { shape.translate({ 50, 50 }); });
+
+	myapp.add_event_listener(event_type::MOUSE_BUTTON_DOWN,
+		[&](const SDL_Event& event) { shape.translate({ 100, 100 }); });
+
+	myapp.add_event_listener(
+		event_type::MOUSE_BUTTON_UP, [&](const SDL_Event& event) { shape.scale(1.1f); });
 
 	return myapp.run(argc, argv);
 }

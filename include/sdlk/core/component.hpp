@@ -11,9 +11,9 @@ namespace sdlk
 	class component : public observer, public renderable
 	{
 	protected:
-		renderable *m_renderable;
+		renderable *p_renderable = nullptr;
 		component *p_parent = nullptr;
-		std::vector<component *> p_childs{};
+		std::vector<component *> m_childs{};
 
 		auto append_child(component *child) -> void;
 
@@ -24,11 +24,11 @@ namespace sdlk
 		virtual auto bind() -> void const override;
 
 		virtual auto translate(glm::vec2 pixel_offset) -> void override;
-
-		virtual auto scale(glm::vec2 pixel_scale) -> void override;
-
+		virtual auto scale(float scale) -> void override;
 		virtual auto rotate(float angle_radians) -> void override;
-
+		virtual auto add_translate(glm::vec2 pixel_offset) -> void override;
+		virtual auto add_scale(float scale) -> void override;
+		virtual auto add_rotation(float angle_radians) -> void override;
 		virtual auto set_transformation_model(glm::mat4 transformation_model) -> void override;
 
 		virtual auto render(GLuint *program) -> void override;

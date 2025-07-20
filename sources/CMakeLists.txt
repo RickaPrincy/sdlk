@@ -28,6 +28,8 @@ else()
   add_library(${SDLK_LIB_NAME} STATIC ${LIB_SOURCES})
 endif()
 
+file(COPY core/shaders DESTINATION ${CMAKE_BINARY_DIR}/bin/resources)
+
 # Set include directories for the library
 target_include_directories(
   ${SDLK_LIB_NAME} PUBLIC $<BUILD_INTERFACE:${SDLK_SOURCE_DIR}/include>)
@@ -81,10 +83,20 @@ if(SDLK_LIB_INSTALL)
     FILE ${SDLK_LIB_NAME}Targets.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${SDLK_LIB_NAME})
 
+  # Configure the Config file
+  configure_package_config_file(
+    ${SDLK_SOURCE_DIR}/cmake/${SDLK_LIB_NAME}Config.cmake.in
+    ${CMAKE_BINARY_DIR}/cmake/${SDLK_LIB_NAME}Config.cmake
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${SDLK_LIB_NAME}
+    PATH_VARS SDLK_SOURCE_DIR
+  )
+
   configure_file(${SDLK_SOURCE_DIR}/cmake/${SDLK_LIB_NAME}Config.cmake.in
                  ${CMAKE_BINARY_DIR}/cmake/${SDLK_LIB_NAME}Config.cmake @ONLY)
+
   # Install the Config, ConfigVersion, and custom Find module files
   install(FILES ${CMAKE_BINARY_DIR}/cmake/${SDLK_LIB_NAME}Config.cmake
                 ${CMAKE_BINARY_DIR}/cmake/${SDLK_LIB_NAME}Version.cmake
           DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${SDLK_LIB_NAME})
+
 endif()

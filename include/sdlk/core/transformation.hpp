@@ -12,14 +12,24 @@ namespace sdlk
 	class transformation
 	{
 	private:
+		float m_scale{ 1.0f };
+		float m_rotation_radians{ 0.0f };
+		glm::vec3 m_translation{ glm::vec3(0.0f) };
 		glm::mat4 m_model{ glm::mat4(1.0f) };
+
+		auto compose() -> void;
 
 	public:
 		transformation() = default;
 
 		auto translate(glm::vec2 offset) -> void;
-		auto scale(glm::vec2 pixel_scale) -> void;
+		auto scale(float scale) -> void;
 		auto rotate(float angle_radians) -> void;
+
+		auto add_translate(glm::vec2 offset) -> void;
+		auto add_scale(float scale) -> void;
+		auto add_rotation(float angle_radians) -> void;
+
 		auto set_model(glm::mat4 model) -> void;
 
 		auto load_uniforms(GLuint *shader_program, std::string model_name = "model") const

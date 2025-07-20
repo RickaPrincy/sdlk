@@ -6,15 +6,55 @@
 
 namespace sdlk
 {
-	auto transformation::translate(glm::vec2 pixel_offset) -> void
+	auto transformation::compose() -> void
 	{
-		this->m_model = glm::translate(this->m_model, glm::vec3(pixel_offset, 0.0));
+		glm::mat4 T = glm::translate(glm::mat4(1.0f), m_translation);
+		glm::mat4 R = glm::rotate(glm::mat4(1.0f), m_rotation_radians, glm::vec3(0, 0, 1));
+		glm::mat4 S = glm::scale(glm::mat4(1.0f), glm::vec3(m_scale));
+
+		m_model = T * R * S;
 	}
 
-	auto transformation::rotate(float angle_radians) -> void
+	void transformation::translate(glm::vec2 pos)
 	{
-		this->m_model =
-			glm::rotate(this->m_model, std::move(angle_radians), glm::vec3(0.0f, 0.0f, 1.0f));
+		this->m_translation = std::move(glm::vec3(std::move(pos), 0.0f));
+		this->compose();
+	}
+
+	void transformation::rotate(float angle_radians)
+	{
+		this->m_rotation_radians = std::move(angle_radians);
+		this->compose();
+	}
+
+	void transformation::scale(float scale)
+	{
+		this->m_scale = std::move(scale);
+		this->compose();
+	}
+
+	void transformation::add_translate(glm::vec2 delta)
+	{
+		this->m_translation += std::move(glm::vec3(std::move(delta), 0.0f));
+		this->compose();
+	}
+
+	void transformation::add_rotation(float delta_angle)
+	{
+		this->m_rotation_radians += std::move(delta_angle);
+		this->compose();
+	}
+
+	void transformation::add_scale(float delta_scale)
+	{
+		this->m_scale += std::move(delta_scale);
+
+		if (m_scale < 0.01f)
+		{
+			this->m_scale = 0.01f;	// prevent negative or zero scale
+		}
+
+		this->compose();
 	}
 
 	auto transformation::set_model(glm::mat4 model) -> void
@@ -22,12 +62,7 @@ namespace sdlk
 		this->m_model = std::move(model);
 	}
 
-	auto transformation::scale(glm::vec2 pixel_scale) -> void
-	{
-		this->m_model = glm::scale(this->m_model, glm::vec3(pixel_scale, 1.0f));
-	}
-
-	auto transformation::load_uniforms(GLuint *shader_program, std::string model_name) const
+	auto transformation::load_uniforms(GLuint* shader_program, std::string model_name) const
 		-> void const
 	{
 		auto loc_model = glGetUniformLocation(*shader_program, model_name.c_str());

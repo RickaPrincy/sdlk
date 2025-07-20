@@ -6,14 +6,15 @@ namespace sdlk
 		event_callback callback,
 		bool stop_propagation)
 	{
-		if (p_event_listener)
+		if (this->m_event_listener)
 		{
-			p_event_listener->m_event_listeners[event_type].push_back(
+			this->m_event_listener->m_event_listeners[event_type].push_back(
 				{ std::move(callback), stop_propagation });
 		}
 	}
 
-	observer::observer(event_listener *event_listener) : p_event_listener(event_listener)
+	observer::observer(std::shared_ptr<event_listener> event_listener)
+		: m_event_listener(event_listener)
 	{
 	}
 }  // namespace sdlk

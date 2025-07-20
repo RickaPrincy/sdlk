@@ -37,16 +37,12 @@ namespace sdlk
 		static unsigned int s_window_width, s_window_height;
 
 	protected:
-		GLuint m_shader_program{};
-		std::string m_title{};
 		camera m_camera;
-
-		std::vector<renderable *> p_childs{};
+		GLuint m_shader_program{};
 
 		SDL_Window *p_window = nullptr;
+		std::vector<renderable *> m_childs{};
 		SDL_GLContext m_opengl_context = nullptr;
-
-		[[nodiscard]] auto get_event_listener() -> event_listener *const;
 
 	public:
 		app(std::string window_title,
@@ -55,6 +51,7 @@ namespace sdlk
 			app_options options = {},
 			Uint32 sdl_init_flags = SDL_INIT_EVERYTHING);
 
+		virtual auto limit_fps() -> void;
 		auto run(int argc, char **argv) -> int;
 		auto add_renderable(renderable *child) -> void;
 
@@ -63,11 +60,9 @@ namespace sdlk
 		[[nodiscard]] static auto get_width() -> int const;
 		[[nodiscard]] static auto get_height() -> int const;
 		[[nodiscard]] static auto get_ft_library() -> FT_Library &;
-
-		virtual auto limit_fps() -> void;
+		[[nodiscard]] auto get_event_listener() -> std::shared_ptr<event_listener> const;
 
 		virtual ~app();
-		friend class component;
 	};
 
 };	// namespace sdlk
