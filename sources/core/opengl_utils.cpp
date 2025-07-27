@@ -46,4 +46,16 @@ namespace sdlk
 		return program;
 	}
 
+	[[nodiscard]] auto get_uniform_loc(GLuint *program, std::string uniform_name) -> GLuint
+	{
+		auto loc = glGetUniformLocation(*program, uniform_name.c_str());
+
+		if (loc == -1)
+		{
+			throw std::runtime_error("Cannot get the location of " + uniform_name);
+		}
+
+		return loc;
+	}
+
 }  // namespace sdlk

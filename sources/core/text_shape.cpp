@@ -1,17 +1,16 @@
-#include <iostream>
 #include <sdlk/core/converter.hpp>
+#include <sdlk/core/opengl_utils.hpp>
 #include <sdlk/core/quad.hpp>
 #include <sdlk/core/shape.hpp>
 
 namespace sdlk
 {
 	text_shape::text_shape(std::string text, std::shared_ptr<freetype_font> font, SDL_Color color)
-		: shape(polygon(), {}, true),
-		  m_text(text),
-		  m_font(std::move(font)),
-		  m_color(color),
-		  _ndc_color(std::move(converter::sdl_color_to_ndc(std::move(color))))
+		: shape(polygon(), {}, { false, true, true }),
+		  m_text(std::move(text)),
+		  m_font(std::move(font))
 	{
+		this->set_color(color);
 		glBindVertexArray(this->m_vao);
 		glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo);
 
@@ -41,51 +40,26 @@ namespace sdlk
 		m_text = std::move(text);
 	}
 
-	auto text_shape::set_color(SDL_Color color) -> void
-	{
-		this->m_color = color;
-		this->_ndc_color = std::move(converter::sdl_color_to_ndc(this->m_color));
-	}
-
 	auto text_shape::get_text() -> std::string
 	{
 		return m_text;
 	}
 
-	auto text_shape::get_color() -> SDL_Color
-	{
-		return m_color;
-	}
-
 	auto text_shape::render(GLuint *program) -> void
 	{
-		auto text_color_loc = glGetUniformLocation(*program, "text_color");
-		if (text_color_loc == -1)
-		{
-			std::cerr << "Warning: uniform text_color not found or optimized out.\n";
-		}
-		glUniform4fv(text_color_loc, 1, this->_ndc_color.data());
+		auto use_vec_color_loc = get_uniform_loc(program, "uUseVecColor");
+		glUniform1i(use_vec_color_loc, 0);
 
-		auto use_text_rendering_loc = glGetUniformLocation(*program, "u_useTextRendering");
-		if (use_text_rendering_loc == -1)
-		{
-			std::cerr << "Warning: uniform u_useTextRendering not found or optimized out.\n";
-		}
+		auto u_color_loc = get_uniform_loc(program, "uColor");
+		glUniform4fv(u_color_loc, 1, this->m_ndc_color.data());
+
+		auto use_text_rendering_loc = get_uniform_loc(program, "uUseTextRendering");
 		glUniform1i(use_text_rendering_loc, 1);
 
-		auto use_texture_loc = glGetUniformLocation(*program, "u_useTexture");
-		if (use_texture_loc == -1)
-		{
-			std::cerr << "Warning: uniform u_useTexture not found or optimized out.\n";
-		}
+		auto use_texture_loc = get_uniform_loc(program, "uUseTexture");
 		glUniform1i(use_texture_loc, 1);
 
-		auto u_texture_loc = glGetUniformLocation(*program, "u_texture");
-		if (u_texture_loc == -1)
-		{
-			std::cerr << "Warning: u_texture not found or optimized out\n";
-		}
-
+		auto u_texture_loc = get_uniform_loc(program, "uTexture");
 		glUniform1i(u_texture_loc, 0);	// TODO: handle texture unit$
 
 		std::string::const_iterator c;

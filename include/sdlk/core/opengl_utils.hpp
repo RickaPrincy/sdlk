@@ -6,6 +6,7 @@
 
 namespace sdlk
 {
+	[[nodiscard]] auto get_uniform_loc(GLuint *program, std::string uniform_name) -> GLuint;
 	[[nodiscard]] auto compile_shader(GLenum type, std::string source) -> GLuint;
 	[[nodiscard]] auto create_shader_program(std::string vertex_source, std::string fragment_source)
 		-> GLuint;

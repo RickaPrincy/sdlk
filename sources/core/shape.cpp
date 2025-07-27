@@ -4,13 +4,14 @@
 #include <mapbox/earcut.hpp>
 #include <sdlk/core/app.hpp>
 #include <sdlk/core/converter.hpp>
+#include <sdlk/core/opengl_utils.hpp>
 #include <sdlk/core/shape.hpp>
 
 namespace sdlk
 {
-	shape::shape(polygon polygon, std::vector<uint32_t> indices, bool use_texture)
+	shape::shape(polygon polygon, std::vector<uint32_t> indices, shape_config config)
 		: m_polygon(polygon),
-		  m_use_texture(std::move(use_texture))
+		  m_config(std::move(config))
 	{
 		this->m_indices_count = static_cast<unsigned int>(indices.size());
 
@@ -33,6 +34,12 @@ namespace sdlk
 		glBindVertexArray(this->m_vao);
 	}
 
+	auto shape::set_color(SDL_Color color) -> void
+	{
+		this->m_color = color;
+		this->m_ndc_color = converter::sdl_color_to_ndc(std::move(color));
+	}
+
 	auto shape::render(GLuint *program) -> void
 	{
 		renderable::render(program);
@@ -42,14 +49,22 @@ namespace sdlk
 			return;
 		}
 
-		auto use_texture_loc = glGetUniformLocation(*program, "u_useTexture");
-		if (use_texture_loc == -1)
-		{
-			std::cerr << "Warning: uniform u_useTexture not found or optimized out.\n";
-		}
+		auto use_vec_color_loc = get_uniform_loc(program, "uUseVecColor");
+		auto use_texture_loc = get_uniform_loc(program, "uUseTexture");
+		auto use_text_rendering_loc = get_uniform_loc(program, "uUseTextRendering");
+		auto u_color_loc = get_uniform_loc(program, "uColor");
 
-		glUniform1i(use_texture_loc, this->m_use_texture ? 1 : 0);
+		glUniform1i(use_vec_color_loc, this->m_config.use_vec_color ? 1 : 0);
+		glUniform1i(use_texture_loc, this->m_config.use_texture ? 1 : 0);
+		glUniform1i(use_text_rendering_loc, this->m_config.use_text_rendering ? 1 : 0);
+		glUniform4fv(u_color_loc, 1, this->m_ndc_color.data());
+
 		glDrawElements(GL_TRIANGLES, this->m_indices_count, GL_UNSIGNED_INT, 0);
+	}
+
+	auto shape::get_color() -> SDL_Color
+	{
+		return this->m_color;
 	}
 
 	shape::~shape()

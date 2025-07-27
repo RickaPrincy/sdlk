@@ -1,8 +1,8 @@
-#include <iostream>
 #include <mapbox/earcut.hpp>
 #include <memory>
 #include <sdlk/core/app.hpp>
 #include <sdlk/core/converter.hpp>
+#include <sdlk/core/opengl_utils.hpp>
 #include <sdlk/core/quad.hpp>
 #include <sdlk/core/shape.hpp>
 #include <stdexcept>
@@ -26,7 +26,7 @@ namespace sdlk
 		std::vector<point> uv,
 		std::shared_ptr<texture> texture,
 		std::vector<uint32_t> indices)
-		: shape(std::move(geometry), std::move(indices), true),
+		: shape(std::move(geometry), std::move(indices), { false, true, false }),
 		  m_texture(std::move(texture))
 	{
 		auto positions = this->m_polygon.flattened();
@@ -57,20 +57,9 @@ namespace sdlk
 
 	auto textured_shape::render(GLuint *program) -> void
 	{
-		auto use_text_rendering_loc = glGetUniformLocation(*program, "u_useTextRendering");
-		if (use_text_rendering_loc == -1)
-		{
-			std::cerr << "Warning: uniform u_useTextRendering not found or optimized out.\n";
-		}
-		glUniform1i(use_text_rendering_loc, 0);
-
-		auto u_texture_loc = glGetUniformLocation(*program, "u_texture");
-		if (u_texture_loc == -1)
-		{
-			std::cerr << "Warning: u_texture not found or optimized out\n";
-		}
-
+		auto u_texture_loc = get_uniform_loc(program, "uTexture");
 		glUniform1i(u_texture_loc, 0);	// TODO: handle texture unit
+
 		shape::render(program);
 	}
 

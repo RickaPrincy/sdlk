@@ -25,6 +25,10 @@ namespace sdlk
 		virtual auto add_rotation(float angle_radians) -> void;
 		virtual auto set_transformation_model(glm::mat4 transformation_model) -> void;
 
+		[[nodiscard]] virtual auto get_scale() -> float;
+		[[nodiscard]] virtual auto get_rotation() -> float;
+		[[nodiscard]] virtual auto get_translation() -> glm::vec2;
+
 		renderable() = default;
 		virtual ~renderable() = default;
 	};

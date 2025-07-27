@@ -3,6 +3,7 @@
 #include <SDL2/SDL_pixels.h>
 #include <glad/glad.h>
 
+#include <cstdint>
 #include <memory>
 #include <sdlk/core/freetype_font.hpp>
 #include <sdlk/core/quad.hpp>
@@ -13,18 +14,32 @@
 
 namespace sdlk
 {
+
+	struct shape_config
+	{
+		bool use_vec_color = false;
+		bool use_texture = false;
+		bool use_text_rendering = false;
+	};
+
 	class shape : public renderable
 	{
 	protected:
+		std::array<float, 4> m_ndc_color{};
+		SDL_Color m_color{};
 		polygon m_polygon{};
-		bool m_use_texture{ false };
+		shape_config m_config{};
 		unsigned int m_indices_count{};
 
 		GLuint m_vao{}, m_vbo{}, m_ebo{};
 
-		shape(polygon polygon, std::vector<uint32_t> indices, bool use_texture = false);
+		shape(polygon polygon, std::vector<uint32_t> indices, shape_config config = {});
 
 	public:
+		auto set_color(SDL_Color color) -> void;
+
+		[[nodiscard]] auto get_color() -> SDL_Color;
+
 		virtual auto bind() -> void const override;
 
 		virtual auto render(GLuint *program) -> void override;
@@ -34,21 +49,13 @@ namespace sdlk
 
 	class text_shape : public shape
 	{
-	private:
-		std::array<float, 4> _ndc_color{};
-
 	protected:
 		std::string m_text{};
-		SDL_Color m_color{};
-
 		std::shared_ptr<freetype_font> m_font = nullptr;
 
 	public:
 		auto set_text(std::string text) -> void;
-		auto set_color(SDL_Color color) -> void;
-
 		[[nodiscard]] auto get_text() -> std::string;
-		[[nodiscard]] auto get_color() -> SDL_Color;
 
 		virtual auto bind() -> void const override;
 		virtual auto render(GLuint *program) -> void override;
@@ -60,13 +67,16 @@ namespace sdlk
 	class colored_shape : public shape
 	{
 	public:
+		colored_shape(polygon geometry, SDL_Color color, bool use_vec_color = false);
+		colored_shape(polygon geometry,
+			SDL_Color color,
+			std::vector<uint32_t> indices,
+			bool use_vec_color = false);
+
 		colored_shape(polygon geometry, std::vector<SDL_Color> color);
 		colored_shape(polygon geometry,
 			std::vector<SDL_Color> colors,
 			std::vector<uint32_t> indices);
-
-		colored_shape(polygon geometry, SDL_Color color);
-		colored_shape(polygon geometry, SDL_Color color, std::vector<uint32_t> indices);
 
 		virtual ~colored_shape() = default;
 	};

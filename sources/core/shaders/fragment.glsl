@@ -4,20 +4,19 @@ out vec4 FragColor;
 in vec2 TexCoord;
 in vec4 OutColor;
 
-uniform sampler2D u_texture;
-uniform bool u_useTextRendering;
-uniform bool u_useTexture;
-uniform vec4 text_color;
+uniform sampler2D uTexture;
+uniform bool uUseTexture;
+uniform bool uUseTextRendering;
 
 void main()
 {
-    if (u_useTexture)
+    if (uUseTexture)
     {
-        if (u_useTextRendering) {
-            vec4 sampled = vec4(1.0, 1.0, 1.0, texture(u_texture, TexCoord).r);
-            FragColor = text_color * sampled;
+        if (uUseTextRendering) {
+            vec4 sampled = vec4(1.0, 1.0, 1.0, texture(uTexture, TexCoord).r);
+            FragColor = OutColor * sampled;
         } else {
-            FragColor = texture(u_texture, TexCoord);
+            FragColor = texture(uTexture, TexCoord);
         }
     } else {
         FragColor = OutColor;

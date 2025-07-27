@@ -35,8 +35,8 @@ namespace sdlk
 		auto update(int width, int height) -> void;	 // Must be called after any change
 
 		auto load_uniforms(GLuint* shader_program,
-			std::string view_name = "view",
-			std::string proj_name = "projection") const -> void const;
+			std::string view_name = "uView",
+			std::string proj_name = "uProjection") const -> void const;
 
 		[[nodiscard]] auto get_projection() const -> const glm::mat4&;
 		[[nodiscard]] auto get_view() const -> const glm::mat4&;

@@ -1,6 +1,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <sdlk/core/app.hpp>
 #include <sdlk/core/camera.hpp>
+#include <sdlk/core/opengl_utils.hpp>
 
 namespace sdlk
 {
@@ -71,17 +72,10 @@ namespace sdlk
 		std::string view_name,
 		std::string proj_name) const -> void const
 	{
-		auto loc_view = glGetUniformLocation(*shader_program, view_name.c_str());
-		auto loc_proj = glGetUniformLocation(*shader_program, proj_name.c_str());
+		auto u_view_loc = get_uniform_loc(shader_program, view_name);
+		glUniformMatrix4fv(u_view_loc, 1, GL_FALSE, glm::value_ptr(this->m_view));
 
-		if (loc_view != -1)
-		{
-			glUniformMatrix4fv(loc_view, 1, GL_FALSE, glm::value_ptr(this->m_view));
-		}
-
-		if (loc_proj != -1)
-		{
-			glUniformMatrix4fv(loc_proj, 1, GL_FALSE, glm::value_ptr(this->m_projection));
-		}
+		auto u_projection_loc = get_uniform_loc(shader_program, proj_name);
+		glUniformMatrix4fv(u_projection_loc, 1, GL_FALSE, glm::value_ptr(this->m_projection));
 	}
 }  // namespace sdlk

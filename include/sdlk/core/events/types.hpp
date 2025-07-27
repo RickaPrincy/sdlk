@@ -10,14 +10,14 @@ namespace sdlk
 {
 	enum class event_type : std::uint8_t
 	{
-		KEY_DOWN,
-		KEY_UP,
-		WINDOW_EVENT,
-		MOUSE_MOTION,
-		MOUSE_WHEEL,
-		MOUSE_BUTTON_DOWN,
-		MOUSE_BUTTON_UP,
-		NOT_SUPPORTED,
+		key_down,
+		key_up,
+		window_event,
+		mouse_motion,
+		mouse_wheel,
+		mouse_button_down,
+		mouse_button_up,
+		all,
 	};
 
 	using event_callback = std::function<void(const SDL_Event &event)>;

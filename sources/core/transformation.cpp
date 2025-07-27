@@ -2,6 +2,7 @@
 
 #include <glm/gtc/type_ptr.hpp>
 #include <sdlk/core/app.hpp>
+#include <sdlk/core/opengl_utils.hpp>
 #include <sdlk/core/transformation.hpp>
 
 namespace sdlk
@@ -65,11 +66,22 @@ namespace sdlk
 	auto transformation::load_uniforms(GLuint* shader_program, std::string model_name) const
 		-> void const
 	{
-		auto loc_model = glGetUniformLocation(*shader_program, model_name.c_str());
+		auto u_model_loc = get_uniform_loc(shader_program, model_name);
+		glUniformMatrix4fv(u_model_loc, 1, GL_FALSE, glm::value_ptr(this->m_model));
+	}
 
-		if (loc_model != -1)
-		{
-			glUniformMatrix4fv(loc_model, 1, GL_FALSE, glm::value_ptr(this->m_model));
-		}
+	auto transformation::get_scale() -> float
+	{
+		return this->m_scale;
+	}
+
+	auto transformation::get_rotation() -> float
+	{
+		return this->m_rotation_radians;
+	}
+
+	auto transformation::get_translation() -> glm::vec2
+	{
+		return this->m_translation;
 	}
 }  // namespace sdlk

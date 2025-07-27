@@ -47,4 +47,19 @@ namespace sdlk
 		this->m_transformation.set_model(std::move(transformation_model));
 	}
 
+	auto renderable::get_scale() -> float
+	{
+		return this->m_transformation.get_scale();
+	}
+
+	auto renderable::get_rotation() -> float
+	{
+		return this->m_transformation.get_rotation();
+	}
+
+	auto renderable::get_translation() -> glm::vec2
+	{
+		return this->m_transformation.get_translation();
+	}
+
 }  // namespace sdlk

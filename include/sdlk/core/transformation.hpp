@@ -30,9 +30,13 @@ namespace sdlk
 		auto add_scale(float scale) -> void;
 		auto add_rotation(float angle_radians) -> void;
 
+		[[nodiscard]] virtual auto get_scale() -> float;
+		[[nodiscard]] virtual auto get_rotation() -> float;
+		[[nodiscard]] virtual auto get_translation() -> glm::vec2;
+
 		auto set_model(glm::mat4 model) -> void;
 
-		auto load_uniforms(GLuint *shader_program, std::string model_name = "model") const
+		auto load_uniforms(GLuint *shader_program, std::string model_name = "uModel") const
 			-> void const;
 	};
 }  // namespace sdlk
