@@ -4,3 +4,6 @@
 [submodule "external/earcut"]
 	path = external/earcut
 	url = https://github.com/mapbox/earcut.hpp
+[submodule "external/msdf-atlas-gen"]
+	path = external/msdf-atlas-gen
+	url = https://github.com/Chlumsky/msdf-atlas-gen
