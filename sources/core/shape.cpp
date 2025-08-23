@@ -1,6 +1,7 @@
 #include <glad/glad.h>
 
 #include <iostream>
+#include <cstdint>
 #include <mapbox/earcut.hpp>
 #include <sdlk/core/app.hpp>
 #include <sdlk/core/converter.hpp>

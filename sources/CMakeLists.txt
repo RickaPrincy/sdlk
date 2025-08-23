@@ -34,21 +34,20 @@ file(COPY core/shaders DESTINATION ${CMAKE_BINARY_DIR}/bin/resources)
 target_include_directories(
   ${SDLK_LIB_NAME} PUBLIC $<BUILD_INTERFACE:${SDLK_SOURCE_DIR}/include>)
 
-target_include_directories(
-  ${SDLK_LIB_NAME} PUBLIC $<BUILD_INTERFACE:${SDLK_SOURCE_DIR}/external/glm>)
-
-target_include_directories(
-  ${SDLK_LIB_NAME} PUBLIC $<BUILD_INTERFACE:${SDLK_SOURCE_DIR}/external/earcut/include>)
-
-target_include_directories(
-  ${SDLK_LIB_NAME} PUBLIC ${FREETYPE_INCLUDE_DIRS})
+target_include_directories(${SDLK_LIB_NAME} PRIVATE $<BUILD_INTERFACE:${EARCUT_HPP_INCLUDE_DIRS})
 
 # target_link
-target_link_libraries(
-  ${SDLK_LIB_NAME}
-  PUBLIC SDL2
-  PUBLIC SDL2_image
-  PUBLIC Freetype::Freetype)
+target_link_libraries(${SDLK_LIB_NAME}
+    PUBLIC
+    $<TARGET_NAME_IF_EXISTS:SDL2::SDL2main>
+    $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
+)
+
+target_link_libraries(${SDLK_LIB_NAME} PUBLIC glm::glm-header-only)
+
+target_link_libraries(${SDLK_LIB_NAME} PUBLIC Freetype::Freetype)
+
+target_link_libraries(${SDLK_LIB_NAME} PUBLIC $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>)
 
 # set properties
 set_target_properties(

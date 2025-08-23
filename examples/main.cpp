@@ -1,6 +1,5 @@
 #include <SDL2/SDL_events.h>
 
-#include <glm/trigonometric.hpp>
 #include <sdlk/core/app.hpp>
 #include <sdlk/core/component.hpp>
 #include <sdlk/core/events/types.hpp>
@@ -10,8 +9,8 @@
 
 using namespace sdlk;
 
-static const constexpr int WINDOW_WIDTH = 1000;
-static const constexpr int WINDOW_HEIGHT = 1000;
+static constexpr int WINDOW_WIDTH = 1000;
+static constexpr int WINDOW_HEIGHT = 1000;
 
 auto main(int argc, char** argv) -> int
 {
@@ -55,7 +54,7 @@ auto main(int argc, char** argv) -> int
 		[&](const SDL_Event& event) { shape.translate({ 100, 100 }); });
 
 	myapp.add_event_listener(
-		event_type::mouse_button_up, [&](const SDL_Event& event) { shape.scale(1.1f); });
+		event_type::mouse_button_up, [&](const SDL_Event&) { shape.scale(1.1f); });
 
 	return myapp.run(argc, argv);
 }

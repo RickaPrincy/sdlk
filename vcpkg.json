@@ -1,0 +1,11 @@
+{
+  "name" : "sdlk",
+  "version" : "0.0.5",
+  "dependencies" : [
+    "sdl2",
+    "glm",
+    "earcut-hpp",
+    "freetype",
+    "sdl2-image"
+  ]
+}
