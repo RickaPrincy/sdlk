@@ -1,3 +1,4 @@
+#include <cstdint>
 #include <mapbox/earcut.hpp>
 #include <memory>
 #include <sdlk/core/app.hpp>

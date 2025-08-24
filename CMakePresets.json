@@ -1,0 +1,45 @@
+{
+  "version": 2,
+  "configurePresets": [
+    {
+      "name": "vcpkg",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+      }
+    },
+    {
+      "name": "vcpkg-debug",
+      "inherits": "vcpkg",
+      "displayName": "Build with vcpkg (Debug)",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "SDLK_BUILD_EXAMPLE": "ON"
+      }
+    },
+    {
+      "name": "vcpkg-release",
+      "inherits": "vcpkg",
+      "displayName": "Build with vcpkg (Release)",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "SDLK_BUILD_EXAMPLE": "OFF"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "vcpkg-debug",
+      "configurePreset": "vcpkg-debug",
+      "displayName": "Build Debug",
+      "description": "Build project in Debug configuration"
+    },
+    {
+      "name": "vcpkg-release",
+      "configurePreset": "vcpkg-release",
+      "displayName": "Build Release",
+      "description": "Build project in Release configuration"
+    }
+  ]
+}

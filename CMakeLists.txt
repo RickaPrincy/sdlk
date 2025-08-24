@@ -8,27 +8,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # SDL2
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-find_package(SDL2 REQUIRED)
-find_package(SDL2_image REQUIRED)
 find_package(Freetype REQUIRED)
+find_package(glm CONFIG REQUIRED)
+find_package(SDL2 CONFIG REQUIRED)
+find_package(SDL2_image CONFIG REQUIRED)
+find_path(EARCUT_HPP_INCLUDE_DIRS "mapbox/earcut.hpp")
 
-# Download git submodule
-message(STATUS "Updating all submodules recursively...")
-execute_process(
-  COMMAND git submodule update --init --recursive
-  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-  RESULT_VARIABLE res
-  OUTPUT_VARIABLE out
-  ERROR_VARIABLE err
-  OUTPUT_STRIP_TRAILING_WHITESPACE
-  ERROR_STRIP_TRAILING_WHITESPACE
-)
-if(NOT res EQUAL 0)
-  message(WARNING "Recursive submodule update failed: ${err}")
-else()
-  message(STATUS "All submodules updated recursively.")
-endif()
 
 set(SDLK_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(SDLK_IS_MAIN_PROJECT OFF)
@@ -42,20 +27,16 @@ set(SDLK_LIB_VERSION ${PROJECT_VERSION})
 set(SDLK_LIB_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
 set(SDLK_VERSION ${PROJECT_VERSION})
 set(SDLK_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
-set(SDLK_BUILD_EXAMPLE OFF)
 
 # list of options
 option(BUILD_SHARED_LIBS "Build rcli as a shared library" ON)
 option(SDLK_LIB_BUILD "Build sdlk lib" ON)
 option(SDLK_LIB_INSTALL "Install sdlk lib" OFF)
+option(SDLK_BUILD_EXAMPLE "Build sdlk example" OFF)
 
 # configure build type
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Debug")
-endif()
-
-if(WIN32)
-  add_compile_options(WIN32)
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
