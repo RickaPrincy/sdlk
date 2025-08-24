@@ -17,8 +17,9 @@ set(LIB_SOURCES
   core/image_shape.cpp
   core/text_shape.cpp
   core/textured_shape.cpp
-  core/freetype_font.cpp
   core/colored_shape.cpp
+  core/fonts/msdf_font.cpp
+  core/fonts/free_type_handle_wrapper.cpp
 )
 
 # Create the library
@@ -34,6 +35,9 @@ file(COPY core/shaders DESTINATION ${CMAKE_BINARY_DIR}/bin/resources)
 target_include_directories(
   ${SDLK_LIB_NAME} PUBLIC $<BUILD_INTERFACE:${SDLK_SOURCE_DIR}/include>)
 
+target_include_directories(
+  ${SDLK_LIB_NAME} PUBLIC $<BUILD_INTERFACE:${SDLK_SOURCE_DIR}/external/msdf-atlas-gen>)
+
 target_include_directories(${SDLK_LIB_NAME} PRIVATE $<BUILD_INTERFACE:${EARCUT_HPP_INCLUDE_DIRS})
 
 # target_link
@@ -45,9 +49,10 @@ target_link_libraries(${SDLK_LIB_NAME}
 
 target_link_libraries(${SDLK_LIB_NAME} PUBLIC glm::glm-header-only)
 
-target_link_libraries(${SDLK_LIB_NAME} PUBLIC Freetype::Freetype)
+target_link_libraries(${SDLK_LIB_NAME} PUBLIC msdf-atlas-gen::msdf-atlas-gen)
 
 target_link_libraries(${SDLK_LIB_NAME} PUBLIC $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>)
+
 
 # set properties
 set_target_properties(

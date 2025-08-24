@@ -1,1 +1,3 @@
+#pragma once
+
 #define SDLK_VERSION "0.0.4"

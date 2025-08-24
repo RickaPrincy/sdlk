@@ -7,6 +7,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# MSDF
+set(MSDF_ATLAS_USE_SKIA OFF CACHE BOOL "" FORCE)
+
 # SDL2
 find_package(Freetype REQUIRED)
 find_package(glm CONFIG REQUIRED)
@@ -60,6 +63,7 @@ if(SDLK_IS_MAIN_PROJECT)
     @ONLY)
 endif()
 
+add_subdirectory(external/msdf-atlas-gen)
 add_subdirectory(sources)
 
 if(SDLK_BUILD_EXAMPLE)

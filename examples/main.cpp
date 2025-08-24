@@ -3,7 +3,8 @@
 #include <sdlk/core/app.hpp>
 #include <sdlk/core/component.hpp>
 #include <sdlk/core/events/types.hpp>
-#include <sdlk/core/freetype_font.hpp>
+#include <sdlk/core/quad.hpp>
+#include <sdlk/core/fonts/msdf_font.hpp>
 #include <sdlk/core/shape.hpp>
 #include <sdlk/core/types.hpp>
 
@@ -38,7 +39,7 @@ auto main(int argc, char** argv) -> int
 		{ 255, 0, 0, 255 },
 		true);
 
-	auto font = freetype_font::make("./resources/assets/font/arial.ttf");
+	auto font = msdf_font::make("./resources/assets/font/arial.ttf");
 
 	text_shape blibli("hello world", font, { 255, 0, 0, 255 });
 

@@ -3,10 +3,8 @@
 #include <SDL2/SDL_pixels.h>
 #include <glad/glad.h>
 
-#include <cstdint>
 #include <memory>
-#include <sdlk/core/freetype_font.hpp>
-#include <sdlk/core/quad.hpp>
+#include <sdlk/core/fonts/msdf_font.hpp>
 #include <sdlk/core/renderable.hpp>
 #include <sdlk/core/texture.hpp>
 #include <sdlk/core/types.hpp>
@@ -51,7 +49,7 @@ namespace sdlk
 	{
 	protected:
 		std::string m_text{};
-		std::shared_ptr<freetype_font> m_font = nullptr;
+		std::shared_ptr<msdf_font> m_font = nullptr;
 
 	public:
 		auto set_text(std::string text) -> void;
@@ -60,7 +58,7 @@ namespace sdlk
 		virtual auto bind() -> void const override;
 		virtual auto render(GLuint *program) -> void override;
 
-		text_shape(std::string text, std::shared_ptr<freetype_font> font, SDL_Color color);
+		text_shape(std::string text, std::shared_ptr<msdf_font> font, SDL_Color color);
 		~text_shape() = default;
 	};
 
