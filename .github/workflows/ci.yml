@@ -1,26 +1,38 @@
-name: ci 
+name: ci
 
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
 jobs:
   build:
-    runs-on: ubuntu-latest
-    name: build with cmake
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: install deps
-      run: sudo apt install libsdl2-2.0-0 libsdl2-dev libsdl2-image-dev libfreetype6-dev
-    
-    - name: configure 
-      run: cmake -DCMAKE_BUILD_TYPE=Debug -S . -B build
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
 
-    - name: build 
-      run: cd build; make
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install latest CMake and Ninja
+        uses: lukka/get-cmake@v3.29.3
+
+      - name: Fix Linux-specific issues
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libltdl-dev build-essential pkg-config ninja-build
+
+      - name: Setup anew (or from cache) vcpkg (and does not build any package)
+        uses: lukka/run-vcpkg@v11
+        with:
+          configurePreset: vcpkg-release
+          buildPreset: vcpkg-release
+
+      - name: Run CMake consuming CMakePreset.json and run vcpkg to build packages
+        uses: lukka/run-cmake@v10
+        with:
+          configurePreset: 'vcpkg-release'
+          buildPreset: 'vcpkg-release'
 
   # style:
   #   runs-on: ubuntu-latest

@@ -27,5 +27,19 @@
         "SDLK_BUILD_EXAMPLE": "OFF"
       }
     }
+  ],
+  "buildPresets": [
+    {
+      "name": "vcpkg-debug",
+      "configurePreset": "vcpkg-debug",
+      "displayName": "Build Debug",
+      "description": "Build project in Debug configuration"
+    },
+    {
+      "name": "vcpkg-release",
+      "configurePreset": "vcpkg-release",
+      "displayName": "Build Release",
+      "description": "Build project in Release configuration"
+    }
   ]
 }

@@ -39,10 +39,6 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
-if(WIN32)
-  add_compile_options(WIN32)
-endif()
-
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
   set(SDLK_TEST OFF)
   set(SDLK_BUILD_EXAMPLE OFF)
