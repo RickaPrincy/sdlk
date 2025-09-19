@@ -1,7 +1,5 @@
 #pragma once
 
-#include <SDL2/SDL_video.h>
-
 #include <sdlk/core/events/observer.hpp>
 #include <sdlk/core/renderable.hpp>
 #include <vector>
@@ -21,16 +19,16 @@ namespace sdlk
 		component(class app *parent, renderable *);
 		component(component *parent, renderable *);
 
-		virtual auto bind() -> void const override;
+		auto bind() -> void const override;
 
-		virtual auto translate(glm::vec2 pixel_offset) -> void override;
-		virtual auto scale(float scale) -> void override;
-		virtual auto rotate(float angle_radians) -> void override;
-		virtual auto add_translate(glm::vec2 pixel_offset) -> void override;
-		virtual auto add_scale(float scale) -> void override;
-		virtual auto add_rotation(float angle_radians) -> void override;
-		virtual auto set_transformation_model(glm::mat4 transformation_model) -> void override;
+		auto translate(glm::vec2 pixel_offset) -> void override;
+		auto scale(float scale) -> void override;
+		auto rotate(float angle_radians) -> void override;
+		auto add_translate(glm::vec2 pixel_offset) -> void override;
+		auto add_scale(float scale) -> void override;
+		auto add_rotation(float angle_radians) -> void override;
+		auto set_transformation_model(glm::mat4 transformation_model) -> void override;
 
-		virtual auto render(GLuint *program) -> void override;
+		auto render(GLuint *program) -> void override;
 	};
 }  // namespace sdlk

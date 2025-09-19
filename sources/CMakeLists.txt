@@ -1,50 +1,50 @@
-set(LIB_SOURCES 
-  core/events/event_listener.cpp 
-  core/events/observer.cpp 
-  core/glad.cpp 
-  core/quad.cpp
-  core/renderable.cpp
-  core/types.cpp
-  core/transformation.cpp
-  core/opengl_utils.cpp
-  core/static_resource.cpp
-  core/converter.cpp
-  core/camera.cpp
-  core/app.cpp 
-  core/component.cpp
-  core/shape.cpp 
-  core/texture.cpp
-  core/image_shape.cpp
-  core/text_shape.cpp
-  core/textured_shape.cpp
-  core/colored_shape.cpp
-  core/fonts/msdf_font.cpp
-  core/fonts/free_type_handle_wrapper.cpp
+set(LIB_SOURCES
+        core/events/event_listener.cpp
+        core/events/observer.cpp
+        core/glad.cpp
+        core/quad.cpp
+        core/renderable.cpp
+        core/types.cpp
+        core/transformation.cpp
+        core/opengl_utils.cpp
+        core/static_resource.cpp
+        core/converter.cpp
+        core/camera.cpp
+        core/app.cpp
+        core/component.cpp
+        core/shape.cpp
+        core/texture.cpp
+        core/image_shape.cpp
+        core/text_shape.cpp
+        core/textured_shape.cpp
+        core/colored_shape.cpp
+        core/fonts/msdf_font.cpp
+        core/fonts/free_type_handle_wrapper.cpp
 )
 
 # Create the library
-if(BUILD_SHARED_LIBS)
-  add_library(${SDLK_LIB_NAME} SHARED ${LIB_SOURCES})
-else()
-  add_library(${SDLK_LIB_NAME} STATIC ${LIB_SOURCES})
-endif()
+if (BUILD_SHARED_LIBS)
+    add_library(${SDLK_LIB_NAME} SHARED ${LIB_SOURCES})
+else ()
+    add_library(${SDLK_LIB_NAME} STATIC ${LIB_SOURCES})
+endif ()
 
 file(COPY core/shaders DESTINATION ${CMAKE_BINARY_DIR}/bin/resources)
 
 # Set include directories for the library
 target_include_directories(
-  ${SDLK_LIB_NAME} PUBLIC $<BUILD_INTERFACE:${SDLK_SOURCE_DIR}/include>)
+        ${SDLK_LIB_NAME} PUBLIC $<BUILD_INTERFACE:${SDLK_SOURCE_DIR}/include>)
 
 target_include_directories(
-  ${SDLK_LIB_NAME} PUBLIC $<BUILD_INTERFACE:${SDLK_SOURCE_DIR}/external/msdf-atlas-gen>)
+        ${SDLK_LIB_NAME} PUBLIC $<BUILD_INTERFACE:${SDLK_SOURCE_DIR}/external/msdf-atlas-gen>)
 
 target_include_directories(${SDLK_LIB_NAME} PRIVATE $<BUILD_INTERFACE:${EARCUT_HPP_INCLUDE_DIRS})
 
 # target_link
 target_link_libraries(${SDLK_LIB_NAME}
-    PUBLIC
-    $<TARGET_NAME_IF_EXISTS:SDL2::SDL2main>
-    $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
+        PUBLIC
+        $<TARGET_NAME_IF_EXISTS:SDL2::SDL2main>
+        $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
 )
 
 target_link_libraries(${SDLK_LIB_NAME} PUBLIC glm::glm-header-only)
@@ -56,51 +56,51 @@ target_link_libraries(${SDLK_LIB_NAME} PUBLIC $<IF:$<TARGET_EXISTS:SDL2_image::S
 
 # set properties
 set_target_properties(
-  ${SDLK_LIB_NAME}
-  PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
-             LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
-             SOVERSION ${SDLK_LIB_VERSION_MAJOR}
-             VERSION ${SDLK_LIB_VERSION})
+        ${SDLK_LIB_NAME}
+        PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+        SOVERSION ${SDLK_LIB_VERSION_MAJOR}
+        VERSION ${SDLK_LIB_VERSION})
 
 # lib install configuration
-if(SDLK_LIB_INSTALL)
-  include(CMakePackageConfigHelpers)
-  write_basic_package_version_file(
-    ${CMAKE_BINARY_DIR}/cmake/${SDLK_LIB_NAME}Version.cmake
-    VERSION ${SDLK_VERSION}
-    COMPATIBILITY SameMajorVersion)
+if (SDLK_LIB_INSTALL)
+    include(CMakePackageConfigHelpers)
+    write_basic_package_version_file(
+            ${CMAKE_BINARY_DIR}/cmake/${SDLK_LIB_NAME}Version.cmake
+            VERSION ${SDLK_VERSION}
+            COMPATIBILITY SameMajorVersion)
 
-  include(GNUInstallDirs)
-  install(DIRECTORY ${SDLK_SOURCE_DIR}/include/${SDLK_LIB_NAME}
-          DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+    include(GNUInstallDirs)
+    install(DIRECTORY ${SDLK_SOURCE_DIR}/include/${SDLK_LIB_NAME}
+            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
-  install(
-    TARGETS ${SDLK_LIB_NAME}
-    EXPORT ${SDLK_LIB_NAME}Targets
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT Runtime
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT Development
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT Development)
+    install(
+            TARGETS ${SDLK_LIB_NAME}
+            EXPORT ${SDLK_LIB_NAME}Targets
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT Runtime
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT Development
+            ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT Development)
 
-  # Install the Config and ConfigVersion files
-  install(
-    EXPORT ${SDLK_LIB_NAME}Targets
-    FILE ${SDLK_LIB_NAME}Targets.cmake
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${SDLK_LIB_NAME})
+    # Install the Config and ConfigVersion files
+    install(
+            EXPORT ${SDLK_LIB_NAME}Targets
+            FILE ${SDLK_LIB_NAME}Targets.cmake
+            DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${SDLK_LIB_NAME})
 
-  # Configure the Config file
-  configure_package_config_file(
-    ${SDLK_SOURCE_DIR}/cmake/${SDLK_LIB_NAME}Config.cmake.in
-    ${CMAKE_BINARY_DIR}/cmake/${SDLK_LIB_NAME}Config.cmake
-    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${SDLK_LIB_NAME}
-    PATH_VARS SDLK_SOURCE_DIR
-  )
+    # Configure the Config file
+    configure_package_config_file(
+            ${SDLK_SOURCE_DIR}/cmake/${SDLK_LIB_NAME}Config.cmake.in
+            ${CMAKE_BINARY_DIR}/cmake/${SDLK_LIB_NAME}Config.cmake
+            INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${SDLK_LIB_NAME}
+            PATH_VARS SDLK_SOURCE_DIR
+    )
 
-  configure_file(${SDLK_SOURCE_DIR}/cmake/${SDLK_LIB_NAME}Config.cmake.in
-                 ${CMAKE_BINARY_DIR}/cmake/${SDLK_LIB_NAME}Config.cmake @ONLY)
+    configure_file(${SDLK_SOURCE_DIR}/cmake/${SDLK_LIB_NAME}Config.cmake.in
+            ${CMAKE_BINARY_DIR}/cmake/${SDLK_LIB_NAME}Config.cmake @ONLY)
 
-  # Install the Config, ConfigVersion, and custom Find module files
-  install(FILES ${CMAKE_BINARY_DIR}/cmake/${SDLK_LIB_NAME}Config.cmake
-                ${CMAKE_BINARY_DIR}/cmake/${SDLK_LIB_NAME}Version.cmake
-          DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${SDLK_LIB_NAME})
+    # Install the Config, ConfigVersion, and custom Find module files
+    install(FILES ${CMAKE_BINARY_DIR}/cmake/${SDLK_LIB_NAME}Config.cmake
+            ${CMAKE_BINARY_DIR}/cmake/${SDLK_LIB_NAME}Version.cmake
+            DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${SDLK_LIB_NAME})
 
-endif()
+endif ()

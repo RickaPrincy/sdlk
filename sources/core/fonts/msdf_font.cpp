@@ -32,6 +32,22 @@ namespace sdlk
 		}
 
 		this->_atlas.add(glyphs.data(), static_cast<int>(glyphs.size()));
+		msdfgen::BitmapConstRef<byte, 3> bitmap{this->_atlas.atlasGenerator().atlasStorage()};
+
+		glGenTextures(1, &this->_texture);
+		glBindTexture(GL_TEXTURE_2D, this->_texture);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bitmap.width, bitmap.height, 0, GL_RGB, GL_UNSIGNED_BYTE, bitmap.pixels);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
+	auto msdf_font::update_texture() -> void
+	{
+		const msdfgen::BitmapConstRef<byte, 3> bitmap{this->_atlas.atlasGenerator().atlasStorage()};
+		glBindTexture(GL_TEXTURE_2D, this->_texture);
+		glTexSubImage2D(GL_TEXTURE_2D, 0,0, 0, bitmap.width, bitmap.height,GL_RGB, GL_UNSIGNED_BYTE, bitmap.pixels);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	 msdf_font::~msdf_font()
@@ -68,6 +84,11 @@ namespace sdlk
 		return this->_glyphs_map[c];
 	}
 
+	auto msdf_font::texture() const -> const GLuint&
+	{
+		return this->_texture;
+	}
+
 	auto msdf_font::bind_and_clone(GlyphGeometry &glyph) const -> GlyphGeometry
 	{
 		glyph.edgeColoring(&msdfgen::edgeColoringInkTrap, _conf.max_corner_angle, 0);
@@ -78,6 +99,7 @@ namespace sdlk
 
 	auto msdf_font::atlas() -> msdf_dynamic_atlas&
 	{
+		msdfgen::Bitmap<byte, 3> bitmap{ this->_atlas.atlasGenerator().atlasStorage() };
 		return this->_atlas;
 	}
 

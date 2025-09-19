@@ -20,9 +20,9 @@ find_path(EARCUT_HPP_INCLUDE_DIRS "mapbox/earcut.hpp")
 
 set(SDLK_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(SDLK_IS_MAIN_PROJECT OFF)
-if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
-  set(SDLK_IS_MAIN_PROJECT ON)
-endif()
+if (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+    set(SDLK_IS_MAIN_PROJECT ON)
+endif ()
 
 # target names
 set(SDLK_LIB_NAME sdlk)
@@ -38,37 +38,37 @@ option(SDLK_LIB_INSTALL "Install sdlk lib" OFF)
 option(SDLK_BUILD_EXAMPLE "Build sdlk example" OFF)
 
 # configure build type
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE "Debug")
-endif()
+if (NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Debug")
+endif ()
 
-if(CMAKE_BUILD_TYPE STREQUAL "Release")
-  set(SDLK_TEST OFF)
-  set(SDLK_BUILD_EXAMPLE OFF)
-endif()
+if (CMAKE_BUILD_TYPE STREQUAL "Release")
+    set(SDLK_TEST OFF)
+    set(SDLK_BUILD_EXAMPLE OFF)
+endif ()
 
-if(SDLK_IS_MAIN_PROJECT)
-  configure_file(${SDLK_SOURCE_DIR}/.templates/PKGBUILD.in
-                 ${SDLK_SOURCE_DIR}/PKGBUILD @ONLY)
+if (SDLK_IS_MAIN_PROJECT)
+    configure_file(${SDLK_SOURCE_DIR}/.templates/PKGBUILD.in
+            ${SDLK_SOURCE_DIR}/PKGBUILD @ONLY)
 
-  configure_file(${SDLK_SOURCE_DIR}/.templates/install.sh.in
-                 ${SDLK_SOURCE_DIR}/install.sh @ONLY)
+    configure_file(${SDLK_SOURCE_DIR}/.templates/install.sh.in
+            ${SDLK_SOURCE_DIR}/install.sh @ONLY)
 
-  configure_file(${SDLK_SOURCE_DIR}/.templates/create-release.sh.in
-                 ${SDLK_SOURCE_DIR}/create-release.sh @ONLY)
+    configure_file(${SDLK_SOURCE_DIR}/.templates/create-release.sh.in
+            ${SDLK_SOURCE_DIR}/create-release.sh @ONLY)
 
-  configure_file(
-    ${SDLK_SOURCE_DIR}/.templates/${SDLK_LIB_NAME}Config.hpp.in
-    ${SDLK_SOURCE_DIR}/include/${SDLK_LIB_NAME}/${SDLK_LIB_NAME}Config.hpp
-    @ONLY)
-endif()
+    configure_file(
+            ${SDLK_SOURCE_DIR}/.templates/${SDLK_LIB_NAME}Config.hpp.in
+            ${SDLK_SOURCE_DIR}/include/${SDLK_LIB_NAME}/${SDLK_LIB_NAME}Config.hpp
+            @ONLY)
+endif ()
 
 add_subdirectory(external/msdf-atlas-gen)
 add_subdirectory(sources)
 
-if(SDLK_BUILD_EXAMPLE)
-  add_subdirectory(examples)
-endif()
+if (SDLK_BUILD_EXAMPLE)
+    add_subdirectory(examples)
+endif ()
 
 # CPack configuration
 set(CPACK_PACKAGE_VENDOR "RickaPrincy <rckprincy@gmail.com>")

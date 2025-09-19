@@ -13,96 +13,107 @@
 namespace sdlk
 {
 
-	struct shape_config
-	{
-		bool use_vec_color = false;
-		bool use_texture = false;
-		bool use_text_rendering = false;
-	};
+    // A struct to hold vertex data for MSDF text rendering
+    struct TextVertex {
+       glm::vec2 position;
+       glm::vec2 texCoord;
+    };
 
-	class shape : public renderable
-	{
-	protected:
-		std::array<float, 4> m_ndc_color{};
-		SDL_Color m_color{};
-		polygon m_polygon{};
-		shape_config m_config{};
-		unsigned int m_indices_count{};
+    struct shape_config
+    {
+       bool use_vec_color = false;
+       bool use_texture = false;
+       bool use_text_rendering = false;
+    };
 
-		GLuint m_vao{}, m_vbo{}, m_ebo{};
+    class shape : public renderable
+    {
+    protected:
+       std::array<float, 4> m_ndc_color{};
+       SDL_Color m_color{};
+       polygon m_polygon{};
+       shape_config m_config{};
+       unsigned int m_indices_count{};
 
-		shape(polygon polygon, std::vector<uint32_t> indices, shape_config config = {});
+       GLuint m_vao{}, m_vbo{}, m_ebo{};
 
-	public:
-		auto set_color(SDL_Color color) -> void;
+       shape(polygon polygon, std::vector<uint32_t> indices, shape_config config = {});
 
-		[[nodiscard]] auto get_color() -> SDL_Color;
+    public:
+       auto set_color(SDL_Color color) -> void;
 
-		virtual auto bind() -> void const override;
+       [[nodiscard]] auto get_color() -> SDL_Color;
 
-		virtual auto render(GLuint *program) -> void override;
+       virtual auto bind() -> void const override;
 
-		virtual ~shape();
-	};
+       virtual auto render(GLuint *program) -> void override;
 
-	class text_shape : public shape
-	{
-	protected:
-		std::string m_text{};
-		std::shared_ptr<msdf_font> m_font = nullptr;
+       virtual ~shape();
+    };
 
-	public:
-		auto set_text(std::string text) -> void;
-		[[nodiscard]] auto get_text() -> std::string;
+    class text_shape : public shape
+    {
+    protected:
+       std::string m_text{};
+       std::shared_ptr<msdf_font> m_font = nullptr;
+       // Add a member to store the number of vertices to draw
+       size_t m_vertex_count = 0;
 
-		virtual auto bind() -> void const override;
-		virtual auto render(GLuint *program) -> void override;
+       // Private helper function to rebuild the vertex data
+       auto rebuild_vertices() -> void;
 
-		text_shape(std::string text, std::shared_ptr<msdf_font> font, SDL_Color color);
-		~text_shape() = default;
-	};
+    public:
+       auto set_text(std::string text) -> void;
+       [[nodiscard]] auto get_text() -> std::string;
 
-	class colored_shape : public shape
-	{
-	public:
-		colored_shape(polygon geometry, SDL_Color color, bool use_vec_color = false);
-		colored_shape(polygon geometry,
-			SDL_Color color,
-			std::vector<uint32_t> indices,
-			bool use_vec_color = false);
+       virtual auto bind() -> void const override;
+       virtual auto render(GLuint *program) -> void override;
 
-		colored_shape(polygon geometry, std::vector<SDL_Color> color);
-		colored_shape(polygon geometry,
-			std::vector<SDL_Color> colors,
-			std::vector<uint32_t> indices);
+       text_shape(std::string text, std::shared_ptr<msdf_font> font, SDL_Color color);
+       ~text_shape() = default;
+    };
 
-		virtual ~colored_shape() = default;
-	};
+    class colored_shape : public shape
+    {
+    public:
+       colored_shape(polygon geometry, SDL_Color color, bool use_vec_color = false);
+       colored_shape(polygon geometry,
+          SDL_Color color,
+          std::vector<uint32_t> indices,
+          bool use_vec_color = false);
 
-	class textured_shape : public shape
-	{
-	protected:
-		std::shared_ptr<texture> m_texture = nullptr;
+       colored_shape(polygon geometry, std::vector<SDL_Color> color);
+       colored_shape(polygon geometry,
+          std::vector<SDL_Color> colors,
+          std::vector<uint32_t> indices);
 
-	public:
-		textured_shape(polygon geometry, std::vector<point> uv, std::shared_ptr<texture> texture);
-		textured_shape(polygon geometry,
-			std::vector<point> uv,
-			std::shared_ptr<texture> texture,
-			std::vector<uint32_t> indices);
+       virtual ~colored_shape() = default;
+    };
 
-		virtual auto render(GLuint *program) -> void override;
-		virtual auto bind() -> const void override;
+    class textured_shape : public shape
+    {
+    protected:
+       std::shared_ptr<texture> m_texture = nullptr;
 
-		virtual ~textured_shape() = default;
-	};
+    public:
+       textured_shape(polygon geometry, std::vector<point> uv, std::shared_ptr<texture> texture);
+       textured_shape(polygon geometry,
+          std::vector<point> uv,
+          std::shared_ptr<texture> texture,
+          std::vector<uint32_t> indices);
 
-	class image_shape : public textured_shape
-	{
-	public:
-		image_shape(std::string path, int width, int height);
-		image_shape(std::string path, int width, int height, std::vector<point> uv);
+       virtual auto render(GLuint *program) -> void override;
+       virtual auto bind() -> const void override;
 
-		virtual ~image_shape() = default;
-	};
+       virtual ~textured_shape() = default;
+    };
+
+    class image_shape : public textured_shape
+    {
+    public:
+       image_shape(std::string path, int width, int height);
+       image_shape(std::string path, int width, int height, std::vector<point> uv);
+
+       virtual ~image_shape() = default;
+    };
 }  // namespace sdlk
