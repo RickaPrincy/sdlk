@@ -8,7 +8,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # SDL2
-find_package(Freetype REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(SDL2 CONFIG REQUIRED)
 find_package(SDL2_image CONFIG REQUIRED)
@@ -32,7 +31,7 @@ set(SDLK_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
 option(BUILD_SHARED_LIBS "Build rcli as a shared library" ON)
 option(SDLK_LIB_BUILD "Build sdlk lib" ON)
 option(SDLK_LIB_INSTALL "Install sdlk lib" OFF)
-option(SDLK_BUILD_EXAMPLE "Build sdlk example" OFF)
+option(SDLK_BUILD_EXAMPLES "Build sdlk example" ON)
 
 # configure build type
 if(NOT CMAKE_BUILD_TYPE)
@@ -41,7 +40,7 @@ endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
   set(SDLK_TEST OFF)
-  set(SDLK_BUILD_EXAMPLE OFF)
+  set(SDLK_BUILD_EXAMPLES OFF)
 endif()
 
 if(SDLK_IS_MAIN_PROJECT)
@@ -61,10 +60,7 @@ if(SDLK_IS_MAIN_PROJECT)
 endif()
 
 add_subdirectory(sources)
-
-if(SDLK_BUILD_EXAMPLE)
-  add_subdirectory(examples)
-endif()
+add_subdirectory(examples)
 
 # CPack configuration
 set(CPACK_PACKAGE_VENDOR "RickaPrincy <rckprincy@gmail.com>")

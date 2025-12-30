@@ -12,11 +12,12 @@ namespace sdlk
 		std::shared_ptr<event_listener> m_event_listener = nullptr;
 
 	public:
-		observer(std::shared_ptr<event_listener> event_listener);
+		virtual ~observer() = default;
 
-		virtual void add_event_listener(event_type event_type,
-			event_callback callback,
-			bool stop_propagation = false);
+		explicit observer(std::shared_ptr<event_listener> event_listener);
+
+		virtual auto add_event_listener(event_type event_type, event_callback callback, bool
+			stop_propagation = false) -> void;;
 
 		friend class app;
 	};

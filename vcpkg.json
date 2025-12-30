@@ -6,7 +6,6 @@
     "sdl2",
     "glm",
     "earcut-hpp",
-    "freetype",
     "sdl2-image"
   ]
 }

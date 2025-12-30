@@ -1,10 +1,11 @@
 #include <sdlk/core/events/observer.hpp>
+#include <utility>
 
 namespace sdlk
 {
-	void observer::add_event_listener(event_type event_type,
+	auto observer::add_event_listener(event_type event_type,
 		event_callback callback,
-		bool stop_propagation)
+		bool stop_propagation) -> void
 	{
 		if (this->m_event_listener)
 		{
@@ -14,7 +15,7 @@ namespace sdlk
 	}
 
 	observer::observer(std::shared_ptr<event_listener> event_listener)
-		: m_event_listener(event_listener)
+		: m_event_listener(std::move(event_listener))
 	{
 	}
 }  // namespace sdlk

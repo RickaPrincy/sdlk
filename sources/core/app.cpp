@@ -2,22 +2,18 @@
 #include <SDL2/SDL_video.h>
 #include <glad/glad.h>
 
+#include <sdlk/core/app.hpp>
+#include <sdlk/core/converter.hpp>
+
 #include <csignal>
 #include <cstdlib>
 #include <iostream>
-#include <sdlk/core/app.hpp>
-#include <sdlk/core/converter.hpp>
-#include <sdlk/core/opengl_utils.hpp>
 #include <stdexcept>
-#include <utility>
-
-#include "static_resource.hpp"
 
 namespace sdlk
 {
-	unsigned int app::s_window_width = 0;
-	unsigned int app::s_window_height = 0;
-	FT_Library app::s_ft_library = 0;
+	unsigned int app::_s_window_width = 0;
+	unsigned int app::_s_window_height = 0;
 
 	// TO handle ctrl + c or something else that can stop the application
 	static bool is_running = true;
@@ -26,12 +22,12 @@ namespace sdlk
 		is_running = false;
 	}
 
-	auto app::run(int argc, char **argv) -> int
+	auto app::run(int, char**) -> int
 	{
 		std::signal(SIGINT, signal_handler);
 		SDL_Event event;
 
-		auto ndc_background_color = converter::sdl_color_to_ndc(this->_options.background_color);
+		const auto ndc_background_color = converter::sdl_color_to_ndc(this->_options.background_color);
 
 		glClearColor(ndc_background_color[0],
 			ndc_background_color[1],
@@ -52,8 +48,8 @@ namespace sdlk
 							if (event.type == SDL_WINDOWEVENT &&
 								event.window.event == SDL_WINDOWEVENT_RESIZED)
 							{
-								app::s_window_width = event.window.data1;
-								app::s_window_height = event.window.data2;
+								_s_window_width = event.window.data1;
+								_s_window_height = event.window.data2;
 								glViewport(0, 0, event.window.data1, event.window.data2);
 							}
 
@@ -62,17 +58,11 @@ namespace sdlk
 					}
 				}
 
-				glUseProgram(this->m_shader_program);
+				this->m_program->use();
 
 				// Update
 				glClear(GL_COLOR_BUFFER_BIT);
 
-				this->m_camera.load_uniforms(&this->m_shader_program);
-				for (const auto &child : this->m_childs)
-				{
-					child->bind();
-					child->render(&this->m_shader_program);
-				}
 				SDL_GL_SwapWindow(this->p_window);
 
 				// FPS Limit
@@ -88,25 +78,18 @@ namespace sdlk
 		return EXIT_SUCCESS;
 	}
 
-	app::app(std::string window_title,
-		int width,
-		int height,
-		app_options options,
+	app::app(const std::string &window_title,
+		const int &width,
+		const int &height,
+		const app_options &options,
 		Uint32 window_init_flags)
 		: observer(nullptr),
-		  m_camera(std::move(camera(width, height))),
-		  _options(std::move(options))
+		  _options(options)
 	{
-		if (FT_Init_FreeType(&app::s_ft_library))
-		{
-			throw std::runtime_error("ERROR::FREETYPE: Could not init FreeType Library");
-		}
-
 		this->_frame_delay_ms = 1000 / this->_options.fps;
 
 		if (SDL_Init(window_init_flags) != 0)
 		{
-			FT_Done_FreeType(app::s_ft_library);
 			throw std::runtime_error("Cannot init sdl");
 		}
 
@@ -121,31 +104,23 @@ namespace sdlk
 			height,
 			SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN);
 
-		app::s_window_width = std::move(width);
-		app::s_window_height = std::move(height);
+		_s_window_width = width;
+		_s_window_height = height;
 
 		this->m_opengl_context = SDL_GL_CreateContext(this->p_window);
 
-		if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress))
+		if (!gladLoadGLLoader(SDL_GL_GetProcAddress))
 		{
-			FT_Done_FreeType(app::s_ft_library);
 			SDL_DestroyWindow(this->p_window);
 			SDL_GL_DeleteContext(this->m_opengl_context);
 			throw std::runtime_error("Failed to initialize GLAD");
 		}
 
-		this->_options.vertex_source = this->_options.vertex_source.empty()
-										   ? resource::s_vertex_source
-										   : this->_options.vertex_source;
-
-		this->_options.fragment_source = this->_options.fragment_source.empty()
-											 ? resource::s_fragment_source
-											 : this->_options.fragment_source;
-
-		this->m_shader_program = create_shader_program(
-			std::move(this->_options.vertex_source), std::move(this->_options.fragment_source));
-
+		this->m_program = gl_program::from_files(
+			"resources/shaders/vertex.glsl",
+			"resources/shaders/fragment.glsl");
 		this->m_event_listener = std::make_shared<event_listener>();
+
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
@@ -162,52 +137,28 @@ namespace sdlk
 		this->_frame_start = SDL_GetTicks();
 	}
 
-	auto app::add_renderable(renderable *child) -> void
+	auto app::get_width() -> unsigned int
 	{
-		this->m_childs.push_back(child);
+		return _s_window_width;
 	}
 
-	auto app::get_ft_library() -> FT_Library &
+	auto app::get_height() -> unsigned int
 	{
-		return app::s_ft_library;
+		return _s_window_height;
 	}
 
-	auto app::get_width() -> int const
-	{
-		return app::s_window_width;
-	}
-
-	auto app::get_height() -> int const
-	{
-		return app::s_window_height;
-	}
-
-	auto app::get_camera() -> camera *
-	{
-		return &this->m_camera;
-	}
-
-	auto app::get_event_listener() -> std::shared_ptr<event_listener> const
+	auto app::get_event_listener() -> std::shared_ptr<event_listener>
 	{
 		return this->m_event_listener;
 	}
 
 	app::~app()
 	{
-		if (this->m_shader_program)
-		{
-			glDeleteProgram(this->m_shader_program);
-		}
-
 		if (this->p_window)
 		{
 			SDL_DestroyWindow(this->p_window);
 		}
 
 		SDL_GL_DeleteContext(this->m_opengl_context);
-
-		FT_Done_FreeType(app::s_ft_library);
-
-		std::cout << "clean app\n";
 	}
 }  // namespace sdlk

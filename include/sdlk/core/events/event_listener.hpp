@@ -9,10 +9,11 @@ namespace sdlk
 {
 	class event_listener
 	{
-	private:
 		std::map<event_type, std::vector<event_action>> m_event_listeners;
 
 	public:
+		virtual ~event_listener() = default;
+
 		event_listener() = default;
 
 		virtual void notify_event(const SDL_Event &event);
