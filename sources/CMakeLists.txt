@@ -8,6 +8,9 @@ set(LIB_SOURCES
     core/gl_uniform.cpp
     core/converter.cpp
     utils/file.cpp
+    core/multiple_view.cpp
+    core/component.cpp
+    core/renderable.cpp
 )
 
 # Create the library

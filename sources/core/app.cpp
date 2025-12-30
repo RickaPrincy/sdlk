@@ -2,12 +2,11 @@
 #include <SDL2/SDL_video.h>
 #include <glad/glad.h>
 
-#include <sdlk/core/app.hpp>
-#include <sdlk/core/converter.hpp>
-
 #include <csignal>
 #include <cstdlib>
 #include <iostream>
+#include <sdlk/core/app.hpp>
+#include <sdlk/core/converter.hpp>
 #include <stdexcept>
 
 namespace sdlk
@@ -22,12 +21,13 @@ namespace sdlk
 		is_running = false;
 	}
 
-	auto app::run(int, char**) -> int
+	auto app::run(int, char **) -> int
 	{
 		std::signal(SIGINT, signal_handler);
 		SDL_Event event;
 
-		const auto ndc_background_color = converter::sdl_color_to_ndc(this->_options.background_color);
+		const auto ndc_background_color =
+			converter::sdl_color_to_ndc(this->_options.background_color);
 
 		glClearColor(ndc_background_color[0],
 			ndc_background_color[1],
@@ -117,8 +117,7 @@ namespace sdlk
 		}
 
 		this->m_program = gl_program::from_files(
-			"resources/shaders/vertex.glsl",
-			"resources/shaders/fragment.glsl");
+			"resources/shaders/vertex.glsl", "resources/shaders/fragment.glsl");
 		this->m_event_listener = std::make_shared<event_listener>();
 
 		glEnable(GL_BLEND);
@@ -150,6 +149,12 @@ namespace sdlk
 	auto app::get_event_listener() -> std::shared_ptr<event_listener>
 	{
 		return this->m_event_listener;
+	}
+
+	auto app::add_view(const std::string &name, const std::shared_ptr<multiple_view> &child) const
+		-> void
+	{
+		this->m_view->add_view(name, child);
 	}
 
 	app::~app()

@@ -9,7 +9,7 @@ auto main(const int argc, char** argv) -> int
 
 	rc_engine.add_event_listener(event_type::key_down, [&](const SDL_Event &event)
 	{
-		std::cout << "Clicked\n";
+		std::cout << "clicked\n";
 	});
 
 	return rc_engine.run(argc, argv);
