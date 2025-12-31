@@ -5,7 +5,7 @@
 #pragma once
 #include <memory>
 #include <vector>
-#include <sdlk/core/renderable.hpp>
+#include <sdlk/core/renderable/renderable.hpp>
 
 namespace sdlk
 {
@@ -19,7 +19,7 @@ namespace sdlk
 
 		auto add_child(const std::shared_ptr<renderable> &child) -> void;
 
-		auto render() -> void override;
+		auto render(const std::shared_ptr<gl_program> &program) -> void override;
 
 		~component() override = default;
 	};

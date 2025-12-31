@@ -9,6 +9,7 @@ namespace sdlk
 {
 	class event_listener
 	{
+	protected:
 		std::map<event_type, std::vector<event_action>> m_event_listeners;
 
 	public:

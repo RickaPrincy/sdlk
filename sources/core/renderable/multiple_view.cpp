@@ -2,8 +2,8 @@
 // Created by ricka on 2025-12-30.
 //
 
-#include <sdlk/core/multiple_view.hpp>
 #include <stdexcept>
+#include <sdlk/core/renderable/multiple_view.hpp>
 
 namespace sdlk
 {
@@ -28,11 +28,11 @@ namespace sdlk
 		this->m_current = it->second;
 	}
 
-	auto multiple_view::render() -> void
+	auto multiple_view::render(const std::shared_ptr<gl_program> &program) -> void
 	{
 		if (this->m_current)
 		{
-			this->m_current->render();
+			this->m_current->render(program);
 		}
 	}
 

@@ -58,10 +58,11 @@ namespace sdlk
 					}
 				}
 
-				this->m_program->use();
-
 				// Update
 				glClear(GL_COLOR_BUFFER_BIT);
+
+				this->m_program->use();
+				this->m_view->render(this->m_program);
 
 				SDL_GL_SwapWindow(this->p_window);
 
@@ -119,6 +120,7 @@ namespace sdlk
 		this->m_program = gl_program::from_files(
 			"resources/shaders/vertex.glsl", "resources/shaders/fragment.glsl");
 		this->m_event_listener = std::make_shared<event_listener>();
+		this->m_view = std::make_shared<multiple_view>();
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -151,10 +153,12 @@ namespace sdlk
 		return this->m_event_listener;
 	}
 
-	auto app::add_view(const std::string &name, const std::shared_ptr<multiple_view> &child) const
+	auto app::add_view(const std::string &name, std::shared_ptr<renderable> child) const
 		-> void
 	{
-		this->m_view->add_view(name, child);
+		this->m_view->add_view(name, std::move(child));
+		//TODO: remove
+		this->m_view->switch_to(name);
 	}
 
 	app::~app()

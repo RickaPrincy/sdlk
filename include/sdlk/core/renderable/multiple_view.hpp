@@ -3,9 +3,10 @@
 //
 
 #pragma once
+
 #include <map>
 #include <memory>
-#include <sdlk/core/component.hpp>
+#include <sdlk/core/renderable/renderable.hpp>
 
 namespace sdlk
 {
@@ -23,7 +24,7 @@ namespace sdlk
 		auto switch_to(const std::string &name) -> void;
 		auto add_view(const std::string &name, std::shared_ptr<renderable> child) -> void;
 
-		auto render() -> void override;
+		auto render(const std::shared_ptr<gl_program> &program) -> void override;
 
 		~multiple_view() override = default;
 	};

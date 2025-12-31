@@ -13,6 +13,7 @@ namespace sdlk
 {
 	class gl_program
 	{
+	protected:
 		GLuint m_id{};
 		std::shared_ptr<gl_uniform> m_uniform{};
 

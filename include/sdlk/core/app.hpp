@@ -2,10 +2,10 @@
 
 #include <SDL2/SDL.h>
 
-#include <sdlk/core/gl/gl_program.hpp>
 #include <sdlk/core/events/event_listener.hpp>
 #include <sdlk/core/events/observer.hpp>
-#include <sdlk/core/multiple_view.hpp>
+#include <sdlk/core/gl/gl_program.hpp>
+#include <sdlk/core/renderable/multiple_view.hpp>
 #include <string>
 
 namespace sdlk
@@ -13,26 +13,26 @@ namespace sdlk
 	class renderable;
 	struct app_options
 	{
-		unsigned int fps{30};
-		SDL_Color background_color{ .r=0, .g=0, .b=0, .a=255 };
+		unsigned int fps{ 30 };
+		SDL_Color background_color{ .r = 0, .g = 0, .b = 0, .a = 255 };
 	};
 
 	class app : public observer
 	{
-		Uint32 _frame_start{0};
+		Uint32 _frame_start{ 0 };
 		app_options _options{};
-		unsigned int _frame_delay_ms{0};
+		unsigned int _frame_delay_ms{ 0 };
 
 		static unsigned int _s_window_width, _s_window_height;
 
 	protected:
-		std::shared_ptr<multiple_view> m_view{};
 		std::shared_ptr<gl_program> m_program{};
 
 		SDL_Window *p_window{};
-		SDL_GLContext m_opengl_context{nullptr};
+		SDL_GLContext m_opengl_context{ nullptr };
 
 	public:
+		std::shared_ptr<multiple_view> m_view{};
 		app(const std::string &window_title,
 			const int &width,
 			const int &height,
@@ -42,7 +42,7 @@ namespace sdlk
 		virtual auto limit_fps() -> void;
 
 		auto run(int argc, char **argv) -> int;
-		auto add_view(const std::string &name, const std::shared_ptr<multiple_view> &child) const
+		auto add_view(const std::string &name, std::shared_ptr<renderable> child) const
 			-> void;
 
 		[[nodiscard]] static auto get_width() -> unsigned int;

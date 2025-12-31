@@ -13,6 +13,7 @@ namespace sdlk
 {
 	class gl_shader
 	{
+	protected:
 		GLuint m_id{};
 	public:
 		explicit gl_shader(GLenum type, const std::string& source);

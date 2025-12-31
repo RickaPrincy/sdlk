@@ -10,9 +10,12 @@ set(LIB_SOURCES
     utils/file.cpp
     core/app.cpp
     core/converter.cpp
-    core/renderable.cpp
-    core/component.cpp
-    core/multiple_view.cpp
+    core/geometry.cpp
+    core/transform.cpp
+    core/renderable/renderable.cpp
+    core/renderable/component.cpp
+    core/renderable/multiple_view.cpp
+    core/renderable/colored_shape.cpp
 )
 
 # Create the library

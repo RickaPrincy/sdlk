@@ -2,7 +2,7 @@
 // Created by ricka on 2025-12-30.
 //
 
-#include <sdlk/core/component.hpp>
+#include <sdlk/core/renderable/component.hpp>
 
 namespace sdlk
 {
@@ -15,11 +15,11 @@ namespace sdlk
 		this->m_childs.push_back(child);
 	}
 
-	auto component::render() -> void
+	auto component::render(const std::shared_ptr<gl_program> &program) -> void
 	{
 		for (const auto &child : this->m_childs)
 		{
-			child->render();
+			child->render(program);
 		}
 	}
 }  // namespace sdlk

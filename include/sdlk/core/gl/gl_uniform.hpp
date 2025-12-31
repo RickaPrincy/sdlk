@@ -16,6 +16,7 @@ namespace sdlk
 
 	class gl_uniform
 	{
+	protected:
 		gl_program *m_program{};
 
 	public:
