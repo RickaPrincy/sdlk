@@ -2,15 +2,17 @@ set(LIB_SOURCES
     core/events/event_listener.cpp
     core/events/observer.cpp
     core/glad.cpp
-    core/app.cpp
-    core/gl_program.cpp
-    core/gl_shader.cpp
-    core/gl_uniform.cpp
-    core/converter.cpp
+    core/gl/gl_program.cpp
+    core/gl/gl_shader.cpp
+    core/gl/gl_uniform.cpp
+    core/gl/gl_buffer.cpp
+    core/gl/gl_vertex_array.cpp
     utils/file.cpp
-    core/multiple_view.cpp
-    core/component.cpp
+    core/app.cpp
+    core/converter.cpp
     core/renderable.cpp
+    core/component.cpp
+    core/multiple_view.cpp
 )
 
 # Create the library

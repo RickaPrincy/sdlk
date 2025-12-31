@@ -30,7 +30,10 @@ namespace sdlk
 
 	auto multiple_view::render() -> void
 	{
-		this->m_current->render();
+		if (this->m_current)
+		{
+			this->m_current->render();
+		}
 	}
 
 	auto multiple_view::add_view(const std::string &name, std::shared_ptr<renderable> child) -> void

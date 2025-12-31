@@ -1,11 +1,11 @@
 #pragma once
 
+#include <SDL2/SDL.h>
+
+#include <sdlk/core/gl/gl_program.hpp>
 #include <sdlk/core/events/event_listener.hpp>
 #include <sdlk/core/events/observer.hpp>
-#include <sdlk/core/gl_program.hpp>
 #include <sdlk/core/multiple_view.hpp>
-
-#include  <SDL2/SDL.h>
 #include <string>
 
 namespace sdlk

@@ -2,7 +2,7 @@
 // Created by ricka on 2025-12-30.
 //
 
-#include <sdlk/core/gl_program.hpp>
+#include <sdlk/core/gl/gl_program.hpp>
 #include <stdexcept>
 
 namespace sdlk
@@ -51,6 +51,9 @@ namespace sdlk
 
 	gl_program::~gl_program()
 	{
-		glDeleteProgram(this->m_id);
+		if (m_id)
+		{
+			glDeleteProgram(this->m_id);
+		}
 	}
 }  // namespace sdlk

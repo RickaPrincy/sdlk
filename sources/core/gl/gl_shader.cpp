@@ -2,9 +2,10 @@
 // Created by ricka on 2025-12-30.
 //
 
-#include <sdlk/core/gl_shader.hpp>
+#include <sdlk/core/gl/gl_shader.hpp>
 #include <stdexcept>
-#include "../utils/file.hpp"
+
+#include "../../utils/file.hpp"
 
 namespace sdlk
 {
@@ -39,6 +40,9 @@ namespace sdlk
 
 	gl_shader::~gl_shader()
 	{
-		glDeleteShader(this->m_id);
+		if (m_id)
+		{
+			glDeleteShader(this->m_id);
+		}
 	}
 }  // namespace sdlk

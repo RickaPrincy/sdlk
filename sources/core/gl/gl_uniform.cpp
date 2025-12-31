@@ -2,9 +2,9 @@
 // Created by ricka on 2025-12-30.
 //
 
+#include <sdlk/core/gl/gl_program.hpp>
+#include <sdlk/core/gl/gl_uniform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <sdlk/core/gl_program.hpp>
-#include <sdlk/core/gl_uniform.hpp>
 #include <stdexcept>
 #include <string>
 
