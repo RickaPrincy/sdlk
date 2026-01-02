@@ -16,6 +16,7 @@ namespace sdlk
 		auto vbo = std::make_shared<gl_buffer>(GL_ARRAY_BUFFER);
 
 		vao->bind();
+		vbo->bind();
 		vao->enable_attrib(0);
 		vao->attrib_pointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
@@ -30,6 +31,7 @@ namespace sdlk
 		}
 
 		vbo->set_data(vertices.data(), GL_STATIC_DRAW, vertices.size(), sizeof(float));
+		vbo->unbind();
 		vao->unbind();
 
 		this->m_color = color;
