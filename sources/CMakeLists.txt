@@ -18,6 +18,8 @@ set(LIB_SOURCES
     core/components/2d/shape/polygon_shape.cpp
     core/components/2d/shape/rectangle_shape.cpp
     core/components/2d/shape/texture.cpp
+    core/fonts/free_type_handle_wrapper.cpp
+    core/fonts/msdf_font.cpp
 )
 
 # Create the library
@@ -45,6 +47,10 @@ target_link_libraries(${SDLK_LIB_NAME}
 target_link_libraries(${SDLK_LIB_NAME} PUBLIC glm::glm-header-only)
 
 target_link_libraries(${SDLK_LIB_NAME} PUBLIC $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>)
+
+target_link_libraries(${SDLK_LIB_NAME} PRIVATE Freetype::Freetype)
+
+target_link_libraries(${SDLK_LIB_NAME} PUBLIC msdf-atlas-gen::msdf-atlas-gen)
 
 # set properties
 set_target_properties(

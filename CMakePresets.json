@@ -6,6 +6,8 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
+        "MSDF_ATLAS_USE_SKIA": "OFF",
+        "MSDF_ATLAS_USE_VCPKG": "ON",
         "CMAKE_TOOLCHAIN_FILE": "/home/ricka/Apk/vcpkg/scripts/buildsystems/vcpkg.cmake"
       }
     },

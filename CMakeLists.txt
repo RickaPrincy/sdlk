@@ -12,6 +12,7 @@ find_package(glm CONFIG REQUIRED)
 find_package(SDL2 CONFIG REQUIRED)
 find_package(SDL2_image CONFIG REQUIRED)
 find_path(EARCUT_HPP_INCLUDE_DIRS "mapbox/earcut.hpp")
+find_package(Freetype REQUIRED)
 
 set(SDLK_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(SDLK_IS_MAIN_PROJECT OFF)
@@ -58,6 +59,7 @@ if(SDLK_IS_MAIN_PROJECT)
     @ONLY)
 endif()
 
+add_subdirectory(external/msdf-atlas-gen)
 add_subdirectory(sources)
 add_subdirectory(examples)
 

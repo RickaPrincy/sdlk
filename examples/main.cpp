@@ -4,6 +4,8 @@
 #include <sdlk/core/components/2d/shape/rectangle_shape.hpp>
 #include <sdlk/core/renderable/component.hpp>
 
+#include "sdlk/core/fonts/msdf_font.hpp"
+
 using namespace sdlk;
 
 auto home() -> std::shared_ptr<renderable>;
@@ -20,6 +22,8 @@ auto main(const int argc, char** argv) -> int
 
 	rc_engine.add_event_listener(
 		event_type::key_down, [](const SDL_Event& event) { std::cout << "Clicked\n"; });
+
+	auto font = msdf_font::make("./resources/assets/fonts/arial.ttf");
 
 	return rc_engine.run(argc, argv);
 }
@@ -56,15 +60,14 @@ auto rectangle_with_texture() -> std::shared_ptr<renderable>
 {
 	const auto texture = sdlk2d::texture::from_file("./resources/assets/images/image.png");
 
-	sdlk2d::type::polygon rect_with_uv = {
-		sdlk2d::type::vertex({ 0.5f, 1.0f }, glm::vec2{ 0.0f, 0.0f }),
+	sdlk2d::type::polygon rect_with_uv = { sdlk2d::type::vertex(
+											   { 0.5f, 1.0f }, glm::vec2{ 0.0f, 0.0f }),
 		sdlk2d::type::vertex({ 1.0f, 1.0f }, glm::vec2{ 1.0f, 0.0f }),
 		sdlk2d::type::vertex({ 1.0f, 0.5f }, glm::vec2{ 1.0f, 1.0f }),
 
 		sdlk2d::type::vertex({ 0.5f, 1.0f }, glm::vec2{ 0.0f, 0.0f }),
 		sdlk2d::type::vertex({ 1.0f, 0.5f }, glm::vec2{ 1.0f, 1.0f }),
-		sdlk2d::type::vertex({ 0.5f, 0.5f }, glm::vec2{ 0.0f, 1.0f })
-	};
+		sdlk2d::type::vertex({ 0.5f, 0.5f }, glm::vec2{ 0.0f, 1.0f }) };
 
 	return std::make_shared<sdlk2d::polygon_shape>(rect_with_uv, texture);
 }
