@@ -39,4 +39,5 @@ namespace sdlk2d::type
 	};
 
 	using polygon = std::vector<vertex>;
+	using points = std::vector<point>;
 }

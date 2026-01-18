@@ -11,7 +11,7 @@
 
 namespace sdlk2d
 {
-	static auto map_points_to_polygon(const std::vector<type::point>& points) -> type::polygon;
+	static auto map_points_to_polygon(const type::points& points) -> type::polygon;
 	static auto map_as_position_only(const type::polygon& polygon) -> std::vector<glm::vec3>;
 	static auto map_as_position_and_uv(const type::polygon& polygon)
 		-> std::vector<std::array<float, 5>>;
@@ -50,8 +50,7 @@ namespace sdlk2d
 		this->m_geometry = std::make_shared<sdlk::geometry>(vao, vbo, nullptr);
 	}
 
-	polygon_shape::polygon_shape(const std::vector<type::point>& points,
-		const SDL_Color& uniform_color)
+	polygon_shape::polygon_shape(const type::points& points, const SDL_Color& uniform_color)
 		: polygon_shape(map_points_to_polygon(points), uniform_color)
 	{
 	}
@@ -79,7 +78,7 @@ namespace sdlk2d
 	}
 
 	polygon_shape::polygon_shape(const type::polygon& polygon,
-		const std::shared_ptr<sdlk2d::texture>& texture)
+		const std::shared_ptr<texture>& texture)
 	{
 		this->m_style = shape_style(texture);
 		const auto data = map_as_position_and_uv(polygon);
@@ -193,7 +192,7 @@ namespace sdlk2d
 		return result;
 	}
 
-	static auto map_points_to_polygon(const std::vector<type::point>& points) -> type::polygon
+	static auto map_points_to_polygon(const type::points& points) -> type::polygon
 	{
 		type::polygon polygon{};
 		polygon.reserve(points.size());

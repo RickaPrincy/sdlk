@@ -16,10 +16,11 @@ namespace sdlk2d
 
 	public:
 		explicit polygon_shape(const type::polygon &polygon);
-		explicit polygon_shape(const std::vector<type::point> &points, const SDL_Color &uniform_color);
+		explicit polygon_shape(const type::points &points, const SDL_Color &uniform_color);
 		explicit polygon_shape(const type::polygon &polygon, const SDL_Color &uniform_color);
 
-		explicit polygon_shape(const type::polygon &polygon, const std::shared_ptr<texture> &texture);
+		explicit polygon_shape(const type::polygon &polygon,
+			const std::shared_ptr<texture> &texture);
 
 		auto render(const std::shared_ptr<sdlk::gl_program> &program) -> void override;
 

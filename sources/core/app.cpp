@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_video.h>
+#include <SDL_image.h>
 #include <glad/glad.h>
 
 #include <csignal>
@@ -94,6 +95,12 @@ namespace sdlk
 			throw std::runtime_error("Cannot init sdl");
 		}
 
+		if (!(IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) & IMG_INIT_JPG | IMG_INIT_PNG))
+		{
+			SDL_Quit();
+			throw std::runtime_error("Cannot init sdl_image");
+		}
+
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -153,11 +160,10 @@ namespace sdlk
 		return this->m_event_listener;
 	}
 
-	auto app::add_view(const std::string &name, std::shared_ptr<renderable> child) const
-		-> void
+	auto app::add_view(const std::string &name, std::shared_ptr<renderable> child) const -> void
 	{
 		this->m_view->add_view(name, std::move(child));
-		//TODO: remove
+		// TODO: remove
 		this->m_view->switch_to(name);
 	}
 
@@ -169,5 +175,8 @@ namespace sdlk
 		}
 
 		SDL_GL_DeleteContext(this->m_opengl_context);
+
+		IMG_Quit();
+		SDL_Quit();
 	}
 }  // namespace sdlk

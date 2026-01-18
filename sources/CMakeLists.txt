@@ -18,7 +18,6 @@ set(LIB_SOURCES
     core/components/2d/shape/polygon_shape.cpp
     core/components/2d/shape/rectangle_shape.cpp
     core/components/2d/shape/texture.cpp
-    core/components/2d/utils/mapper_to_3d.cpp
 )
 
 # Create the library

@@ -54,7 +54,7 @@ namespace sdlk2d
 		return std::make_shared<texture>(id, surface->w, surface->h);
 	}
 
-	auto texture::bind(GLuint unit) const -> void
+	auto texture::bind(const GLuint unit) const -> void
 	{
 		glActiveTexture(GL_TEXTURE0 + unit);
 		glBindTexture(GL_TEXTURE_2D, this->m_id);

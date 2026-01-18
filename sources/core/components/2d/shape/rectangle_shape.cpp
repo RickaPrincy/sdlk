@@ -7,8 +7,8 @@
 
 namespace sdlk2d
 {
-	static auto to_points(const type::point &origin, float width, float height)
-		-> std::vector<type::point>;
+	static auto to_points(const type::point &origin, const float &width, const float &height)
+		-> type::points;
 
 	rectangle_shape::rectangle_shape(const type::point &origin,
 		const float &width,
@@ -18,8 +18,8 @@ namespace sdlk2d
 	{
 	}
 
-	static auto to_points(const type::point &origin, float width, float height)
-		-> std::vector<type::point>
+	static auto to_points(const type::point &origin, const float &width, const float &height)
+		-> type::points
 	{
 		const float x0 = origin.x;
 		const float y0 = origin.y;
