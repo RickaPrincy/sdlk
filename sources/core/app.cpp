@@ -29,10 +29,10 @@ namespace sdlk
 		const auto ndc_background_color =
 			converter::sdl_color_to_ndc(this->_options.background_color);
 
-		glClearColor(ndc_background_color[0],
-			ndc_background_color[1],
-			ndc_background_color[2],
-			ndc_background_color[3]);
+		glClearColor(ndc_background_color.r,
+			ndc_background_color.g,
+			ndc_background_color.b,
+			ndc_background_color.a);
 
 		try
 		{

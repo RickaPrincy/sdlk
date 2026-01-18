@@ -1,9 +1,8 @@
+#include <../include/sdlk/core/components/2d/shape/polygon_shape.hpp>
 #include <iostream>
 #include <sdlk/core/app.hpp>
-#include <sdlk/core/renderable/component.hpp>
-
-#include <sdlk/core/components/2d/polygon_shape.hpp>
 #include <sdlk/core/components/2d/rectangle_shape.hpp>
+#include <sdlk/core/renderable/component.hpp>
 
 using namespace sdlk;
 
