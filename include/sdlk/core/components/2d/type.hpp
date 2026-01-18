@@ -7,10 +7,10 @@
 #include <glm/glm.hpp>
 #include <vector>
 
-namespace sdlk::type
+namespace sdlk2d::type
 {
-	using point = glm::vec3;
-	using ring = std::vector<point>;
+	using point= glm::vec2;
+	using ring= std::vector<point>;
 
 	using polygon = ring;
 	using multi_polygon = std::vector<polygon>;

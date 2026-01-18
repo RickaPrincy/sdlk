@@ -15,7 +15,9 @@ set(LIB_SOURCES
     core/renderable/renderable.cpp
     core/renderable/component.cpp
     core/renderable/multiple_view.cpp
-    core/renderable/colored_shape.cpp
+    core/components/2d/polygon_shape.cpp
+    core/components/2d/rectangle_shape.cpp
+    core/components/2d/mapper_to_3d.cpp
 )
 
 # Create the library
