@@ -2,9 +2,8 @@
 #include <sdlk/core/app.hpp>
 #include <sdlk/core/components/2d/shape/polygon_shape.hpp>
 #include <sdlk/core/components/2d/shape/rectangle_shape.hpp>
+#include <sdlk/core/fonts/msdf_font.hpp>
 #include <sdlk/core/renderable/component.hpp>
-
-#include "sdlk/core/fonts/msdf_font.hpp"
 
 using namespace sdlk;
 
@@ -24,6 +23,11 @@ auto main(const int argc, char** argv) -> int
 		event_type::key_down, [](const SDL_Event& event) { std::cout << "Clicked\n"; });
 
 	auto font = msdf_font::make("./resources/assets/fonts/arial.ttf");
+
+	const auto test = font->get('c');
+
+
+	std::cout << test.getCodepoint() << "\n";
 
 	return rc_engine.run(argc, argv);
 }

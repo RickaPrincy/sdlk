@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include <glad/glad.h>
 #include <msdf-atlas-gen/msdf-atlas-gen.h>
 
 #include <memory>
@@ -28,11 +27,18 @@ namespace sdlk
 		msdf_font_conf m_conf{};
 		std::string m_font_path{};
 		msdfgen::FontHandle* m_font_handle{};
+		std::unordered_map<char, GlyphGeometry> m_glyphs{};
+
+		auto configure(GlyphGeometry &glyph) const -> GlyphGeometry;
 
 	public:
 		explicit msdf_font(std::string font_path, msdf_font_conf&& conf = {});
 
 		static auto make(std::string font_path) -> std::shared_ptr<msdf_font>;
+
+		auto load(const Charset &charset) -> void;
+
+		[[nodiscard]] auto get(const char &c) -> const GlyphGeometry&;
 
 		~msdf_font();
 	};
