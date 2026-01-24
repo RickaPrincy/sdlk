@@ -2,29 +2,30 @@
 // Created by ricka on 2026-01-24.
 //
 
-#include <sdlk/core/components/2d/shape/text_shape.hpp>
-#include <utility>
 #include <glm/vec4.hpp>
+#include <sdlk/core/components/2d/shape/text_shape.hpp>
 #include <sdlk/core/gl/gl_program.hpp>
+#include <utility>
 
 namespace sdlk2d
 {
-
-	struct QuadVertex {
-		glm::vec3 pos;
-		glm::vec2 uv;
+	struct char_vertex
+	{
+		glm::vec3 m_pos;
+		glm::vec2 m_uv;
 	};
 
-	class QuadRenderer {
+	class char_drawer
+	{
 	public:
-		void draw(const std::array<QuadVertex, 6> &quad) const {
-			glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		void draw(const std::array<char_vertex, 6> &quad) const
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, m_vbo->m_id);
 			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(quad), quad.data());
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 		}
 
-		GLuint vao;
-		GLuint vbo;
+		std::shared_ptr<sdlk::gl_buffer> m_vbo;
 	};
 
 	text_shape::text_shape(std::string text, const std::shared_ptr<sdlk::msdf_font> &font)
@@ -42,8 +43,13 @@ namespace sdlk2d
 		vao->enable_attrib(0);	// position
 		vao->enable_attrib(2);	// uv
 
-		vao->attrib_pointer(0, 3, GL_FLOAT, GL_FALSE,  5 * sizeof(float), nullptr);  // position
-		vao->attrib_pointer(2, 2, GL_FLOAT, GL_FALSE,  5 * sizeof(float), reinterpret_cast<void *>(2 * sizeof(float)));  // uv
+		vao->attrib_pointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), nullptr);	// position
+		vao->attrib_pointer(2,
+			2,
+			GL_FLOAT,
+			GL_FALSE,
+			5 * sizeof(float),
+			reinterpret_cast<void *>(3 * sizeof(float)));  // uv
 
 		this->m_geometry = std::make_shared<sdlk::geometry>(vao, vbo, nullptr);
 
@@ -53,21 +59,23 @@ namespace sdlk2d
 
 	auto text_shape::render(const std::shared_ptr<sdlk::gl_program> &program) -> void
 	{
+		this->m_geometry->get_vao()->bind();
 		const auto uniform = program->get_uniform();
 
 		uniform->set("u_use_texture", true);
 		uniform->set("u_text_rendering", true);
 		uniform->set("u_use_vertex_color", false);
-		uniform->set("u_color", glm::vec4{0.0f, 1.0f, 0.0f, 1.0f});
+		uniform->set("u_color", glm::vec4{ 0.0f, 1.0f, 1.0f, 1.0f });
 
 		this->m_font->get_texture()->bind();
+		uniform->set("u_px_range", this->m_font->get_conf().m_pixel_range);
 		uniform->set("u_texture", 0);
 
-		glm::vec2 pen{0.0, 0.0};
+		glm::vec2 pen{ -1.0, 0.0 };
 		static float scale = 0.2;
 
-		QuadRenderer quad_renderer{.vao=this->m_geometry->get_vao()->m_id, .vbo=this->m_geometry->get_vbo()->m_id};
-		for (const auto &c: this->m_text)
+		const char_drawer drawer{ .m_vbo = this->m_geometry->get_vbo() };
+		for (const auto &c : this->m_text)
 		{
 			const auto &glyph = this->m_font->get(c);
 			double pl, pb, pr, pt;
@@ -76,31 +84,28 @@ namespace sdlk2d
 			double ul, ub, ur, ut;
 			glyph.getQuadAtlasBounds(ul, ub, ur, ut);
 
-			// Transforme plane bounds en positions écran
-			float x0 = pen.x + float(pl) * scale;
-			float y0 = pen.y + float(pb) * scale;
-			float x1 = pen.x + float(pr) * scale;
-			float y1 = pen.y + float(pt) * scale;
+			float x0 = pen.x + static_cast<float>(pl) * scale;
+			float y0 = pen.y + static_cast<float>(pb) * scale;
+			float x1 = pen.x + static_cast<float>(pr) * scale;
+			float y1 = pen.y + static_cast<float>(pt) * scale;
 
-			// Normalise les UV par la taille de l’atlas
 			const auto &atlas = this->m_font->get_bitmap();
-			float u0 = float(ul) / float(atlas.width);
-			float v0 = float(ub) / float(atlas.height);
-			float u1 = float(ur) / float(atlas.width);
-			float v1 = float(ut) / float(atlas.height);
+			float u0 = static_cast<float>(ul) / static_cast<float>(atlas.width);
+			float v0 = static_cast<float>(ub) / static_cast<float>(atlas.height);
+			float u1 = static_cast<float>(ur) / static_cast<float>(atlas.width);
+			float v1 = static_cast<float>(ut) / static_cast<float>(atlas.height);
 
-			std::array<QuadVertex, 6> quad = {{
-				{{x0, y0, 0}, {u0, v0}},
-				{{x1, y0, 0}, {u1, v0}},
-				{{x1, y1, 0}, {u1, v1}},
+			std::array<char_vertex, 6> quad = { {
+				{ { x0, y0, 0 }, { u0, v0 } },
+				{ { x1, y0, 0 }, { u1, v0 } },
+				{ { x1, y1, 0 }, { u1, v1 } },
 
-				{{x0, y0, 0}, {u0, v0}},
-				{{x1, y1, 0}, {u1, v1}},
-				{{x0, y1, 0}, {u0, v1}},
-			}};
+				{ { x0, y0, 0 }, { u0, v0 } },
+				{ { x1, y1, 0 }, { u1, v1 } },
+				{ { x0, y1, 0 }, { u0, v1 } },
+			} };
 
-			quad_renderer.draw(quad);
-
+			drawer.draw(quad);
 			pen.x += static_cast<float>(glyph.getAdvance()) * scale;
 		}
 	}

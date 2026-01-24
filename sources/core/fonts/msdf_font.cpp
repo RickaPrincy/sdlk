@@ -146,6 +146,11 @@ namespace sdlk
 		msdfgen::destroyFont(this->m_font_handle);
 	}
 
+	auto msdf_font::get_conf() const -> msdf_font_conf
+	{
+		return this->m_conf;
+	}
+
 	auto msdf_font::make(std::string font_path) -> std::shared_ptr<msdf_font>
 	{
 		return std::make_shared<msdf_font>(std::move(font_path));

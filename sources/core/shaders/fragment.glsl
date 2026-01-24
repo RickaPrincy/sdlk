@@ -5,10 +5,11 @@ in vec2 text_coord;
 
 out vec4 frag_color;
 
-uniform bool u_text_rendering;
-uniform bool u_use_texture;
-uniform bool u_use_vertex_color;
 uniform sampler2D u_texture;
+uniform float u_px_range;
+uniform bool u_use_texture;
+uniform bool u_text_rendering;
+uniform bool u_use_vertex_color;
 
 float median(float r, float g, float b) {
     return max(min(r, g), min(max(r, g), b));
@@ -17,8 +18,8 @@ float median(float r, float g, float b) {
 vec4 msdf() {
     vec3 msd = texture(u_texture, text_coord).rgb;
     float sd = median(msd.r, msd.g, msd.b);
-    float screenPxDistance = 2.0 * (sd - 0.5);
-    float opacity = clamp(screenPxDistance + 0.5, 0.0, 1.0);
+    float screen_px_distance = u_px_range * (sd - 0.5);
+    float opacity = clamp(screen_px_distance + 0.5, 0.0, 1.0);
     return mix(vec4(0.0), out_color, opacity);
 }
 

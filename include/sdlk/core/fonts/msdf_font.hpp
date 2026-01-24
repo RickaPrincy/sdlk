@@ -20,10 +20,10 @@ namespace sdlk
 
 	struct msdf_font_conf
 	{
-		const double m_pixel_range = 2.0;
-		const double m_glyph_scale = 32.0;
-		const double m_miter_limit = 1.0;
-		const double m_max_corner_angle = 3.0;
+		const float m_pixel_range = 2.0;
+		const float m_glyph_scale = 32.0;
+		const float m_miter_limit = 1.0;
+		const float m_max_corner_angle = 3.0;
 	};
 
 	class msdf_font final
@@ -48,6 +48,7 @@ namespace sdlk
 		[[nodiscard]] auto get(const char &c) -> const GlyphGeometry &;
 		[[nodiscard]] auto get_texture() const -> std::shared_ptr<sdlk2d::texture>;
 		[[nodiscard]] auto get_bitmap() const -> bitmap_const_ref;
+		[[nodiscard]] auto get_conf() const -> msdf_font_conf;
 
 		auto load(const Charset &charset) -> void;
 		auto load(const char &character) -> void;

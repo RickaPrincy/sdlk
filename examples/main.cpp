@@ -27,7 +27,6 @@ auto home() -> std::shared_ptr<renderable>
 {
 	auto home = std::make_shared<component>();
 
-	home->add_child(rectangle_with_texture());
 	home->add_child(text_hello_world());
 
 	return home;
