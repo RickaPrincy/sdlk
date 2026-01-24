@@ -30,6 +30,7 @@ namespace sdlk
 	{
 		msdf_font_conf m_conf{};
 		std::string m_font_path{};
+		bitmap_const_ref m_bitmap{};
 		msdf_dynamic_atlas m_atlas{};
 		msdfgen::FontHandle *m_font_handle{};
 		std::shared_ptr<sdlk2d::texture> m_texture{};
@@ -45,6 +46,8 @@ namespace sdlk
 		static auto make(std::string font_path) -> std::shared_ptr<msdf_font>;
 
 		[[nodiscard]] auto get(const char &c) -> const GlyphGeometry &;
+		[[nodiscard]] auto get_texture() const -> std::shared_ptr<sdlk2d::texture>;
+		[[nodiscard]] auto get_bitmap() const -> bitmap_const_ref;
 
 		auto load(const Charset &charset) -> void;
 		auto load(const char &character) -> void;

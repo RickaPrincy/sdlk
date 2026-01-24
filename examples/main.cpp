@@ -1,13 +1,14 @@
-#include <iostream>
 #include <sdlk/core/app.hpp>
 #include <sdlk/core/components/2d/shape/polygon_shape.hpp>
 #include <sdlk/core/components/2d/shape/rectangle_shape.hpp>
 #include <sdlk/core/fonts/msdf_font.hpp>
 #include <sdlk/core/renderable/component.hpp>
+#include <sdlk/core/components/2d/shape/text_shape.hpp>
 
 using namespace sdlk;
 
 auto home() -> std::shared_ptr<renderable>;
+auto text_hello_world() -> std::shared_ptr<renderable>;
 auto rectangle_with_texture() -> std::shared_ptr<renderable>;
 auto rectangle_with_uniform_color() -> std::shared_ptr<renderable>;
 auto rectangle_with_vertex_color() -> std::shared_ptr<renderable>;
@@ -19,16 +20,6 @@ auto main(const int argc, char** argv) -> int
 
 	rc_engine.add_view("home", home());
 
-	rc_engine.add_event_listener(
-		event_type::key_down, [](const SDL_Event& event) { std::cout << "Clicked\n"; });
-
-	auto font = msdf_font::make("./resources/assets/fonts/arial.ttf");
-
-	const auto test = font->get('c');
-
-
-	std::cout << test.getCodepoint() << "\n";
-
 	return rc_engine.run(argc, argv);
 }
 
@@ -37,10 +28,15 @@ auto home() -> std::shared_ptr<renderable>
 	auto home = std::make_shared<component>();
 
 	home->add_child(rectangle_with_texture());
-	home->add_child(rectangle_with_vertex_color());
-	home->add_child(rectangle_with_uniform_color());
+	home->add_child(text_hello_world());
 
 	return home;
+}
+
+auto text_hello_world() -> std::shared_ptr<renderable>
+{
+	auto font = msdf_font::make("./resources/assets/fonts/arial.ttf");
+	return std::make_shared<sdlk2d::text_shape>("Hello World!", font);
 }
 
 auto rectangle_with_uniform_color() -> std::shared_ptr<renderable>

@@ -12,10 +12,8 @@ namespace sdlk
 {
 	class gl_vertex_array
 	{
-	protected:
-		GLuint m_id{0};
-
 	public:
+		GLuint m_id{0};
 		gl_vertex_array();
 
 		virtual ~gl_vertex_array();

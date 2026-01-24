@@ -17,6 +17,16 @@ namespace sdlk
 		this->m_is_indexed = this->m_ebo != nullptr;
 	}
 
+	auto geometry::get_vbo() const -> std::shared_ptr<gl_buffer>
+	{
+		return this->m_vbo;
+	}
+
+	auto geometry::get_vao() const -> std::shared_ptr<gl_vertex_array>
+	{
+		return this->m_vao;
+	}
+
 	auto geometry::render() const -> void
 	{
 		this->m_vao->bind();

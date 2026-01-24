@@ -13,13 +13,12 @@ namespace sdlk
 {
 	class gl_buffer
 	{
-	protected:
-		GLuint m_id{0};
 		GLenum m_target{};
 		std::size_t m_count{0};
 		std::size_t m_element_size{0};
 
 	public:
+		GLuint m_id{0};
 		explicit gl_buffer(GLenum target);
 
 		virtual ~gl_buffer();

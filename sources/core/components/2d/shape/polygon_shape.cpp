@@ -114,6 +114,7 @@ namespace sdlk2d
 		const auto& uniform = program->get_uniform();
 
 		const auto style_type = this->m_style.m_type;
+		uniform->set("u_text_rendering", false);
 		uniform->set("u_use_texture", style_type == shape_style::type::texture);
 		uniform->set("u_use_vertex_color", style_type == shape_style::type::vertex);
 
@@ -198,7 +199,7 @@ namespace sdlk2d
 		polygon.reserve(points.size());
 		for (const auto& point : points)
 		{
-			polygon.emplace_back(type::vertex(point));
+			polygon.emplace_back(point);
 		}
 		return polygon;
 	}

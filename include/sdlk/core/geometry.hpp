@@ -24,5 +24,8 @@ namespace sdlk
 			std::shared_ptr<gl_buffer> ebo);
 
 		auto render() const -> void;
+
+		[[nodiscard]] auto get_vbo() const -> std::shared_ptr<gl_buffer>;
+		[[nodiscard]] auto get_vao() const -> std::shared_ptr<gl_vertex_array>;
 	};
 }  // namespace sdlk

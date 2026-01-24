@@ -89,11 +89,16 @@ namespace sdlk
 		return data;
 	}
 
+	auto msdf_font::get_bitmap() const -> bitmap_const_ref
+	{
+		return this->m_bitmap;
+	}
+
 	auto msdf_font::update_texture(msdf_dynamic_atlas::ChangeFlags flags) -> void
 	{
 		static bool initialized = false;
 		this->m_texture->bind();
-		const bitmap_const_ref bitmap{ this->m_atlas.atlasGenerator().atlasStorage() };
+		this->m_bitmap = bitmap_const_ref{ this->m_atlas.atlasGenerator().atlasStorage() };
 
 		if (!initialized)
 		{
@@ -108,12 +113,12 @@ namespace sdlk
 				glTexImage2D(GL_TEXTURE_2D,
 					0,
 					GL_RGB8,
-					bitmap.width,
-					bitmap.height,
+					m_bitmap.width,
+					m_bitmap.height,
 					0,
 					GL_RGB,
 					GL_UNSIGNED_BYTE,
-					bitmap.pixels);
+					m_bitmap.pixels);
 				break;
 			case msdf_dynamic_atlas::ChangeFlag::REARRANGED:
 				glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -121,14 +126,19 @@ namespace sdlk
 					0,
 					0,
 					0,
-					bitmap.width,
-					bitmap.height,
+					m_bitmap.width,
+					m_bitmap.height,
 					GL_RGB,
 					GL_UNSIGNED_BYTE,
-					bitmap.pixels);
+					m_bitmap.pixels);
 				break;
 			default: break;
 		}
+	}
+
+	auto msdf_font::get_texture() const -> std::shared_ptr<sdlk2d::texture>
+	{
+		return this->m_texture;
 	}
 
 	msdf_font::~msdf_font()
