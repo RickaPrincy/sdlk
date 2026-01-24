@@ -14,10 +14,12 @@ namespace sdlk2d
 		int m_width{}, m_height{};
 
 	public:
+		texture() = default;
 		texture(GLuint id, int width, int height);
 
 		auto bind(GLuint unit = 0) const -> void;
 
+		[[nodiscard]] auto get_id() -> GLuint&;
 		[[nodiscard]] auto get_width() const -> int;
 		[[nodiscard]] auto get_height() const -> int;
 
@@ -27,4 +29,4 @@ namespace sdlk2d
 		static auto from_surface(SDL_Surface* surface) -> std::shared_ptr<texture>;
 	};
 
-}  // namespace sdlk
+}  // namespace sdlk2d

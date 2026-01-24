@@ -21,7 +21,23 @@ namespace sdlk
 			throw std::runtime_error("Could not load font " + m_font_path);
 		}
 
+		this->m_texture = std::make_shared<sdlk2d::texture>();
+		glGenTextures(1, &this->m_texture->get_id());
+
+		this->m_texture->bind();
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
 		this->load(Charset::ASCII);
+	}
+
+	auto msdf_font::load(const char &character) -> void
+	{
+		Charset charset{};
+		charset.add(character);
+		return this->load(charset);
 	}
 
 	auto msdf_font::load(const Charset &charset) -> void
@@ -38,6 +54,7 @@ namespace sdlk
 			this->m_glyphs.insert(
 				std::make_pair(static_cast<char>(glyph.getCodepoint()), new_glyph));
 		}
+		this->add_to_atlas(charset_glyphs);
 	}
 
 	auto msdf_font::get(const char &c) -> const GlyphGeometry &
@@ -48,7 +65,8 @@ namespace sdlk
 			return it->second;
 		}
 
-		throw std::runtime_error("Not implemented");
+		this->load(c);
+		return this->get(c);
 	}
 
 	auto msdf_font::configure(GlyphGeometry &glyph) const -> GlyphGeometry
@@ -59,6 +77,58 @@ namespace sdlk
 			m_conf.m_miter_limit);
 
 		return glyph;
+	}
+
+	auto msdf_font::add_to_atlas(std::vector<GlyphGeometry> glyphs)
+		-> msdf_dynamic_atlas::ChangeFlags
+	{
+		const auto data = this->m_atlas.add(glyphs.data(), static_cast<int>(glyphs.size()));
+
+		this->update_texture(data);
+
+		return data;
+	}
+
+	auto msdf_font::update_texture(msdf_dynamic_atlas::ChangeFlags flags) -> void
+	{
+		static bool initialized = false;
+		this->m_texture->bind();
+		const bitmap_const_ref bitmap{ this->m_atlas.atlasGenerator().atlasStorage() };
+
+		if (!initialized)
+		{
+			flags = msdf_dynamic_atlas::ChangeFlag::RESIZED;
+			initialized = true;
+		}
+
+		switch (flags)
+		{
+			case msdf_dynamic_atlas::ChangeFlag::RESIZED:
+				glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+				glTexImage2D(GL_TEXTURE_2D,
+					0,
+					GL_RGB8,
+					bitmap.width,
+					bitmap.height,
+					0,
+					GL_RGB,
+					GL_UNSIGNED_BYTE,
+					bitmap.pixels);
+				break;
+			case msdf_dynamic_atlas::ChangeFlag::REARRANGED:
+				glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+				glTexSubImage2D(GL_TEXTURE_2D,
+					0,
+					0,
+					0,
+					bitmap.width,
+					bitmap.height,
+					GL_RGB,
+					GL_UNSIGNED_BYTE,
+					bitmap.pixels);
+				break;
+			default: break;
+		}
 	}
 
 	msdf_font::~msdf_font()

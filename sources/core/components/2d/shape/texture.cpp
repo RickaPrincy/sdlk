@@ -70,6 +70,11 @@ namespace sdlk2d
 		return this->m_height;
 	}
 
+	auto texture::get_id()-> GLuint&
+	{
+		return this->m_id;
+	}
+
 	texture::~texture()
 	{
 		if (this->m_id != 0)
