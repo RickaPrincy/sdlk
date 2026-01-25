@@ -2,6 +2,9 @@
 // Created by ricka on 2026-01-18.
 //
 
+#include <msdfgen/ext/save-png.h>
+
+#include <iostream>
 #include <sdlk/core/fonts/msdf_font.hpp>
 #include <stdexcept>
 
@@ -31,9 +34,11 @@ namespace sdlk
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 		this->load(Charset::ASCII);
+
+		msdfgen::savePng(this->get_bitmap(), "/home/ricka/atlas.png");
 	}
 
-	auto msdf_font::load(const char &character) -> void
+	auto msdf_font::load(const char32_t &character) -> void
 	{
 		Charset charset{};
 		charset.add(character);
@@ -48,16 +53,20 @@ namespace sdlk
 		FontGeometry font_geometry(&charset_glyphs);
 		font_geometry.loadCharset(this->m_font_handle, 1.0, charset);
 
+		for (auto &glyph: charset_glyphs){
+			this->configure(glyph);
+		}
+
+		this->add_to_atlas(charset_glyphs);
+
 		for (auto &glyph : charset_glyphs)
 		{
-			auto new_glyph = this->configure(glyph);
 			this->m_glyphs.insert(
-				std::make_pair(static_cast<char>(glyph.getCodepoint()), new_glyph));
+				std::make_pair(static_cast<char32_t>(glyph.getCodepoint()), glyph));
 		}
-		this->add_to_atlas(charset_glyphs);
 	}
 
-	auto msdf_font::get(const char &c) -> const GlyphGeometry &
+	auto msdf_font::get(const char32_t &c) -> const GlyphGeometry &
 	{
 		const auto &it = this->m_glyphs.find(c);
 		if (it != this->m_glyphs.end())
@@ -79,7 +88,7 @@ namespace sdlk
 		return glyph;
 	}
 
-	auto msdf_font::add_to_atlas(std::vector<GlyphGeometry> glyphs)
+	auto msdf_font::add_to_atlas(std::vector<GlyphGeometry> &glyphs)
 		-> msdf_dynamic_atlas::ChangeFlags
 	{
 		const auto data = this->m_atlas.add(glyphs.data(), static_cast<int>(glyphs.size()));
@@ -106,10 +115,10 @@ namespace sdlk
 			initialized = true;
 		}
 
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		switch (flags)
 		{
 			case msdf_dynamic_atlas::ChangeFlag::RESIZED:
-				glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 				glTexImage2D(GL_TEXTURE_2D,
 					0,
 					GL_RGB8,
@@ -121,7 +130,6 @@ namespace sdlk
 					m_bitmap.pixels);
 				break;
 			case msdf_dynamic_atlas::ChangeFlag::REARRANGED:
-				glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 				glTexSubImage2D(GL_TEXTURE_2D,
 					0,
 					0,

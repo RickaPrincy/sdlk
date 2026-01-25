@@ -2,6 +2,7 @@
 // Created by ricka on 2026-01-24.
 //
 
+#include <cassert>
 #include <glm/vec4.hpp>
 #include <sdlk/core/components/2d/shape/text_shape.hpp>
 #include <sdlk/core/gl/gl_program.hpp>
@@ -15,19 +16,6 @@ namespace sdlk2d
 		glm::vec2 m_uv;
 	};
 
-	class char_drawer
-	{
-	public:
-		void draw(const std::array<char_vertex, 6> &quad) const
-		{
-			glBindBuffer(GL_ARRAY_BUFFER, m_vbo->m_id);
-			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(quad), quad.data());
-			glDrawArrays(GL_TRIANGLES, 0, 6);
-		}
-
-		std::shared_ptr<sdlk::gl_buffer> m_vbo;
-	};
-
 	text_shape::text_shape(std::string text, const std::shared_ptr<sdlk::msdf_font> &font)
 		: m_font(font),
 		  m_text(std::move(text))
@@ -38,7 +26,7 @@ namespace sdlk2d
 		vao->bind();
 		vbo->bind();
 
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 5, NULL, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(char_vertex) * 6, NULL, GL_DYNAMIC_DRAW);
 
 		vao->enable_attrib(0);	// position
 		vao->enable_attrib(2);	// uv
@@ -65,16 +53,17 @@ namespace sdlk2d
 		uniform->set("u_use_texture", true);
 		uniform->set("u_text_rendering", true);
 		uniform->set("u_use_vertex_color", false);
-		uniform->set("u_color", glm::vec4{ 0.0f, 1.0f, 1.0f, 1.0f });
+		uniform->set("u_color", glm::vec4{ 0.0f, 1.0f, 0.5f, 1.0f });
+		uniform->set("u_px_range", this->m_font->get_conf().m_pixel_range);
 
 		this->m_font->get_texture()->bind();
-		uniform->set("u_px_range", this->m_font->get_conf().m_pixel_range);
 		uniform->set("u_texture", 0);
 
 		glm::vec2 pen{ -1.0, 0.0 };
-		static float scale = 0.2;
+		static float scale = 0.03;
 
-		const char_drawer drawer{ .m_vbo = this->m_geometry->get_vbo() };
+		std::vector<char_vertex> vertices{};
+		vertices.reserve(m_text.size() * 6);
 		for (const auto &c : this->m_text)
 		{
 			const auto &glyph = this->m_font->get(c);
@@ -95,18 +84,21 @@ namespace sdlk2d
 			float u1 = static_cast<float>(ur) / static_cast<float>(atlas.width);
 			float v1 = static_cast<float>(ut) / static_cast<float>(atlas.height);
 
-			std::array<char_vertex, 6> quad = { {
-				{ { x0, y0, 0 }, { u0, v0 } },
-				{ { x1, y0, 0 }, { u1, v0 } },
-				{ { x1, y1, 0 }, { u1, v1 } },
+			vertices.push_back({ { x0, y0, 0 }, { u0, v0 } });
+			vertices.push_back({ { x1, y0, 0 }, { u1, v0 } });
+			vertices.push_back({ { x1, y1, 0 }, { u1, v1 } });
+			vertices.push_back({ { x0, y0, 0 }, { u0, v0 } });
+			vertices.push_back({ { x1, y1, 0 }, { u1, v1 } });
+			vertices.push_back({ { x0, y1, 0 }, { u0, v1 } });
 
-				{ { x0, y0, 0 }, { u0, v0 } },
-				{ { x1, y1, 0 }, { u1, v1 } },
-				{ { x0, y1, 0 }, { u0, v1 } },
-			} };
-
-			drawer.draw(quad);
 			pen.x += static_cast<float>(glyph.getAdvance()) * scale;
 		}
+
+		glBindBuffer(GL_ARRAY_BUFFER, this->m_geometry->get_vbo()->m_id);
+		glBufferData(GL_ARRAY_BUFFER,
+			static_cast<GLsizei>(vertices.size() * sizeof(char_vertex)),
+			vertices.data(),
+			GL_STREAM_DRAW);
+		glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(vertices.size()));
 	}
 }  // namespace sdlk2d

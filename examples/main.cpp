@@ -35,7 +35,7 @@ auto home() -> std::shared_ptr<renderable>
 auto text_hello_world() -> std::shared_ptr<renderable>
 {
 	auto font = msdf_font::make("./resources/assets/fonts/arial.ttf");
-	return std::make_shared<sdlk2d::text_shape>("Hello World!", font);
+	return std::make_shared<sdlk2d::text_shape>("Hello world !!!", font);
 }
 
 auto rectangle_with_uniform_color() -> std::shared_ptr<renderable>
