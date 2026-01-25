@@ -6,8 +6,7 @@
 
 namespace sdlk
 {
-	gl_buffer::gl_buffer(const GLenum target)
-		: m_target(target)
+	gl_buffer::gl_buffer(const GLenum target) : m_target(target)
 	{
 		glGenBuffers(1, &m_id);
 	}
@@ -30,15 +29,19 @@ namespace sdlk
 		glBindBuffer(m_target, 0);
 	}
 
-	auto gl_buffer::set_data(const void *data, const GLenum usage, const std::size_t count, const std::size_t element_size) -> void
+	auto gl_buffer::set_data(const void* data,
+		const GLenum usage,
+		const std::size_t count,
+		const std::size_t element_size) -> void
 	{
 		this->bind();
 		this->m_count = count;
 		this->m_element_size = element_size;
-		glBufferData(m_target, static_cast<GLsizeiptr>(this->m_count * this->m_element_size), data, usage);
+		glBufferData(
+			m_target, static_cast<GLsizeiptr>(this->m_count * this->m_element_size), data, usage);
 	}
 
-	auto gl_buffer::get_id() const -> GLuint
+	auto gl_buffer::id() -> GLuint&
 	{
 		return m_id;
 	}
@@ -52,5 +55,4 @@ namespace sdlk
 	{
 		return std::make_shared<gl_buffer>(target);
 	}
-}
-
+}  // namespace sdlk

@@ -12,8 +12,9 @@ namespace sdlk
 {
 	class gl_vertex_array
 	{
+		GLuint m_id{ 0 };
+
 	public:
-		GLuint m_id{0};
 		gl_vertex_array();
 
 		virtual ~gl_vertex_array();
@@ -22,15 +23,14 @@ namespace sdlk
 		auto unbind() const -> void;
 
 		auto enable_attrib(GLuint index) -> void;
-		auto attrib_pointer(
-			GLuint index,
+		auto attrib_pointer(GLuint index,
 			GLint size,
 			GLenum type,
 			GLboolean normalized,
 			GLsizei stride,
-			const void *offset) -> void;
+			const void* offset) -> void;
 
-		[[nodiscard]] auto get_id() const ->  GLuint;
+		[[nodiscard]] auto id() -> GLuint&;
 		[[nodiscard]] static auto make() -> std::shared_ptr<gl_vertex_array>;
 	};
-}
+}  // namespace sdlk

@@ -13,12 +13,12 @@ namespace sdlk
 {
 	class gl_buffer
 	{
+		GLuint m_id{ 0 };
 		GLenum m_target{};
-		std::size_t m_count{0};
-		std::size_t m_element_size{0};
+		std::size_t m_count{ 0 };
+		std::size_t m_element_size{ 0 };
 
 	public:
-		GLuint m_id{0};
 		explicit gl_buffer(GLenum target);
 
 		virtual ~gl_buffer();
@@ -26,11 +26,12 @@ namespace sdlk
 		auto bind() const -> void;
 		auto unbind() const -> void;
 
-		auto set_data(const void *data, GLenum usage,  std::size_t count, std::size_t element_size) -> void;
+		auto set_data(const void* data, GLenum usage, std::size_t count, std::size_t element_size)
+			-> void;
 
 		[[nodiscard]] static auto make(GLenum target) -> std::shared_ptr<gl_buffer>;
 
-		[[nodiscard]] auto get_id() const -> GLuint;
+		[[nodiscard]] auto id() -> GLuint&;
 		[[nodiscard]] auto get_count() const -> std::size_t;
 	};
 }  // namespace sdlk

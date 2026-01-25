@@ -39,12 +39,12 @@ namespace sdlk
 		const GLenum type,
 		const GLboolean normalized,
 		const GLsizei stride,
-		const void *offset) -> void
+		const void* offset) -> void
 	{
 		glVertexAttribPointer(index, size, type, normalized, stride, offset);
 	}
 
-	auto gl_vertex_array::get_id() const -> GLuint
+	auto gl_vertex_array::id() -> GLuint&
 	{
 		return m_id;
 	}

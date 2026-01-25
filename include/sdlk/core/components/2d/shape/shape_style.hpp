@@ -16,8 +16,6 @@ namespace sdlk2d
 		float m_size{ 0.2 };
 		sdlk::color m_fg_color{ sdlk::color::white() };
 		sdlk::color m_bg_color{ SDL_Color{ .r = 0, .g = 0, .b = 0, .a = 0 } };
-
-		explicit text_style() = default;
 	};
 
 	struct shape_style

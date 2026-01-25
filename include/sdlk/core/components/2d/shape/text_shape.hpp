@@ -12,12 +12,22 @@
 
 namespace sdlk2d
 {
+	struct char_vertex
+	{
+		glm::vec3 m_pos;
+		glm::vec2 m_uv;
+	};
+
 	class text_shape : public sdlk::renderable
 	{
+		std::vector<char_vertex> m_vertices{};
+
 	protected:
 		text_style m_style{};
 		std::u32string m_text{};
 		std::shared_ptr<sdlk::msdf_font> m_font{};
+
+		auto update_vertices() -> void;
 
 	public:
 		explicit text_shape(std::u32string text,
