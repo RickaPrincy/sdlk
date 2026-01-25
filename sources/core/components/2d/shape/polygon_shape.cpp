@@ -4,7 +4,6 @@
 
 #include <array>
 #include <sdlk/core/components/2d/shape/polygon_shape.hpp>
-#include <sdlk/core/converter.hpp>
 #include <sdlk/core/geometry.hpp>
 #include <sdlk/core/gl/gl_program.hpp>
 #include <stdexcept>
@@ -50,12 +49,12 @@ namespace sdlk2d
 		this->m_geometry = std::make_shared<sdlk::geometry>(vao, vbo, nullptr);
 	}
 
-	polygon_shape::polygon_shape(const type::points& points, const SDL_Color& uniform_color)
+	polygon_shape::polygon_shape(const type::points& points, const sdlk::color& uniform_color)
 		: polygon_shape(map_points_to_polygon(points), uniform_color)
 	{
 	}
 
-	polygon_shape::polygon_shape(const type::polygon& polygon, const SDL_Color& color)
+	polygon_shape::polygon_shape(const type::polygon& polygon, const sdlk::color& color)
 	{
 		this->m_style = shape_style(color);
 		const auto data = map_as_position_only(polygon);
@@ -125,7 +124,7 @@ namespace sdlk2d
 				uniform->set("u_texture", 0);
 				break;
 			case shape_style::type::uniform:
-				uniform->set("u_color", this->m_style.m_ndc_uniform_color.value());
+				uniform->set("u_color", this->m_style.m_uniform_color.value().ndc());
 				break;
 			default: break;
 		}
@@ -179,8 +178,7 @@ namespace sdlk2d
 				throw std::runtime_error("Vertex is missing Color for polygon_shape");
 			}
 
-			const auto ndc_color = sdlk::converter::sdl_color_to_ndc(vertex.m_color.value());
-
+			const auto ndc_color = vertex.m_color.value().ndc();
 			result.push_back({ vertex.m_position.x,
 				vertex.m_position.y,
 				0.0f,

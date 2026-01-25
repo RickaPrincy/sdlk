@@ -13,7 +13,7 @@ namespace sdlk2d
 	rectangle_shape::rectangle_shape(const type::point &origin,
 		const float &width,
 		const float &height,
-		const SDL_Color &color)
+		const sdlk::color &color)
 		: polygon_shape(to_points(origin, width, height), color)
 	{
 	}

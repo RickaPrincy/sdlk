@@ -2,8 +2,8 @@
 // Created by ricka on 2026-01-24.
 //
 
-#include <cassert>
 #include <glm/vec4.hpp>
+#include <locale>
 #include <sdlk/core/components/2d/shape/text_shape.hpp>
 #include <sdlk/core/gl/gl_program.hpp>
 #include <utility>
@@ -16,17 +16,21 @@ namespace sdlk2d
 		glm::vec2 m_uv;
 	};
 
-	text_shape::text_shape(std::string text, const std::shared_ptr<sdlk::msdf_font> &font)
-		: m_font(font),
-		  m_text(std::move(text))
+	text_shape::text_shape(std::u32string text,
+		const text_style &text_style,
+		const std::shared_ptr<sdlk::msdf_font> &font)
+		: m_text(std::move(text)),
+		  m_font(font),
+		  m_style(text_style)
 	{
+		this->m_font->load(this->m_text);
 		auto vao = std::make_shared<sdlk::gl_vertex_array>();
 		auto vbo = std::make_shared<sdlk::gl_buffer>(GL_ARRAY_BUFFER);
 
 		vao->bind();
 		vbo->bind();
 
-		glBufferData(GL_ARRAY_BUFFER, sizeof(char_vertex) * 6, NULL, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(char_vertex) * 6, nullptr, GL_DYNAMIC_DRAW);
 
 		vao->enable_attrib(0);	// position
 		vao->enable_attrib(2);	// uv
@@ -53,20 +57,35 @@ namespace sdlk2d
 		uniform->set("u_use_texture", true);
 		uniform->set("u_text_rendering", true);
 		uniform->set("u_use_vertex_color", false);
-		uniform->set("u_color", glm::vec4{ 0.0f, 1.0f, 0.5f, 1.0f });
+
 		uniform->set("u_px_range", this->m_font->get_conf().m_pixel_range);
+		uniform->set("u_color", this->m_style.m_fg_color.ndc());
+		uniform->set("u_bg_color", this->m_style.m_bg_color.ndc());
 
 		this->m_font->get_texture()->bind();
 		uniform->set("u_texture", 0);
 
 		glm::vec2 pen{ -1.0, 0.0 };
-		static float scale = 0.03;
+		const float scale = this->m_style.m_size;
 
 		std::vector<char_vertex> vertices{};
 		vertices.reserve(m_text.size() * 6);
-		for (const auto &c : this->m_text)
+
+		for (const char32_t &c : this->m_text)
 		{
-			const auto &glyph = this->m_font->get(c);
+			const auto &opt_glyph = this->m_font->get(c);
+			if (!opt_glyph.has_value())
+			{
+				continue;
+			}
+
+			const auto glyph = opt_glyph.value().get();
+			if (glyph.isWhitespace())
+			{
+				pen.x += static_cast<float>(opt_glyph.value().get().getAdvance()) * scale;
+				continue;
+			}
+
 			double pl, pb, pr, pt;
 			glyph.getQuadPlaneBounds(pl, pb, pr, pt);
 

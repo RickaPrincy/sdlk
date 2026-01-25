@@ -2,10 +2,7 @@
 // Created by ricka on 2026-01-18.
 //
 
-#include <msdfgen/ext/save-png.h>
-
-#include <iostream>
-#include <sdlk/core/fonts/msdf_font.hpp>
+#include <sdlk/core/components/2d/fonts/msdf_font.hpp>
 #include <stdexcept>
 
 #include "free_type_handle_wrapper.hpp"
@@ -34,8 +31,25 @@ namespace sdlk
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 		this->load(Charset::ASCII);
+	}
 
-		msdfgen::savePng(this->get_bitmap(), "/home/ricka/atlas.png");
+	auto msdf_font::load(const std::u32string &text) -> void
+	{
+		Charset charset{};
+		for (const auto &c : text)
+		{
+			if (!this->is_loaded(c))
+			{
+				charset.add(c);
+			}
+		}
+
+		if (charset.empty())
+		{
+			return;
+		}
+
+		return this->load(charset);
 	}
 
 	auto msdf_font::load(const char32_t &character) -> void
@@ -47,51 +61,61 @@ namespace sdlk
 
 	auto msdf_font::load(const Charset &charset) -> void
 	{
-		std::vector<GlyphGeometry> charset_glyphs;
-		charset_glyphs.reserve(charset.size());
+		const size_t old_size = m_glyphs_storage.size();
 
-		FontGeometry font_geometry(&charset_glyphs);
-		font_geometry.loadCharset(this->m_font_handle, 1.0, charset);
+		this->m_font_geometry.loadCharset(this->m_font_handle, 1.0, charset);
 
-		for (auto &glyph: charset_glyphs){
-			this->configure(glyph);
-		}
+		this->configure(old_size);
+		this->add_to_atlas(old_size);
 
-		this->add_to_atlas(charset_glyphs);
-
-		for (auto &glyph : charset_glyphs)
+		for (size_t i = old_size; i < m_glyphs_storage.size(); ++i)
 		{
-			this->m_glyphs.insert(
-				std::make_pair(static_cast<char32_t>(glyph.getCodepoint()), glyph));
+			this->m_glyphs.emplace(static_cast<char32_t>(m_glyphs_storage[i].getCodepoint()),
+				&this->m_glyphs_storage[i]);
 		}
 	}
 
-	auto msdf_font::get(const char32_t &c) -> const GlyphGeometry &
+	auto msdf_font::is_loaded(const char32_t &c) const -> bool
 	{
 		const auto &it = this->m_glyphs.find(c);
-		if (it != this->m_glyphs.end())
+		return it != this->m_glyphs.end();
+	}
+
+	auto msdf_font::get(const char32_t &c) const
+		-> std::optional<std::reference_wrapper<const GlyphGeometry>>
+	{
+		if (this->is_loaded(c))
 		{
-			return it->second;
+			return *this->m_glyphs.at(c);
 		}
 
-		this->load(c);
-		return this->get(c);
+		return std::nullopt;
 	}
 
-	auto msdf_font::configure(GlyphGeometry &glyph) const -> GlyphGeometry
+	auto msdf_font::configure(const size_t start_index) -> void
 	{
-		glyph.edgeColoring(&msdfgen::edgeColoringInkTrap, m_conf.m_max_corner_angle, 0);
-		glyph.wrapBox(m_conf.m_glyph_scale,
-			m_conf.m_pixel_range / m_conf.m_glyph_scale,
-			m_conf.m_miter_limit);
-
-		return glyph;
+		for (size_t i = start_index; i < this->m_glyphs_storage.size(); ++i)
+		{
+			this->m_glyphs_storage[i].edgeColoring(
+				&msdfgen::edgeColoringInkTrap, m_conf.m_max_corner_angle, 0);
+			this->m_glyphs_storage[i].wrapBox(m_conf.m_glyph_scale,
+				m_conf.m_pixel_range / m_conf.m_glyph_scale,
+				m_conf.m_miter_limit);
+		}
 	}
 
-	auto msdf_font::add_to_atlas(std::vector<GlyphGeometry> &glyphs)
-		-> msdf_dynamic_atlas::ChangeFlags
+	auto msdf_font::add_to_atlas(const size_t start_index) -> msdf_dynamic_atlas::ChangeFlags
 	{
-		const auto data = this->m_atlas.add(glyphs.data(), static_cast<int>(glyphs.size()));
+		std::vector<GlyphGeometry *> glyph_ptrs;
+		glyph_ptrs.reserve(this->m_glyphs_storage.size() - start_index);
+
+		for (size_t i = start_index; i < this->m_glyphs_storage.size(); ++i)
+		{
+			glyph_ptrs.push_back(&this->m_glyphs_storage[i]);
+		}
+
+		const auto data =
+			this->m_atlas.add(*glyph_ptrs.data(), static_cast<int>(glyph_ptrs.size()));
 
 		this->update_texture(data);
 
@@ -105,6 +129,7 @@ namespace sdlk
 
 	auto msdf_font::update_texture(msdf_dynamic_atlas::ChangeFlags flags) -> void
 	{
+		// TODO: fix
 		static bool initialized = false;
 		this->m_texture->bind();
 		this->m_bitmap = bitmap_const_ref{ this->m_atlas.atlasGenerator().atlasStorage() };

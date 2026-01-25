@@ -2,6 +2,7 @@
 
 #include <SDL2/SDL.h>
 
+#include <sdlk/core/color.hpp>
 #include <sdlk/core/events/event_listener.hpp>
 #include <sdlk/core/events/observer.hpp>
 #include <sdlk/core/gl/gl_program.hpp>
@@ -14,7 +15,7 @@ namespace sdlk
 	struct app_options
 	{
 		unsigned int fps{ 30 };
-		SDL_Color background_color{ .r = 0, .g = 0, .b = 0, .a = 255 };
+		color m_background{ color::black() };
 	};
 
 	class app : public observer
@@ -42,8 +43,7 @@ namespace sdlk
 		virtual auto limit_fps() -> void;
 
 		auto run(int argc, char **argv) -> int;
-		auto add_view(const std::string &name, std::shared_ptr<renderable> child) const
-			-> void;
+		auto add_view(const std::string &name, std::shared_ptr<renderable> child) const -> void;
 
 		[[nodiscard]] static auto get_width() -> unsigned int;
 		[[nodiscard]] static auto get_height() -> unsigned int;

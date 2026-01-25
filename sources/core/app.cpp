@@ -27,9 +27,7 @@ namespace sdlk
 		std::signal(SIGINT, signal_handler);
 		SDL_Event event;
 
-		const auto ndc_background_color =
-			converter::sdl_color_to_ndc(this->_options.background_color);
-
+		const auto ndc_background_color = this->_options.m_background.ndc();
 		glClearColor(ndc_background_color.r,
 			ndc_background_color.g,
 			ndc_background_color.b,

@@ -14,7 +14,7 @@ namespace sdlk2d
 		rectangle_shape(const type::point &origin,
 			const float &width,
 			const float &height,
-			const SDL_Color &color);
+			const sdlk::color &color);
 
 		~rectangle_shape() override = default;
 	};

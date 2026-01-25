@@ -18,8 +18,8 @@ set(LIB_SOURCES
     core/components/2d/shape/polygon_shape.cpp
     core/components/2d/shape/rectangle_shape.cpp
     core/components/2d/shape/texture.cpp
-    core/fonts/free_type_handle_wrapper.cpp
-    core/fonts/msdf_font.cpp
+    core/components/2d/fonts/free_type_handle_wrapper.cpp
+    core/components/2d/fonts/msdf_font.cpp
     core/components/2d/shape/text_shape.cpp
 )
 
