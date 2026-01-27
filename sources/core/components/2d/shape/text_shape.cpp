@@ -3,7 +3,9 @@
 //
 
 #include <glm/vec4.hpp>
+#include <iostream>
 #include <locale>
+#include <ostream>
 #include <sdlk/core/components/2d/shape/text_shape.hpp>
 #include <sdlk/core/gl/gl_program.hpp>
 #include <utility>
@@ -17,7 +19,6 @@ namespace sdlk2d
 		  m_text(std::move(text)),
 		  m_font(font)
 	{
-		this->m_font->load(this->m_text);
 		auto vao = std::make_shared<sdlk::gl_vertex_array>();
 		auto vbo = std::make_shared<sdlk::gl_buffer>(GL_ARRAY_BUFFER);
 
@@ -46,6 +47,7 @@ namespace sdlk2d
 		vbo->unbind();
 		vao->unbind();
 
+		this->m_font->load(this->m_text);
 		this->update_vertices();
 	}
 
@@ -71,9 +73,7 @@ namespace sdlk2d
 	auto text_shape::update_vertices() -> void
 	{
 		this->m_geometry->get_vao()->bind();
-
 		this->m_vertices.clear();
-		this->m_vertices.reserve(m_text.size() * 6);
 
 		glm::vec2 pen{ -1.0, 0.0 };
 		const float scale = this->m_style.m_size;
