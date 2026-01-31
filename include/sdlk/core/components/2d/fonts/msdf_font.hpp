@@ -19,6 +19,7 @@ namespace sdlk
 
 	using charset = Charset;
 	using font_geometry = FontGeometry;
+	using font_metrics = msdfgen::FontMetrics;
 	using glyph_geometry = GlyphGeometry;
 	using font_handle = msdfgen::FontHandle;
 
@@ -30,7 +31,7 @@ namespace sdlk
 
 	struct msdf_font_conf
 	{
-		const float m_pixel_range = 2.0;
+		const float m_pixel_range = 2;
 		const float m_glyph_scale = 32.0;
 		const float m_miter_limit = 1.0;
 		const float m_max_corner_angle = 3.0;
@@ -80,6 +81,7 @@ namespace sdlk
 		[[nodiscard]] auto get_bitmap() const -> bitmap_const_ref;
 		[[nodiscard]] auto is_loaded(const char32_t &c) const -> bool;
 		[[nodiscard]] auto get_texture() const -> std::shared_ptr<sdlk2d::texture>;
+		[[nodiscard]] auto get_metrics() const -> font_metrics;
 
 		auto load(const Charset &charset) -> void;
 		auto load(const char32_t &character) -> void;

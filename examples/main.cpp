@@ -20,10 +20,8 @@ auto main(const int argc, char** argv) -> int
 
 	rc_engine.add_view("home", home());
 
-	rc_engine.add_event_listener(event_type::key_up, [&](const SDL_Event &event)
-	{
-		std::cout << "Clicked \n";
-	});
+	rc_engine.add_event_listener(
+		event_type::key_up, [&](const SDL_Event& event) { std::cout << "Clicked \n"; });
 
 	return rc_engine.run(argc, argv);
 }
@@ -32,9 +30,6 @@ auto home() -> std::shared_ptr<renderable>
 {
 	auto home = std::make_shared<component>();
 
-	home->add_child(rectangle_with_texture());
-	home->add_child(rectangle_with_vertex_color());
-	home->add_child(rectangle_with_uniform_color());
 	home->add_child(text_hello_world());
 
 	return home;
@@ -44,14 +39,14 @@ auto text_hello_world() -> std::shared_ptr<renderable>
 {
 	auto font = msdf_font::make("./resources/assets/fonts/arial.ttf");
 	return std::make_shared<sdlk2d::text_shape>(U"Hello World helloé",
-		sdlk2d::text_style{ .m_fg_color = color::blue(), .m_bg_color = color::green() },
+		sdlk2d::text_style{ .m_size = 30.0f, .m_fg_color = color::white() },
 		font);
 }
 
 auto rectangle_with_uniform_color() -> std::shared_ptr<renderable>
 {
 	return std::make_shared<sdlk2d::rectangle_shape>(
-		sdlk2d::type::point{ -1.0f, 1.0f }, 0.5f, 0.5f, color::blue());
+		sdlk2d::type::point{ 0.0f, 0.0f }, 10.0f, 10.0f, color::red());
 }
 
 auto rectangle_with_vertex_color() -> std::shared_ptr<renderable>

@@ -13,7 +13,7 @@ namespace sdlk2d
 {
 	struct text_style
 	{
-		float m_size{ 0.2 };
+		float m_size{ 12.0f };
 		sdlk::color m_fg_color{ sdlk::color::white() };
 		sdlk::color m_bg_color{ SDL_Color{ .r = 0, .g = 0, .b = 0, .a = 0 } };
 	};

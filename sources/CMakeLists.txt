@@ -21,6 +21,7 @@ set(LIB_SOURCES
     core/components/2d/fonts/free_type_handle_wrapper.cpp
     core/components/2d/fonts/msdf_font.cpp
     core/components/2d/shape/text_shape.cpp
+    core/camera.cpp
 )
 
 # Create the library

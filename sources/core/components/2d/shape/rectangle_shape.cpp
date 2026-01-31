@@ -24,7 +24,7 @@ namespace sdlk2d
 		const float x0 = origin.x;
 		const float y0 = origin.y;
 		const float x1 = origin.x + width;
-		const float y1 = origin.y - height;
+		const float y1 = origin.y + height;
 
 		return {
 			{ x0, y0 },

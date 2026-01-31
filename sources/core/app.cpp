@@ -49,6 +49,7 @@ namespace sdlk
 							{
 								_s_window_width = event.window.data1;
 								_s_window_height = event.window.data2;
+								this->m_camera->update(get_width(), get_height());
 								glViewport(0, 0, event.window.data1, event.window.data2);
 							}
 
@@ -61,6 +62,7 @@ namespace sdlk
 				glClear(GL_COLOR_BUFFER_BIT);
 
 				this->m_program->use();
+				this->m_camera->load_uniforms(this->m_program);
 				this->m_view->render(this->m_program);
 
 				SDL_GL_SwapWindow(this->p_window);
@@ -126,6 +128,7 @@ namespace sdlk
 			"resources/shaders/vertex.glsl", "resources/shaders/fragment.glsl");
 		this->m_event_listener = std::make_shared<event_listener>();
 		this->m_view = std::make_shared<multiple_view>();
+		this->m_camera = std::make_shared<camera>(get_width(), get_height());
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

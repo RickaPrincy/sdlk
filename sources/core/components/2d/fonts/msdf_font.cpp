@@ -199,6 +199,11 @@ namespace sdlk
 		return this->m_conf;
 	}
 
+	auto msdf_font::get_metrics() const -> font_metrics
+	{
+		return this->m_glyph_storage.m_font_geometry.getMetrics();
+	}
+
 	auto msdf_font::make(const std::string &font_path) -> std::shared_ptr<msdf_font>
 	{
 		return std::make_shared<msdf_font>(font_path);

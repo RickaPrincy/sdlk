@@ -2,6 +2,7 @@
 
 #include <SDL2/SDL.h>
 
+#include <sdlk/core/camera.hpp>
 #include <sdlk/core/color.hpp>
 #include <sdlk/core/events/event_listener.hpp>
 #include <sdlk/core/events/observer.hpp>
@@ -27,6 +28,7 @@ namespace sdlk
 		static unsigned int _s_window_width, _s_window_height;
 
 	protected:
+		std::shared_ptr<camera> m_camera{};
 		std::shared_ptr<gl_program> m_program{};
 
 		SDL_Window *p_window{};

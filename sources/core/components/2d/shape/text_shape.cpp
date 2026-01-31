@@ -5,7 +5,6 @@
 #include <glm/vec4.hpp>
 #include <iostream>
 #include <locale>
-#include <ostream>
 #include <sdlk/core/components/2d/shape/text_shape.hpp>
 #include <sdlk/core/gl/gl_program.hpp>
 #include <utility>
@@ -75,20 +74,20 @@ namespace sdlk2d
 		this->m_geometry->get_vao()->bind();
 		this->m_vertices.clear();
 
-		glm::vec2 pen{ -1.0, 0.0 };
-		const float scale = this->m_style.m_size;
+		const auto font_metrics = this->m_font->get_metrics();
+		const auto scale = this->m_style.m_size / static_cast<float>(font_metrics.emSize);
+		glm::vec2 pen{ 0.0f, static_cast<float>(font_metrics.ascenderY) * scale};
+
 		for (const char32_t &c : this->m_text)
 		{
 			const auto &opt_glyph = this->m_font->get(c);
 			if (!opt_glyph.has_value())
-			{
 				continue;
-			}
 
 			const auto glyph = opt_glyph.value().get();
 			if (glyph.isWhitespace())
 			{
-				pen.x += static_cast<float>(opt_glyph.value().get().getAdvance()) * scale;
+				pen.x += static_cast<float>(glyph.getAdvance()) * scale;
 				continue;
 			}
 
@@ -99,22 +98,23 @@ namespace sdlk2d
 			glyph.getQuadAtlasBounds(ul, ub, ur, ut);
 
 			float x0 = pen.x + static_cast<float>(pl) * scale;
-			float y0 = pen.y + static_cast<float>(pb) * scale;
+			float y0 = pen.y - static_cast<float>(pt) * scale;
 			float x1 = pen.x + static_cast<float>(pr) * scale;
-			float y1 = pen.y + static_cast<float>(pt) * scale;
+			float y1 = pen.y - static_cast<float>(pb) * scale;
 
 			const auto &atlas = this->m_font->get_bitmap();
 			float u0 = static_cast<float>(ul) / static_cast<float>(atlas.width);
-			float v0 = static_cast<float>(ub) / static_cast<float>(atlas.height);
+			float v0 = static_cast<float>(ut) / static_cast<float>(atlas.height);
 			float u1 = static_cast<float>(ur) / static_cast<float>(atlas.width);
-			float v1 = static_cast<float>(ut) / static_cast<float>(atlas.height);
+			float v1 = static_cast<float>(ub) / static_cast<float>(atlas.height);
 
 			m_vertices.push_back({ { x0, y0, 0 }, { u0, v0 } });
+			m_vertices.push_back({ { x1, y1, 0 }, { u1, v1 } });
 			m_vertices.push_back({ { x1, y0, 0 }, { u1, v0 } });
-			m_vertices.push_back({ { x1, y1, 0 }, { u1, v1 } });
+
 			m_vertices.push_back({ { x0, y0, 0 }, { u0, v0 } });
-			m_vertices.push_back({ { x1, y1, 0 }, { u1, v1 } });
 			m_vertices.push_back({ { x0, y1, 0 }, { u0, v1 } });
+			m_vertices.push_back({ { x1, y1, 0 }, { u1, v1 } });
 
 			pen.x += static_cast<float>(glyph.getAdvance()) * scale;
 		}
