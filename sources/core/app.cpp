@@ -46,13 +46,17 @@ namespace sdlk
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
-		const auto dpi_scale = imgui_wrapper::get_dpi();
+		const auto dpi_scale = 1;
+		const auto window_width = static_cast<int>(static_cast<float>(width) * dpi_scale);
+		const auto window_height = static_cast<int>(static_cast<float>(height) * dpi_scale);
+
 		this->p_window = SDL_CreateWindow(window_title.c_str(),
 			SDL_WINDOWPOS_CENTERED,
 			SDL_WINDOWPOS_CENTERED,
-			static_cast<int>(static_cast<float>(width) * dpi_scale),
-			static_cast<int>(static_cast<float>(height) * dpi_scale),
-			SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI);
+			window_width,
+			window_height,
+			SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN /*|
+			SDL_WINDOW_ALLOW_HIGHDPI */);
 
 		this->m_opengl_context = SDL_GL_CreateContext(this->p_window);
 
@@ -73,16 +77,14 @@ namespace sdlk
 
 		this->_imgui_wrapper =
 			std::make_shared<imgui_wrapper>(p_window, &m_opengl_context, "#version 330 core");
-		const auto &io = imgui_wrapper::get_io();
-
 		this->m_view = std::make_shared<multiple_view>();
 		this->m_program = gl_program::from_files(
 			"resources/shaders/vertex.glsl", "resources/shaders/fragment.glsl");
-		this->m_camera = std::make_shared<camera>(
-			static_cast<int>(io.DisplaySize.x), static_cast<int>(io.DisplaySize.x));
+		this->m_camera = std::make_shared<camera>(window_width, window_height);
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glViewport(0, 0, window_width, window_height);
 	}
 
 	auto app::handle_event(SDL_Event &event) const -> void
@@ -106,14 +108,11 @@ namespace sdlk
 					if (event.type == SDL_WINDOWEVENT &&
 						event.window.event == SDL_WINDOWEVENT_RESIZED)
 					{
-						const auto &io = imgui_wrapper::get_io();
-						this->m_camera->update(
-							static_cast<int>(io.DisplaySize.x), static_cast<int>(io.DisplaySize.y));
+						const int width = event.window.data1;
+						const int height = event.window.data2;
 
-						glViewport(0,
-							0,
-							static_cast<int>(io.DisplaySize.x),
-							static_cast<int>(io.DisplaySize.y));
+						this->m_camera->update(width, height);
+						glViewport(0, 0, width, height);
 					}
 
 					event_listener::instance()->notify_event(event);

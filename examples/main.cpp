@@ -39,7 +39,7 @@ auto text_hello_world() -> std::shared_ptr<renderable>
 {
 	auto font = msdf_font::make("./resources/assets/fonts/arial.ttf");
 	return std::make_shared<sdlk2d::text_shape>(U"Hello World helloé",
-		sdlk2d::text_style{ .m_size = 12.0f, .m_fg_color = color::white() },
+		sdlk2d::text_style{ .m_size = 20.0f, .m_fg_color = color::white() },
 		font);
 }
 

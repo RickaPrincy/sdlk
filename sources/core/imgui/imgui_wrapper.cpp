@@ -33,10 +33,13 @@ namespace sdlk
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 
-		const auto dpi = get_dpi();
-		auto &style = ImGui::GetStyle();
-		style.ScaleAllSizes(dpi);
-		style.FontScaleDpi = dpi;
+		/*
+		 *DPI
+			const auto dpi = get_dpi();
+			auto &style = ImGui::GetStyle();
+			style.ScaleAllSizes(dpi);
+			style.FontScaleDpi = dpi;
+		*/
 
 		ImGui_ImplSDL2_InitForOpenGL(window, gl_context);
 		ImGui_ImplOpenGL3_Init(glsl_version.c_str());
