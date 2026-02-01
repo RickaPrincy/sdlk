@@ -5,7 +5,7 @@
 #include <sdlk/core/gl/gl_shader.hpp>
 #include <stdexcept>
 
-#include "../../utils/file.hpp"
+#include "../../../utils/file.hpp"
 
 namespace sdlk
 {

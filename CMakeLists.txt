@@ -16,48 +16,55 @@ find_package(Freetype REQUIRED)
 
 set(SDLK_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(SDLK_IS_MAIN_PROJECT OFF)
-if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
-  set(SDLK_IS_MAIN_PROJECT ON)
-endif()
+if (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+    set(SDLK_IS_MAIN_PROJECT ON)
+endif ()
 
 # target names
 set(SDLK_LIB_NAME sdlk)
 set(SDLK_LIB_VERSION ${PROJECT_VERSION})
 set(SDLK_LIB_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+
+set(SDLK_ENGINE_NAME sdlk_engine)
+set(SDLK_ENGINE_VERSION ${PROJECT_VERSION})
+set(SDLK_ENGINE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+
 set(SDLK_VERSION ${PROJECT_VERSION})
 set(SDLK_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
 
 # list of options
-option(BUILD_SHARED_LIBS "Build rcli as a shared library" ON)
-option(SDLK_LIB_BUILD "Build sdlk lib" ON)
-option(SDLK_LIB_INSTALL "Install sdlk lib" OFF)
-option(SDLK_BUILD_EXAMPLES "Build sdlk example" ON)
+option(BUILD_SHARED_LIBS "Build sdlk as a shared library" ON)
+option(SDLK_LIB_INSTALL "Install sdlk lib" ON)
+option(SDLK_BUILD_EXAMPLES "Build sdlk example" OFF)
+
+option(SDLK_ENGINE_BUILD "Build sdlk engine lib" ON)
+option(SDLK_ENGINE_INSTALL "Install sdlk engine lib" ON)
 
 # configure build type
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE "Debug")
-endif()
+if (NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Debug")
+endif ()
 
-if(CMAKE_BUILD_TYPE STREQUAL "Release")
-  set(SDLK_TEST OFF)
-  set(SDLK_BUILD_EXAMPLES OFF)
-endif()
+if (CMAKE_BUILD_TYPE STREQUAL "Release")
+    set(SDLK_TEST OFF)
+    set(SDLK_BUILD_EXAMPLES OFF)
+endif ()
 
-if(SDLK_IS_MAIN_PROJECT)
-  configure_file(${SDLK_SOURCE_DIR}/.templates/PKGBUILD.in
-                 ${SDLK_SOURCE_DIR}/PKGBUILD @ONLY)
+if (SDLK_IS_MAIN_PROJECT)
+    configure_file(${SDLK_SOURCE_DIR}/.templates/PKGBUILD.in
+            ${SDLK_SOURCE_DIR}/PKGBUILD @ONLY)
 
-  configure_file(${SDLK_SOURCE_DIR}/.templates/install.sh.in
-                 ${SDLK_SOURCE_DIR}/install.sh @ONLY)
+    configure_file(${SDLK_SOURCE_DIR}/.templates/install.sh.in
+            ${SDLK_SOURCE_DIR}/install.sh @ONLY)
 
-  configure_file(${SDLK_SOURCE_DIR}/.templates/create-release.sh.in
-                 ${SDLK_SOURCE_DIR}/create-release.sh @ONLY)
+    configure_file(${SDLK_SOURCE_DIR}/.templates/create-release.sh.in
+            ${SDLK_SOURCE_DIR}/create-release.sh @ONLY)
 
-  configure_file(
-    ${SDLK_SOURCE_DIR}/.templates/${SDLK_LIB_NAME}Config.hpp.in
-    ${SDLK_SOURCE_DIR}/include/${SDLK_LIB_NAME}/${SDLK_LIB_NAME}Config.hpp
-    @ONLY)
-endif()
+    configure_file(
+            ${SDLK_SOURCE_DIR}/.templates/${SDLK_LIB_NAME}Config.hpp.in
+            ${SDLK_SOURCE_DIR}/include/${SDLK_LIB_NAME}/${SDLK_LIB_NAME}Config.hpp
+            @ONLY)
+endif ()
 
 add_subdirectory(external/msdf-atlas-gen)
 add_subdirectory(sources)

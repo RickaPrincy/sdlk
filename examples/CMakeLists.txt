@@ -1,4 +1,5 @@
-add_executable(example main.cpp)
+add_executable(example main.cpp
+        ../sources/engine/main.cpp)
 
 target_include_directories(example PRIVATE ${SDLK_SOURCE_DIR}/include)
 
