@@ -5,6 +5,7 @@
 #include <glm/vec4.hpp>
 #include <iostream>
 #include <locale>
+#include <sdlk/core/app.hpp>
 #include <sdlk/core/components/2d/shape/text_shape.hpp>
 #include <sdlk/core/gl/gl_program.hpp>
 #include <utility>
@@ -76,7 +77,7 @@ namespace sdlk2d
 
 		const auto font_metrics = this->m_font->get_metrics();
 		const auto scale = this->m_style.m_size / static_cast<float>(font_metrics.emSize);
-		glm::vec2 pen{ 0.0f, static_cast<float>(font_metrics.ascenderY) * scale};
+		glm::vec2 pen{ 0.0f, static_cast<float>(font_metrics.ascenderY) * scale };
 
 		for (const char32_t &c : this->m_text)
 		{

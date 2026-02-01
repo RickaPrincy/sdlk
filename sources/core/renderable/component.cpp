@@ -6,7 +6,8 @@
 
 namespace sdlk
 {
-	component::component(std::vector<std::shared_ptr<renderable>> childs): m_childs(std::move(childs))
+	component::component(std::vector<std::shared_ptr<renderable>> childs)
+		: m_childs(std::move(childs))
 	{
 	}
 

@@ -3,19 +3,21 @@
 //
 
 #pragma once
+
 #include <memory>
-#include <vector>
+#include <sdlk/core/events/observer.hpp>
 #include <sdlk/core/renderable/renderable.hpp>
+#include <vector>
 
 namespace sdlk
 {
-	class component: public renderable
+	class component : public renderable, public observer
 	{
 	protected:
 		std::vector<std::shared_ptr<renderable>> m_childs{};
 
 	public:
-		explicit component(std::vector<std::shared_ptr<renderable>> childs={});
+		explicit component(std::vector<std::shared_ptr<renderable>> childs = {});
 
 		auto add_child(const std::shared_ptr<renderable> &child) -> void;
 

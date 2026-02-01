@@ -4,7 +4,7 @@
 
 namespace sdlk
 {
-	camera::camera(const unsigned int width, const unsigned int height)
+	camera::camera(const int width, const int height)
 	{
 		this->update(width, height);
 	}
@@ -22,30 +22,32 @@ namespace sdlk
 	auto camera::translate(const glm::vec2& delta) -> void
 	{
 		m_position += delta;
-		this->update(app::get_width(), app::get_height());
+		this->update(_width, _height);
 	}
 
 	auto camera::set_position(const glm::vec2& pos) -> void
 	{
 		m_position = pos;
-		this->update(app::get_width(), app::get_height());
+		this->update(_width, _height);
 	}
 
 	auto camera::set_zoom(const float zoom) -> void
 	{
 		this->m_zoom = glm::max(zoom, 0.01f);  // Avoid negative/zero zoom
-		this->update(app::get_width(), app::get_height());
+		this->update(_width, _height);
 	}
 
 	auto camera::focus_on(const glm::vec2& target) -> void
 	{
 		this->set_position(target);
-		this->update(app::get_width(), app::get_height());
+		this->update(_width, _height);
 	}
 
-	auto camera::update(const unsigned int width, const unsigned int height) -> void
+	auto camera::update(const int width, const int height) -> void
 	{
-		this->recalculate(static_cast<int>(width), static_cast<int>(height));
+		this->_width = width;
+		this->_height = height;
+		this->recalculate(width, height);
 	}
 
 	auto camera::recalculate(const int width, const int height) -> void

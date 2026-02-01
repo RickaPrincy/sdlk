@@ -5,6 +5,8 @@
 
 #include <msdf-atlas-gen/msdf-atlas-gen.h>
 
+#include <memory>
+
 namespace sdlk
 {
 	class free_type_handle_wrapper final
@@ -16,7 +18,7 @@ namespace sdlk
 
 		[[nodiscard]] auto raw() const -> msdfgen::FreetypeHandle *;
 
-		[[nodiscard]] static auto instance() -> free_type_handle_wrapper *;
+		[[nodiscard]] static auto instance() -> std::shared_ptr<free_type_handle_wrapper>;
 
 		~free_type_handle_wrapper();
 	};

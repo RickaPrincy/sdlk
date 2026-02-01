@@ -39,14 +39,14 @@ auto text_hello_world() -> std::shared_ptr<renderable>
 {
 	auto font = msdf_font::make("./resources/assets/fonts/arial.ttf");
 	return std::make_shared<sdlk2d::text_shape>(U"Hello World helloé",
-		sdlk2d::text_style{ .m_size = 30.0f, .m_fg_color = color::white() },
+		sdlk2d::text_style{ .m_size = 12.0f, .m_fg_color = color::white() },
 		font);
 }
 
 auto rectangle_with_uniform_color() -> std::shared_ptr<renderable>
 {
 	return std::make_shared<sdlk2d::rectangle_shape>(
-		sdlk2d::type::point{ 0.0f, 0.0f }, 10.0f, 10.0f, color::red());
+		sdlk2d::type::point{ 0.0f, 0.0f }, 100.0f, 100.0f, color::red());
 }
 
 auto rectangle_with_vertex_color() -> std::shared_ptr<renderable>

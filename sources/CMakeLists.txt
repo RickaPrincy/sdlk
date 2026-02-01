@@ -1,12 +1,25 @@
+set(IMGUI_DIR ${SDLK_SOURCE_DIR}/external/imgui)
+
+set(IMGUI_SOURCES
+    ${IMGUI_DIR}/imgui.cpp
+    ${IMGUI_DIR}/imgui_draw.cpp
+    ${IMGUI_DIR}/imgui_tables.cpp
+    ${IMGUI_DIR}/imgui_widgets.cpp
+    # backends (SDL2 + OPENGL3)
+    ${IMGUI_DIR}/backends/imgui_impl_sdl2.cpp
+    ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp
+)
+
 set(LIB_SOURCES
-    core/events/event_listener.cpp
-    core/events/observer.cpp
-    core/glad.cpp
+    ${IMGUI_SOURCES}
     core/gl/gl_program.cpp
     core/gl/gl_shader.cpp
     core/gl/gl_uniform.cpp
     core/gl/gl_buffer.cpp
     core/gl/gl_vertex_array.cpp
+    core/events/event_listener.cpp
+    core/events/observer.cpp
+    core/glad.cpp
     utils/file.cpp
     core/app.cpp
     core/converter.cpp
@@ -22,6 +35,7 @@ set(LIB_SOURCES
     core/components/2d/fonts/msdf_font.cpp
     core/components/2d/shape/text_shape.cpp
     core/camera.cpp
+    core/imgui/imgui_wrapper.cpp
 )
 
 # Create the library
@@ -35,9 +49,12 @@ file(COPY core/shaders DESTINATION ${CMAKE_BINARY_DIR}/bin/resources)
 
 # Set include directories for the library
 target_include_directories(
-        ${SDLK_LIB_NAME} PUBLIC $<BUILD_INTERFACE:${SDLK_SOURCE_DIR}/include>)
+        ${SDLK_LIB_NAME} PRIVATE $<BUILD_INTERFACE:${IMGUI_DIR}>)
 
 target_include_directories(${SDLK_LIB_NAME} PRIVATE $<BUILD_INTERFACE:${EARCUT_HPP_INCLUDE_DIRS})
+
+target_include_directories(
+        ${SDLK_LIB_NAME} PUBLIC $<BUILD_INTERFACE:${SDLK_SOURCE_DIR}/include>)
 
 # target_link
 target_link_libraries(${SDLK_LIB_NAME}

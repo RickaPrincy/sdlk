@@ -4,6 +4,8 @@
 
 namespace sdlk
 {
+	static auto event_listener_instance = std::make_shared<event_listener>();
+
 	auto event_listener::notify_event(const SDL_Event &event) -> void
 	{
 		const auto actual_type = get_event_type_value(event);
@@ -40,5 +42,10 @@ namespace sdlk
 			case SDL_MOUSEWHEEL: return event_type::mouse_wheel;
 			default: return event_type::all;
 		}
+	}
+
+	auto event_listener::instance() -> std::shared_ptr<event_listener>
+	{
+		return event_listener_instance;
 	}
 }  // namespace sdlk

@@ -4,12 +4,12 @@
 
 #include "free_type_handle_wrapper.hpp"
 
-#include <iostream>
+#include <memory>
 #include <stdexcept>
 
 namespace sdlk
 {
-	static free_type_handle_wrapper free_type_handle_wrapper_instance;
+	static auto free_type_handle_wrapper_instance = std::make_shared<free_type_handle_wrapper>();
 
 	free_type_handle_wrapper::free_type_handle_wrapper()
 	{
@@ -25,9 +25,9 @@ namespace sdlk
 		msdfgen::deinitializeFreetype(this->_ft_handle);
 	}
 
-	auto free_type_handle_wrapper::instance() -> free_type_handle_wrapper*
+	auto free_type_handle_wrapper::instance() -> std::shared_ptr<free_type_handle_wrapper>
 	{
-		return &free_type_handle_wrapper_instance;
+		return free_type_handle_wrapper_instance;
 	}
 
 	auto free_type_handle_wrapper::raw() const -> msdfgen::FreetypeHandle*

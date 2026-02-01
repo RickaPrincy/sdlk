@@ -1,12 +1,13 @@
 #pragma once
 
-#include <glm/gtc/matrix_transform.hpp>
 #include <sdlk/core/gl/gl_program.hpp>
 
 namespace sdlk
 {
 	class camera
 	{
+		unsigned int _width, _height;
+
 	protected:
 		float m_zoom{ 1.0f };
 		glm::vec2 m_position{ 0.0f };
@@ -17,7 +18,7 @@ namespace sdlk
 		auto recalculate(int width, int height) -> void;
 
 	public:
-		camera(unsigned int width, unsigned int height);
+		camera(int width, int height);
 
 		[[nodiscard]] auto get_zoom() const -> float;
 		[[nodiscard]] auto get_position() const -> glm::vec2;
@@ -29,8 +30,7 @@ namespace sdlk
 
 		auto focus_on(const glm::vec2& target) -> void;
 
-		auto update(unsigned int width, unsigned int height)
-			-> void;  // Must be called after any change
+		auto update(int width, int height) -> void;	 // Must be called after any change
 
 		auto load_uniforms(const std::shared_ptr<gl_program>& program) const -> void;
 
