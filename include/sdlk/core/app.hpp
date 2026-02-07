@@ -45,7 +45,7 @@ namespace sdlk
 			const app_options &options = {},
 			Uint32 sdl_init_flags = SDL_INIT_EVERYTHING);
 
-		auto run(int argc, char **argv) -> int;
+		auto run(const std::string& default_view, int, char **) -> int;
 		auto add_view(const std::string &name, std::shared_ptr<renderable> child) const -> void;
 
 		~app() override;

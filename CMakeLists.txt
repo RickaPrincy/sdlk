@@ -34,11 +34,11 @@ set(SDLK_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
 
 # list of options
 option(BUILD_SHARED_LIBS "Build sdlk as a shared library" ON)
-option(SDLK_LIB_INSTALL "Install sdlk lib" ON)
-option(SDLK_BUILD_EXAMPLES "Build sdlk example" OFF)
+option(SDLK_LIB_INSTALL "Install sdlk lib" OFF)
+option(SDLK_BUILD_EXAMPLES "Build sdlk example" ON)
 
 option(SDLK_ENGINE_BUILD "Build sdlk engine lib" ON)
-option(SDLK_ENGINE_INSTALL "Install sdlk engine lib" ON)
+option(SDLK_ENGINE_INSTALL "Install sdlk engine lib" OFF)
 
 # configure build type
 if (NOT CMAKE_BUILD_TYPE)

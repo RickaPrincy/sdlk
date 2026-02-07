@@ -36,6 +36,8 @@ set(LIB_SOURCES
         core/components/2d/shape/text_shape.cpp
         core/camera.cpp
         core/imgui/imgui_wrapper.cpp
+        core/imgui/imgui_renderable.cpp
+        core/imgui/imgui_drawer_utils.cpp
 )
 
 # Create the library

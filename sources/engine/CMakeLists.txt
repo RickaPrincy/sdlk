@@ -1,8 +1,19 @@
-set(SDLK_ENGINE_SOURCES main.cpp)
+set(IMGUI_DIR ${SDLK_SOURCE_DIR}/external/imgui)
 
-add_executable(${SDLK_ENGINE_NAME})
+set(SDLK_ENGINE_SOURCES
+        main.cpp
+        types/project.cpp
+        views/home/home.cpp
+        views/home/draw_project_card.cpp
+)
 
-target_sources(${SDLK_ENGINE_NAME} PRIVATE ${SDLK_ENGINE_SOURCES})
+add_executable(${SDLK_ENGINE_NAME} ${SDLK_ENGINE_SOURCES})
+
+file(COPY resources/images DESTINATION ${CMAKE_BINARY_DIR}/bin/resources)
+
+# Set include directories for the library
+target_include_directories(
+        ${SDLK_ENGINE_NAME} PRIVATE $<BUILD_INTERFACE:${IMGUI_DIR}>)
 
 target_include_directories(${SDLK_ENGINE_NAME} PRIVATE ${SDLK_SOURCE_DIR}/include)
 

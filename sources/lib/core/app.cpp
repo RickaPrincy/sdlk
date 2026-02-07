@@ -119,8 +119,9 @@ namespace sdlk
 		}
 	}
 
-	auto app::run(int, char **) -> int
+	auto app::run(const std::string& default_view, int, char **) -> int
 	{
+		this->m_view->switch_to(default_view);
 		std::signal(SIGINT, signal_handler);
 
 		const auto ndc_background_color = this->_options.m_background.ndc();
@@ -140,23 +141,6 @@ namespace sdlk
 				glClear(GL_COLOR_BUFFER_BIT);
 
 				imgui_wrapper::new_frame();
-
-				{
-					static float f = 0.0f;
-					static int counter = 0;
-
-					ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-
-					ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-
-					ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-
-					if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-						counter++;
-					ImGui::SameLine();
-					ImGui::Text("counter = %d", counter);
-					ImGui::End();
-				}
 
 				this->m_program->use();
 				this->m_camera->load_uniforms(this->m_program);
@@ -194,8 +178,6 @@ namespace sdlk
 	auto app::add_view(const std::string &name, std::shared_ptr<renderable> child) const -> void
 	{
 		this->m_view->add_view(name, std::move(child));
-		// TODO: remove
-		this->m_view->switch_to(name);
 	}
 
 	app::~app()

@@ -1,5 +1,5 @@
 add_executable(example main.cpp
-        ../sources/engine/main.cpp)
+        ../include/sdlk/core/imgui/imgui_drawer_utils.hpp)
 
 target_include_directories(example PRIVATE ${SDLK_SOURCE_DIR}/include)
 
