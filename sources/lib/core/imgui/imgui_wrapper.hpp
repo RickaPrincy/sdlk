@@ -5,11 +5,10 @@
 #pragma once
 
 #include <SDL_video.h>
+#include <backends/imgui_impl_sdl2.h>
+#include <imgui.h>
 
 #include <string>
-
-#include "backends/imgui_impl_sdl2.h"
-#include "imgui.h"
 
 namespace sdlk
 {

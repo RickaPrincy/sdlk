@@ -6,27 +6,28 @@
 #include <memory>
 #include <string>
 
-namespace sdlk2d
+namespace sdlk
 {
-	class texture
+	class gl_texture
 	{
 		GLuint m_id{ 0 };
 		int m_width{}, m_height{};
 
 	public:
-		texture() = default;
-		texture(GLuint id, int width, int height);
+		gl_texture() = default;
+		gl_texture(GLuint id, int width, int height);
 
 		auto bind(GLuint unit = 0) const -> void;
 
 		[[nodiscard]] auto get_id() -> GLuint&;
 		[[nodiscard]] auto get_width() const -> int;
 		[[nodiscard]] auto get_height() const -> int;
+		[[nodiscard]] auto get_ratio() const -> float;
 
-		~texture();
+		~gl_texture();
 
-		static auto from_file(const std::string& path) -> std::shared_ptr<texture>;
-		static auto from_surface(SDL_Surface* surface) -> std::shared_ptr<texture>;
+		static auto from_file(const std::string& path) -> std::shared_ptr<gl_texture>;
+		static auto from_surface(SDL_Surface* surface) -> std::shared_ptr<gl_texture>;
 	};
 
 }  // namespace sdlk2d

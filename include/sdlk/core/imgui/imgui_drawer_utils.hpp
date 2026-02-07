@@ -4,11 +4,11 @@
 
 #pragma once
 
+#include <imgui.h>
+
 #include <functional>
 #include <memory>
-#include <sdlk/core/components/2d/shape/texture.hpp>
-
-#include "imgui.h"
+#include <sdlk/core/gl/gl_texture.hpp>
 
 namespace sdlk::imgui_drawer_utils
 {
@@ -16,5 +16,5 @@ namespace sdlk::imgui_drawer_utils
 		const std::function<void()> &renderable) -> void;
 
 	auto spacing(int iteration = 1) -> void;
-	auto image(const std::shared_ptr<sdlk2d::texture> &texture, const ImVec2 &size) -> void;
+	auto image(const std::shared_ptr<gl_texture> &texture, const ImVec2 &size) -> void;
 }  // namespace sdlk::imgui_drawer_utils

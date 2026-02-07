@@ -7,7 +7,8 @@
 #include <sdlk/core/color.hpp>
 #include <sdlk/core/components/2d/shape/shape_style.hpp>
 #include <sdlk/core/components/2d/type.hpp>
-#include <sdlk/core/renderable/renderable.hpp>
+#include <sdlk/core/components/renderable.hpp>
+#include <sdlk/core/gl/gl_texture.hpp>
 
 namespace sdlk2d
 {
@@ -21,7 +22,7 @@ namespace sdlk2d
 		explicit polygon_shape(const type::polygon &polygon, const sdlk::color &uniform_color);
 
 		explicit polygon_shape(const type::polygon &polygon,
-			const std::shared_ptr<texture> &texture);
+			const std::shared_ptr<sdlk::gl_texture> &texture);
 
 		auto render(const std::shared_ptr<sdlk::gl_program> &program) -> void override;
 

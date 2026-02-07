@@ -7,7 +7,7 @@
 #include <memory>
 #include <optional>
 #include <sdlk/core/color.hpp>
-#include <sdlk/core/components/2d/shape/texture.hpp>
+#include <sdlk/core/gl/gl_texture.hpp>
 
 namespace sdlk2d
 {
@@ -28,7 +28,7 @@ namespace sdlk2d
 		};
 
 		type m_type{ type::uniform };
-		std::shared_ptr<texture> m_texture{};
+		std::shared_ptr<sdlk::gl_texture> m_texture{};
 		std::optional<sdlk::color> m_uniform_color{};
 
 		explicit shape_style()
@@ -42,7 +42,7 @@ namespace sdlk2d
 			this->m_uniform_color = color;
 		}
 
-		explicit shape_style(const std::shared_ptr<texture> &texture)
+		explicit shape_style(const std::shared_ptr<sdlk::gl_texture> &texture)
 		{
 			this->m_type = type::texture;
 			this->m_texture = texture;

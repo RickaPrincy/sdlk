@@ -77,7 +77,7 @@ namespace sdlk2d
 	}
 
 	polygon_shape::polygon_shape(const type::polygon& polygon,
-		const std::shared_ptr<texture>& texture)
+		const std::shared_ptr<sdlk::gl_texture>& texture)
 	{
 		this->m_style = shape_style(texture);
 		const auto data = map_as_position_and_uv(polygon);

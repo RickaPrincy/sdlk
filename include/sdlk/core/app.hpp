@@ -4,9 +4,9 @@
 
 #include <sdlk/core/camera.hpp>
 #include <sdlk/core/color.hpp>
+#include <sdlk/core/components/multiple_view.hpp>
 #include <sdlk/core/events/observer.hpp>
 #include <sdlk/core/gl/gl_program.hpp>
-#include <sdlk/core/renderable/multiple_view.hpp>
 #include <string>
 
 namespace sdlk
@@ -45,7 +45,7 @@ namespace sdlk
 			const app_options &options = {},
 			Uint32 sdl_init_flags = SDL_INIT_EVERYTHING);
 
-		auto run(const std::string& default_view, int, char **) -> int;
+		auto run(const std::string &default_view, int, char **) -> int;
 		auto add_view(const std::string &name, std::shared_ptr<renderable> child) const -> void;
 
 		~app() override;

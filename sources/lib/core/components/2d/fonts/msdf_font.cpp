@@ -67,7 +67,7 @@ namespace sdlk
 			throw std::runtime_error("Could not load font " + font_path);
 		}
 
-		this->m_texture = std::make_shared<sdlk2d::texture>();
+		this->m_texture = std::make_shared<gl_texture>();
 		glGenTextures(1, &this->m_texture->get_id());
 
 		this->m_texture->bind();
@@ -189,7 +189,7 @@ namespace sdlk
 		}
 	}
 
-	auto msdf_font::get_texture() const -> std::shared_ptr<sdlk2d::texture>
+	auto msdf_font::get_texture() const -> std::shared_ptr<gl_texture>
 	{
 		return this->m_texture;
 	}

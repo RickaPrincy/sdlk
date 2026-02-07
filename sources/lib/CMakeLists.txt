@@ -1,44 +1,44 @@
 set(IMGUI_DIR ${SDLK_SOURCE_DIR}/external/imgui)
-
 set(IMGUI_SOURCES
-    ${IMGUI_DIR}/imgui.cpp
-    ${IMGUI_DIR}/imgui_draw.cpp
-    ${IMGUI_DIR}/imgui_tables.cpp
-    ${IMGUI_DIR}/imgui_widgets.cpp
-    # backends (SDL2 + OPENGL3)
-    ${IMGUI_DIR}/backends/imgui_impl_sdl2.cpp
-    ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp
+        ${IMGUI_DIR}/imgui.cpp
+        ${IMGUI_DIR}/imgui_draw.cpp
+        ${IMGUI_DIR}/imgui_tables.cpp
+        ${IMGUI_DIR}/imgui_widgets.cpp
+        # backends (SDL2 + OPENGL3)
+        ${IMGUI_DIR}/backends/imgui_impl_sdl2.cpp
+        ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp
 )
 
+set(EXTRA_SOURCES extra/nfd_wrapper.cpp)
 set(LIB_SOURCES
-    ${IMGUI_SOURCES}
+        ${IMGUI_SOURCES}
+        ${EXTRA_SOURCES}
+        ../utils/file.cpp
+        core/glad/glad.cpp
         core/gl/gl_program.cpp
         core/gl/gl_shader.cpp
         core/gl/gl_uniform.cpp
         core/gl/gl_buffer.cpp
         core/gl/gl_vertex_array.cpp
+        core/gl/gl_texture.cpp
         core/events/event_listener.cpp
         core/events/observer.cpp
-        core/glad.cpp
-        ../utils/file.cpp
+        core/components/renderable.cpp
+        core/components/component.cpp
+        core/components/multiple_view.cpp
+        core/components/2d/shape/polygon_shape.cpp
+        core/components/2d/shape/rectangle_shape.cpp
+        core/components/2d/fonts/free_type_handle_wrapper.cpp
+        core/components/2d/fonts/msdf_font.cpp
+        core/components/2d/shape/text_shape.cpp
         core/app.cpp
         core/converter.cpp
         core/geometry.cpp
         core/transform.cpp
-        core/renderable/renderable.cpp
-        core/renderable/component.cpp
-        core/renderable/multiple_view.cpp
-        core/components/2d/shape/polygon_shape.cpp
-        core/components/2d/shape/rectangle_shape.cpp
-        core/components/2d/shape/texture.cpp
-        core/components/2d/fonts/free_type_handle_wrapper.cpp
-        core/components/2d/fonts/msdf_font.cpp
-        core/components/2d/shape/text_shape.cpp
         core/camera.cpp
         core/imgui/imgui_wrapper.cpp
         core/imgui/imgui_renderable.cpp
         core/imgui/imgui_drawer_utils.cpp
-        extra/nfd_wrapper.cpp
 )
 
 # Create the library
@@ -75,6 +75,8 @@ target_link_libraries(${SDLK_LIB_NAME} PRIVATE Freetype::Freetype)
 target_link_libraries(${SDLK_LIB_NAME} PUBLIC msdf-atlas-gen::msdf-atlas-gen)
 
 target_link_libraries(${SDLK_LIB_NAME} PRIVATE nfd)
+
+target_link_libraries(${SDLK_LIB_NAME} PRIVATE nlohmann_json::nlohmann_json)
 
 # set properties
 set_target_properties(

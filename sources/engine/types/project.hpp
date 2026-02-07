@@ -5,14 +5,14 @@
 #pragma once
 
 #include <memory>
-#include <sdlk/core/components/2d/shape/texture.hpp>
+#include <sdlk/core/gl/gl_texture.hpp>
 #include <string>
 
 namespace sdlk
 {
 	class project
 	{
-		std::shared_ptr<sdlk2d::texture> _texture{};
+		std::shared_ptr<gl_texture> _texture{};
 
 	protected:
 		std::string m_name{};
@@ -23,7 +23,7 @@ namespace sdlk
 
 		auto open() -> void;
 		[[nodiscard]] auto get_name() -> std::string;
-		[[nodiscard]] auto get_texture() -> std::shared_ptr<sdlk2d::texture>;
+		[[nodiscard]] auto get_texture() -> std::shared_ptr<gl_texture>;
 
 		virtual ~project() = default;
 	};

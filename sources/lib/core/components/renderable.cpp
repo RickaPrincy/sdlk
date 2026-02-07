@@ -2,7 +2,7 @@
 // Created by ricka on 2025-12-30.
 //
 
-#include <sdlk/core/renderable/renderable.hpp>
+#include <sdlk/core/components/renderable.hpp>
 #include <sdlk/core/gl/gl_program.hpp>
 
 namespace sdlk
@@ -15,7 +15,7 @@ namespace sdlk
 		}
 	}
 
-	renderable::renderable(const std::shared_ptr<geometry> &geometry): m_geometry(geometry)
+	renderable::renderable(const std::shared_ptr<geometry> &geometry) : m_geometry(geometry)
 	{
 	}
 }  // namespace sdlk

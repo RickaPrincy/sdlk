@@ -3,8 +3,9 @@
 //
 
 #pragma once
+
 #include <memory>
-#include <sdlk/core/renderable/component.hpp>
+#include <sdlk/core/components/component.hpp>
 
 namespace sdlk
 {

@@ -4,7 +4,7 @@
 #include <sdlk/core/components/2d/shape/polygon_shape.hpp>
 #include <sdlk/core/components/2d/shape/rectangle_shape.hpp>
 #include <sdlk/core/components/2d/shape/text_shape.hpp>
-#include <sdlk/core/renderable/component.hpp>
+#include <sdlk/core/components/component.hpp>
 
 using namespace sdlk;
 
@@ -23,7 +23,7 @@ auto main(const int argc, char** argv) -> int
 	rc_engine.add_event_listener(
 		event_type::key_up, [&](const SDL_Event& event) { std::cout << "Clicked \n"; });
 
-	return rc_engine.run(argc, argv);
+	return rc_engine.run("home", argc, argv);
 }
 
 auto home() -> std::shared_ptr<renderable>
@@ -61,7 +61,7 @@ auto rectangle_with_vertex_color() -> std::shared_ptr<renderable>
 
 auto rectangle_with_texture() -> std::shared_ptr<renderable>
 {
-	const auto texture = sdlk2d::texture::from_file("./resources/assets/images/image.png");
+	const auto texture = gl_texture::from_file("./resources/assets/images/image.png");
 
 	sdlk2d::type::polygon rect_with_uv = { sdlk2d::type::vertex(
 											   { 0.5f, 1.0f }, glm::vec2{ 0.0f, 0.0f }),

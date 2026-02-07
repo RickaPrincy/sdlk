@@ -2,6 +2,8 @@
 // Created by ricka on 2026-02-06.
 //
 
+#include <imgui.h>
+
 #include <iostream>
 #include <sdlk/core/imgui/imgui_drawer_utils.hpp>
 #include <sdlk/core/imgui/imgui_renderable.hpp>
@@ -10,12 +12,11 @@
 #include "../../types/project.hpp"
 #include "../view.hpp"
 #include "components.hpp"
-#include "imgui.h"
 
 namespace sdlk
 {
 	auto draw_home_content() -> void;
-	auto open_new_project() -> void;
+	auto open_existing_project() -> void;
 
 	auto home() -> std::shared_ptr<component>
 	{
@@ -26,8 +27,8 @@ namespace sdlk
 
 	auto draw_home_content() -> void
 	{
-		static const std::shared_ptr<sdlk2d::texture> logo =
-			sdlk2d::texture::from_file("./resources/images/sdlk.png");
+		static const std::shared_ptr<gl_texture> logo =
+			gl_texture::from_file("./resources/images/home.png");
 
 		static const std::vector projects{ std::make_shared<project>(
 											   "Alpha", "./resources/images/examples/game_bg.png"),
@@ -38,7 +39,9 @@ namespace sdlk
 			[]
 			{
 				const ImGuiViewport* vp = ImGui::GetMainViewport();
-				return ImVec2(vp->Size.x * 0.7f, vp->Size.y * 0.75f);
+				const float width = vp->Size.x * 0.6f;
+				const float height = width / logo->get_ratio() + 100 /* TODO */;
+				return ImVec2(width, height);
 			},
 			[]
 			{
@@ -49,7 +52,7 @@ namespace sdlk
 
 				const float content_width = ImGui::GetContentRegionAvail().x;
 
-				imgui_drawer_utils::image(logo, ImVec2{ content_width, 250.0F });
+				imgui_drawer_utils::image(logo, ImVec2{ content_width, 300.0F });
 				imgui_drawer_utils::spacing(2);
 
 				ImGui::Button("Create a new Project", ImVec2(content_width, 0));
@@ -58,7 +61,7 @@ namespace sdlk
 
 				if (ImGui::Button("Open a Project", ImVec2(content_width, 0)))
 				{
-					open_new_project();
+					open_existing_project();
 				}
 
 				imgui_drawer_utils::spacing();
@@ -91,9 +94,10 @@ namespace sdlk
 			});
 	}
 
-	auto open_new_project() -> void
+	auto open_existing_project() -> void
 	{
 		static nfd_filter filter{ .m_name = "SDLK Project", .m_extensions = "json" };
+
 		if (const auto response = nfd_wrapper::instance()->open_file_dialog({ filter });
 			response.m_type == nfd_open_dialog_result::type::success)
 		{

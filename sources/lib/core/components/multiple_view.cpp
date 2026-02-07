@@ -2,8 +2,8 @@
 // Created by ricka on 2025-12-30.
 //
 
+#include <sdlk/core/components/multiple_view.hpp>
 #include <stdexcept>
-#include <sdlk/core/renderable/multiple_view.hpp>
 
 namespace sdlk
 {
@@ -28,7 +28,7 @@ namespace sdlk
 		this->m_current = it->second;
 	}
 
-	auto multiple_view::render(const std::shared_ptr<gl_program> &program) -> void
+	auto multiple_view::render(const std::shared_ptr<gl_program>& program) -> void
 	{
 		if (this->m_current)
 		{
@@ -36,8 +36,9 @@ namespace sdlk
 		}
 	}
 
-	auto multiple_view::add_view(const std::string &name, std::shared_ptr<renderable> child) -> void
+	auto multiple_view::add_view(const std::string& name, std::shared_ptr<renderable> child) -> void
 	{
-		this->m_childs.insert(std::make_pair<std::string, std::shared_ptr<renderable>>(name.data(), std::move(child)));
+		this->m_childs.insert(std::make_pair<std::string, std::shared_ptr<renderable>>(
+			name.data(), std::move(child)));
 	}
 }  // namespace sdlk

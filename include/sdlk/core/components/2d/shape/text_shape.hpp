@@ -7,7 +7,7 @@
 #include <memory>
 #include <sdlk/core/components/2d/fonts/msdf_font.hpp>
 #include <sdlk/core/components/2d/shape/shape_style.hpp>
-#include <sdlk/core/renderable/renderable.hpp>
+#include <sdlk/core/components/renderable.hpp>
 #include <string>
 
 namespace sdlk2d

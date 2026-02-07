@@ -6,8 +6,7 @@
 #include <SDL_pixels.h>
 
 #include <glm/vec4.hpp>
-
-#include "converter.hpp"
+#include <sdlk/core/converter.hpp>
 
 namespace sdlk
 {

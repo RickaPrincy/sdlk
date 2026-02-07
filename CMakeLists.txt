@@ -11,6 +11,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_package(glm CONFIG REQUIRED)
 find_package(SDL2 CONFIG REQUIRED)
 find_package(SDL2_image CONFIG REQUIRED)
+find_package(nlohmann_json CONFIG REQUIRED)
 find_path(EARCUT_HPP_INCLUDE_DIRS "mapbox/earcut.hpp")
 find_package(Freetype REQUIRED)
 

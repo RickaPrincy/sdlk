@@ -3,16 +3,20 @@
 //
 
 #include <SDL2/SDL_image.h>
-#include <sdlk/core/components/2d/shape/texture.hpp>
+
+#include <sdlk/core/gl/gl_texture.hpp>
 #include <stdexcept>
 
-namespace sdlk2d
+namespace sdlk
 {
-	texture::texture(const GLuint id, const int width, const int height) : m_id(id), m_width(width), m_height(height)
+	gl_texture::gl_texture(const GLuint id, const int width, const int height)
+		: m_id(id),
+		  m_width(width),
+		  m_height(height)
 	{
 	}
 
-	std::shared_ptr<texture> texture::from_file(const std::string& path)
+	std::shared_ptr<gl_texture> gl_texture::from_file(const std::string& path)
 	{
 		SDL_Surface* surface = IMG_Load(path.c_str());
 		if (!surface)
@@ -25,7 +29,7 @@ namespace sdlk2d
 		return tex;
 	}
 
-	std::shared_ptr<texture> texture::from_surface(SDL_Surface* surface)
+	std::shared_ptr<gl_texture> gl_texture::from_surface(SDL_Surface* surface)
 	{
 		if (!surface)
 		{
@@ -51,31 +55,36 @@ namespace sdlk2d
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		return std::make_shared<texture>(id, surface->w, surface->h);
+		return std::make_shared<gl_texture>(id, surface->w, surface->h);
 	}
 
-	auto texture::bind(const GLuint unit) const -> void
+	auto gl_texture::bind(const GLuint unit) const -> void
 	{
 		glActiveTexture(GL_TEXTURE0 + unit);
 		glBindTexture(GL_TEXTURE_2D, this->m_id);
 	}
 
-	auto texture::get_width() const -> int
+	auto gl_texture::get_width() const -> int
 	{
 		return this->m_width;
 	}
 
-	auto texture::get_height() const -> int
+	auto gl_texture::get_height() const -> int
 	{
 		return this->m_height;
 	}
 
-	auto texture::get_id()-> GLuint&
+	auto gl_texture::get_id() -> GLuint&
 	{
 		return this->m_id;
 	}
 
-	texture::~texture()
+	auto gl_texture::get_ratio() const -> float
+	{
+		return static_cast<float>(this->m_width) / static_cast<float>(this->m_height);
+	}
+
+	gl_texture::~gl_texture()
 	{
 		if (this->m_id != 0)
 		{

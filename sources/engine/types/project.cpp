@@ -10,7 +10,7 @@
 namespace sdlk
 {
 	project::project(std::string name, const std::string& image_path)
-		: _texture(sdlk2d::texture::from_file(image_path)),
+		: _texture(gl_texture::from_file(image_path)),
 		  m_name(std::move(name)),
 		  m_image_path(image_path)
 	{
@@ -21,7 +21,7 @@ namespace sdlk
 		throw std::runtime_error("Not implemented");
 	}
 
-	auto project::get_texture() -> std::shared_ptr<sdlk2d::texture>
+	auto project::get_texture() -> std::shared_ptr<gl_texture>
 	{
 		return this->_texture;
 	}

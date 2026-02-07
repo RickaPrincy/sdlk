@@ -21,7 +21,7 @@ namespace sdlk::imgui_drawer_utils
 		renderable();
 	}
 
-	auto image(const std::shared_ptr<sdlk2d::texture>& texture, const ImVec2& size) -> void
+	auto image(const std::shared_ptr<gl_texture>& texture, const ImVec2& size) -> void
 	{
 		ImGui::Image(static_cast<ImTextureID>(static_cast<intptr_t>(texture->get_id())), size);
 	}
@@ -33,4 +33,4 @@ namespace sdlk::imgui_drawer_utils
 			ImGui::Spacing();
 		}
 	}
-}  // namespace sdlk
+}  // namespace sdlk::imgui_drawer_utils

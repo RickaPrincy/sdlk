@@ -7,6 +7,7 @@
     "glm",
     "earcut-hpp",
     "sdl2-image",
-    "freetype"
+    "freetype",
+    "nlohmann-json"
   ]
 }

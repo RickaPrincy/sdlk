@@ -2,7 +2,7 @@
 // Created by ricka on 2025-12-30.
 //
 
-#include <sdlk/core/renderable/component.hpp>
+#include <sdlk/core/components/component.hpp>
 
 namespace sdlk
 {

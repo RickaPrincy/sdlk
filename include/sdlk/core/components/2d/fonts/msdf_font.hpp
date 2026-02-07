@@ -6,10 +6,9 @@
 
 #include <msdf-atlas-gen/msdf-atlas-gen.h>
 
-#include <deque>
 #include <memory>
 #include <optional>
-#include <sdlk/core/components/2d/shape/texture.hpp>
+#include <sdlk/core/gl/gl_texture.hpp>
 
 #define MIN_SIDE 256
 
@@ -47,7 +46,8 @@ namespace sdlk
 		[[nodiscard]] auto size() const -> size_t;
 		[[nodiscard]] auto is_loaded(const char32_t &character) const -> bool;
 		[[nodiscard]] auto slice(size_t start_index) -> glyph_geometry *;
-		[[nodiscard]] auto get(const char32_t &character) -> std::optional<std::reference_wrapper<const GlyphGeometry>>;
+		[[nodiscard]] auto get(const char32_t &character)
+			-> std::optional<std::reference_wrapper<const GlyphGeometry>>;
 
 		auto invalidate_glyphs_map() -> void;
 		auto load(const charset &charset) -> void;
@@ -62,7 +62,7 @@ namespace sdlk
 		msdf_dynamic_atlas m_atlas{ 256 };
 
 		bool m_texture_initialized{ false };
-		std::shared_ptr<sdlk2d::texture> m_texture{};
+		std::shared_ptr<gl_texture> m_texture{};
 
 		glyph_storage m_glyph_storage{ nullptr };
 
@@ -80,7 +80,7 @@ namespace sdlk
 		[[nodiscard]] auto get_conf() const -> msdf_font_conf;
 		[[nodiscard]] auto get_bitmap() const -> bitmap_const_ref;
 		[[nodiscard]] auto is_loaded(const char32_t &c) const -> bool;
-		[[nodiscard]] auto get_texture() const -> std::shared_ptr<sdlk2d::texture>;
+		[[nodiscard]] auto get_texture() const -> std::shared_ptr<gl_texture>;
 		[[nodiscard]] auto get_metrics() const -> font_metrics;
 
 		auto load(const Charset &charset) -> void;
