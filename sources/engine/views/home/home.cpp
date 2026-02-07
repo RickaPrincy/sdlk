@@ -2,8 +2,10 @@
 // Created by ricka on 2026-02-06.
 //
 
+#include <iostream>
 #include <sdlk/core/imgui/imgui_drawer_utils.hpp>
 #include <sdlk/core/imgui/imgui_renderable.hpp>
+#include <sdlk/extra/nfd_wrapper.hpp>
 
 #include "../../types/project.hpp"
 #include "../view.hpp"
@@ -13,6 +15,7 @@
 namespace sdlk
 {
 	auto draw_home_content() -> void;
+	auto open_new_project() -> void;
 
 	auto home() -> std::shared_ptr<component>
 	{
@@ -53,7 +56,10 @@ namespace sdlk
 
 				imgui_drawer_utils::spacing();
 
-				ImGui::Button("Open a Project", ImVec2(content_width, 0));
+				if (ImGui::Button("Open a Project", ImVec2(content_width, 0)))
+				{
+					open_new_project();
+				}
 
 				imgui_drawer_utils::spacing();
 				ImGui::Separator();
@@ -83,6 +89,16 @@ namespace sdlk
 
 				ImGui::End();
 			});
+	}
+
+	auto open_new_project() -> void
+	{
+		static nfd_filter filter{ .m_name = "SDLK Project", .m_extensions = "json" };
+		if (const auto response = nfd_wrapper::instance()->open_file_dialog({ filter });
+			response.m_type == nfd_open_dialog_result::type::success)
+		{
+			std::cout << response.m_path.value() << std::endl;
+		}
 	}
 
 }  // namespace sdlk

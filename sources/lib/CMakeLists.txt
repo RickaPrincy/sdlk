@@ -38,6 +38,7 @@ set(LIB_SOURCES
         core/imgui/imgui_wrapper.cpp
         core/imgui/imgui_renderable.cpp
         core/imgui/imgui_drawer_utils.cpp
+        extra/nfd_wrapper.cpp
 )
 
 # Create the library
@@ -72,6 +73,8 @@ target_link_libraries(${SDLK_LIB_NAME} PUBLIC $<IF:$<TARGET_EXISTS:SDL2_image::S
 target_link_libraries(${SDLK_LIB_NAME} PRIVATE Freetype::Freetype)
 
 target_link_libraries(${SDLK_LIB_NAME} PUBLIC msdf-atlas-gen::msdf-atlas-gen)
+
+target_link_libraries(${SDLK_LIB_NAME} PRIVATE nfd)
 
 # set properties
 set_target_properties(

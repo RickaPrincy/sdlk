@@ -3,6 +3,7 @@
 //
 
 #include <sdlk/core/app.hpp>
+#include <sdlk/extra/nfd_wrapper.hpp>
 
 #include "imgui.h"
 #include "views/view.hpp"

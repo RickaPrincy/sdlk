@@ -66,6 +66,7 @@ if (SDLK_IS_MAIN_PROJECT)
             @ONLY)
 endif ()
 
+add_subdirectory(external/nfd-extended)
 add_subdirectory(external/msdf-atlas-gen)
 add_subdirectory(sources)
 add_subdirectory(examples)
