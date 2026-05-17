@@ -18,4 +18,14 @@ namespace sdlk
 	renderable::renderable(const std::shared_ptr<geometry> &geometry) : m_geometry(geometry)
 	{
 	}
+
+    auto renderable::set_context(const std::shared_ptr<renderable_context> &context) -> void
+    {
+        this->m_context = context;
+	}
+
+    auto renderable::get_context() -> std::shared_ptr<renderable_context>
+    {
+        return this->m_context;
+    }
 }  // namespace sdlk

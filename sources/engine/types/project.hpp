@@ -3,27 +3,22 @@
 //
 
 #pragma once
-
-#include <memory>
-#include <sdlk/core/gl/gl_texture.hpp>
 #include <string>
 
 namespace sdlk
 {
 	class project
 	{
-		std::shared_ptr<gl_texture> _texture{};
-
 	protected:
 		std::string m_name{};
-		std::string m_image_path{};
+	    std::string m_path{};
 
 	public:
-		explicit project(std::string name, const std::string &image_path);
+	    explicit project(std::string path);
 
 		auto open() -> void;
 		[[nodiscard]] auto get_name() -> std::string;
-		[[nodiscard]] auto get_texture() -> std::shared_ptr<gl_texture>;
+	    [[nodiscard]] auto get_path() -> std::string;
 
 		virtual ~project() = default;
 	};

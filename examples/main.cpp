@@ -64,7 +64,7 @@ auto rectangle_with_texture() -> std::shared_ptr<renderable>
 	const auto texture = gl_texture::from_file("./resources/assets/images/image.png");
 
 	sdlk2d::type::polygon rect_with_uv = { sdlk2d::type::vertex(
-											   { 0.5f, 1.0f }, glm::vec2{ 0.0f, 0.0f }),
+										   { 0.5f, 1.0f }, glm::vec2{ 0.0f, 0.0f }),
 		sdlk2d::type::vertex({ 1.0f, 1.0f }, glm::vec2{ 1.0f, 0.0f }),
 		sdlk2d::type::vertex({ 1.0f, 0.5f }, glm::vec2{ 1.0f, 1.0f }),
 

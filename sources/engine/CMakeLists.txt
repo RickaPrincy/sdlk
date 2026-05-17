@@ -5,6 +5,9 @@ set(SDLK_ENGINE_SOURCES
         types/project.cpp
         views/home/home.cpp
         views/home/draw_project_card.cpp
+        conf/sdlk_engine_conf.cpp
+        utils/os.cpp
+        views/project_editor/project.cpp
 )
 
 add_executable(${SDLK_ENGINE_NAME} ${SDLK_ENGINE_SOURCES})

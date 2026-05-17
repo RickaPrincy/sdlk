@@ -10,4 +10,5 @@
 namespace sdlk
 {
 	auto home() -> std::shared_ptr<component>;
+	auto project_editor() -> std::shared_ptr<component>;
 }

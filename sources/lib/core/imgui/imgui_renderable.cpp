@@ -6,16 +6,16 @@
 
 namespace sdlk
 {
-	imgui_renderable::imgui_renderable(std::function<void()> render) : _render(std::move(render))
+	imgui_renderable::imgui_renderable(std::function<void(renderable*)> render) : _render(std::move(render))
 	{
 	}
 
 	auto imgui_renderable::render(const std::shared_ptr<gl_program>& program) -> void
 	{
-		_render();
+		_render(this);
 	}
 
-	auto imgui_renderable::make(const std::function<void()>& render)
+	auto imgui_renderable::make(const std::function<void(renderable*)>& render)
 		-> std::shared_ptr<imgui_renderable>
 	{
 		return std::make_shared<imgui_renderable>(render);

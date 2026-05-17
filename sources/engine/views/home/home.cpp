@@ -9,14 +9,16 @@
 #include <sdlk/core/imgui/imgui_renderable.hpp>
 #include <sdlk/extra/nfd_wrapper.hpp>
 
-#include "../../types/project.hpp"
-#include "../view.hpp"
 #include "components.hpp"
+#include "../view.hpp"
+#include "../../types/project.hpp"
+#include "../../conf/sdlk_engine_conf.hpp"
 
 namespace sdlk
 {
-	auto draw_home_content() -> void;
-	auto open_existing_project() -> void;
+	static auto draw_home_content(renderable*) -> void;
+	static auto open_existing_project() -> void;
+    static auto get_last_projects() -> std::vector<std::shared_ptr<project>>;
 
 	auto home() -> std::shared_ptr<component>
 	{
@@ -25,15 +27,11 @@ namespace sdlk
 		return home_view;
 	}
 
-	auto draw_home_content() -> void
+	auto draw_home_content(renderable*) -> void
 	{
+	    static const auto projects = get_last_projects();
 		static const std::shared_ptr<gl_texture> logo =
 			gl_texture::from_file("./resources/images/home.png");
-
-		static const std::vector projects{ std::make_shared<project>(
-											   "Alpha", "./resources/images/examples/game_bg.png"),
-			std::make_shared<project>("Beta", "./resources/images/examples/game_bg.png"),
-			std::make_shared<project>("Mario Kart", "./resources/images/examples/game_bg.png") };
 
 		imgui_drawer_utils::centered_window(
 			[]
@@ -105,4 +103,16 @@ namespace sdlk
 		}
 	}
 
+    auto get_last_projects() -> std::vector<std::shared_ptr<project>>
+    {
+        std::vector<std::shared_ptr<project>> projects{};
+
+	    projects.reserve(sdlk_engine_conf::MAX_RECENTS);
+	    const auto last_project_paths = sdlk_engine_conf::load_or_init()->get_last_project_paths();
+	    for (const auto& path : last_project_paths)
+	    {
+	        projects.emplace_back(std::make_shared<project>(path));
+	    }
+	    return projects;
+    }
 }  // namespace sdlk

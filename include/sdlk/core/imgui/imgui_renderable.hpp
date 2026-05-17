@@ -11,13 +11,13 @@ namespace sdlk
 {
 	class imgui_renderable : public renderable
 	{
-		std::function<void()> _render;
+		std::function<void(renderable*)> _render;
 
 	public:
-		explicit imgui_renderable(std::function<void()> render);
+		explicit imgui_renderable(std::function<void(renderable*)> render);
 
 		auto render(const std::shared_ptr<gl_program> &program) -> void override;
 
-		static auto make(const std::function<void()> &render) -> std::shared_ptr<imgui_renderable>;
+		static auto make(const std::function<void(renderable*)> &render) -> std::shared_ptr<imgui_renderable>;
 	};
 }  // namespace sdlk

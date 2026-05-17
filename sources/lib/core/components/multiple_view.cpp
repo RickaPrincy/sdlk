@@ -17,7 +17,7 @@ namespace sdlk
 		return m_current;
 	}
 
-	auto multiple_view::switch_to(const std::string& name) -> void
+	auto multiple_view::switch_to(const std::string& name, std::shared_ptr<renderable_context> ctx) -> void
 	{
 		const auto it = this->m_childs.find(name);
 		if (it == this->m_childs.end())
@@ -26,6 +26,10 @@ namespace sdlk
 		}
 
 		this->m_current = it->second;
+	    if (ctx)
+	    {
+	        this->m_current->set_context(ctx);
+	    }
 	}
 
 	auto multiple_view::render(const std::shared_ptr<gl_program>& program) -> void
