@@ -1,60 +1,76 @@
-#include <SDL2/SDL_events.h>
-
+#include <iostream>
 #include <sdlk/core/app.hpp>
-#include <sdlk/core/component.hpp>
-#include <sdlk/core/events/types.hpp>
-#include <sdlk/core/freetype_font.hpp>
-#include <sdlk/core/shape.hpp>
-#include <sdlk/core/types.hpp>
+#include <sdlk/core/components/2d/fonts/msdf_font.hpp>
+#include <sdlk/core/components/2d/shape/polygon_shape.hpp>
+#include <sdlk/core/components/2d/shape/rectangle_shape.hpp>
+#include <sdlk/core/components/2d/shape/text_shape.hpp>
+#include <sdlk/core/components/component.hpp>
 
 using namespace sdlk;
 
-static constexpr int WINDOW_WIDTH = 1000;
-static constexpr int WINDOW_HEIGHT = 1000;
+auto home() -> std::shared_ptr<renderable>;
+auto text_hello_world() -> std::shared_ptr<renderable>;
+auto rectangle_with_texture() -> std::shared_ptr<renderable>;
+auto rectangle_with_uniform_color() -> std::shared_ptr<renderable>;
+auto rectangle_with_vertex_color() -> std::shared_ptr<renderable>;
 
-auto main(int argc, char** argv) -> int
+auto main(const int argc, char** argv) -> int
 {
-	app myapp("Hello World", WINDOW_WIDTH, WINDOW_HEIGHT);
+	app rc_engine("RC_Engine", 1200, 800);
 
-	auto image = texture::from_file("./resources/assets/images/image.png");
-	textured_shape shape(
-		std::move(polygon(quad::make(image->get_width() / 2, image->get_height() / 2))),
-		quad::make(image->get_width() / 2, image->get_height() / 2),
-		image);
+	rc_engine.add_view("home", home());
 
-	textured_shape shape2(
-		std::move(polygon(quad::make(image->get_width() / 2, image->get_height() / 2))),
-		quad::make(image->get_width() / 2, image->get_height() / 2),
-		image);
+	rc_engine.add_event_listener(
+		event_type::key_up, [&](const SDL_Event& event) { std::cout << "Clicked \n"; });
 
-	shape2.translate({ 40.f, 50.f });
+	return rc_engine.run("home", argc, argv);
+}
 
-	colored_shape test(polygon({
-						   { 0, 0 },
-						   { 50, 0 },
-						   { 50, 50 },
-						   { 0, 50 },
-					   }),
-		{ 255, 0, 0, 255 },
-		true);
+auto home() -> std::shared_ptr<renderable>
+{
+	auto home = std::make_shared<component>();
 
-	auto font = freetype_font::make("./resources/assets/font/arial.ttf");
+	home->add_child(rectangle_with_uniform_color());
+	home->add_child(text_hello_world());
 
-	text_shape blibli("hello world", font, { 255, 0, 0, 255 });
+	return home;
+}
 
-	myapp.add_renderable(&shape);
-	myapp.add_renderable(&shape2);
-	myapp.add_renderable(&test);
-	myapp.add_renderable(&blibli);
+auto text_hello_world() -> std::shared_ptr<renderable>
+{
+	auto font = msdf_font::make("./resources/assets/fonts/arial.ttf");
+	return std::make_shared<sdlk2d::text_shape>(U"Hello World helloé",
+		sdlk2d::text_style{ .m_size = 20.0f, .m_fg_color = color::white() },
+		font);
+}
 
-	myapp.add_event_listener(
-		event_type::key_down, [&](const SDL_Event& event) { shape.translate({ 50, 50 }); });
+auto rectangle_with_uniform_color() -> std::shared_ptr<renderable>
+{
+	return std::make_shared<sdlk2d::rectangle_shape>(
+		sdlk2d::type::point{ 0.0f, 0.0f }, 100.0f, 100.0f, color::red());
+}
 
-	myapp.add_event_listener(event_type::mouse_button_down,
-		[&](const SDL_Event& event) { shape.translate({ 100, 100 }); });
+auto rectangle_with_vertex_color() -> std::shared_ptr<renderable>
+{
+	sdlk2d::type::polygon triangle_with_color = { sdlk2d::type::vertex(
+													  { -1.0f, -1.0f }, color::blue()),
+		sdlk2d::type::vertex({ 0.0f, 1.0f }, color::red()),
+		sdlk2d::type::vertex({ 1.0f, -1.0f }, color::green()) };
+	return std::make_shared<sdlk2d::polygon_shape>(triangle_with_color);
+}
 
-	myapp.add_event_listener(
-		event_type::mouse_button_up, [&](const SDL_Event&) { shape.scale(1.1f); });
+auto rectangle_with_texture() -> std::shared_ptr<renderable>
+{
+	const auto texture = gl_texture::from_file("./resources/assets/images/image.png");
 
-	return myapp.run(argc, argv);
+	sdlk2d::type::polygon rect_with_uv = { sdlk2d::type::vertex(
+										   { 0.5f, 1.0f }, glm::vec2{ 0.0f, 0.0f }),
+		sdlk2d::type::vertex({ 1.0f, 1.0f }, glm::vec2{ 1.0f, 0.0f }),
+		sdlk2d::type::vertex({ 1.0f, 0.5f }, glm::vec2{ 1.0f, 1.0f }),
+
+		sdlk2d::type::vertex({ 0.5f, 1.0f }, glm::vec2{ 0.0f, 0.0f }),
+		sdlk2d::type::vertex({ 1.0f, 0.5f }, glm::vec2{ 1.0f, 1.0f }),
+		sdlk2d::type::vertex({ 0.5f, 0.5f }, glm::vec2{ 0.0f, 1.0f }) };
+
+	return std::make_shared<sdlk2d::polygon_shape>(rect_with_uv, texture);
 }

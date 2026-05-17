@@ -1,68 +1,64 @@
 #pragma once
 
-#include <SDL2/SDL_pixels.h>
-#include <ft2build.h>
-#include FT_FREETYPE_H
-
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_stdinc.h>
-#include <SDL2/SDL_video.h>
 
-#include <glm/glm.hpp>
 #include <sdlk/core/camera.hpp>
-#include <sdlk/core/events/event_listener.hpp>
+#include <sdlk/core/color.hpp>
+#include <sdlk/core/components/multiple_view.hpp>
 #include <sdlk/core/events/observer.hpp>
-#include <sdlk/core/renderable.hpp>
+#include <sdlk/core/gl/gl_program.hpp>
 #include <string>
-#include <vector>
 
 namespace sdlk
 {
+	class renderable;
 	struct app_options
 	{
-		unsigned int fps = 30;
-		std::string vertex_source = "";
-		std::string fragment_source = "";
-		SDL_Color background_color = { 0, 0, 0, 255 };
+		bool m_vsync = false;
+		unsigned int m_fps{ 30 };
+		color m_background{ color::black() };
 	};
 
 	class app : public observer
 	{
-	private:
+		Uint32 _frame_start{ 0 };
 		app_options _options{};
-		Uint32 _frame_start = 0;
-		unsigned int _frame_delay_ms = 0;
+		unsigned int _frame_delay_ms{ 0 };
 
-		static FT_Library s_ft_library;
-		static unsigned int s_window_width, s_window_height;
+		std::shared_ptr<class imgui_wrapper> _imgui_wrapper{};
 
 	protected:
-		camera m_camera;
-		GLuint m_shader_program{};
+		std::shared_ptr<camera> m_camera{};
+		std::shared_ptr<gl_program> m_program{};
 
-		SDL_Window *p_window = nullptr;
-		std::vector<renderable *> m_childs{};
-		SDL_GLContext m_opengl_context = nullptr;
+		SDL_Window *p_window{};
+		SDL_GLContext m_opengl_context{ nullptr };
 
-	public:
-		app(std::string window_title,
-			int width,
-			int height,
-			app_options options = {},
-			Uint32 sdl_init_flags = SDL_INIT_EVERYTHING);
-
+		auto handle_event(SDL_Event &event) const -> void;
 		virtual auto limit_fps() -> void;
-		auto run(int argc, char **argv) -> int;
-		auto add_renderable(renderable *child) -> void;
 
-		[[nodiscard]] auto get_camera() -> camera *;
+	    app(const std::string &window_title,
+            const int &width,
+            const int &height,
+            const app_options &options,
+            Uint32 sdl_init_flags);
+	public:
+		std::shared_ptr<multiple_view> m_view{};
 
-		[[nodiscard]] static auto get_width() -> int const;
-		[[nodiscard]] static auto get_height() -> int const;
-		[[nodiscard]] static auto get_ft_library() -> FT_Library &;
-		[[nodiscard]] auto get_event_listener() -> std::shared_ptr<event_listener> const;
+	    static auto make(const std::string &window_title,
+            const int &width,
+            const int &height,
+            const app_options &options = {},
+            Uint32 sdl_init_flags = SDL_INIT_EVERYTHING) -> std::shared_ptr<app>;
 
-		virtual ~app();
+	    static auto get() -> std::shared_ptr<app>;
+
+		auto run(const std::string &default_view, int, char **) -> int;
+		auto add_view(const std::string &name, const std::shared_ptr<renderable> &child) const -> void;
+	    auto switch_to(const std::string &name, const std::shared_ptr<renderable_context> &context = nullptr) const -> void;
+
+	    app() = delete;
+		~app() override;
 	};
 
 };	// namespace sdlk

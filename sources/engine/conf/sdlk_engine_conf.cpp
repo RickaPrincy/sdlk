@@ -1,0 +1,113 @@
+//
+// Created by ricka on 2026-05-17.
+//
+
+#include "sdlk_engine_conf.hpp"
+
+#include <algorithm>
+
+#include "../utils/os.hpp"
+#include "../utils/json_reader.hpp"
+#include <nlohmann/json.hpp>
+#include <utility>
+
+#define SDLK_CONF_DIRECTORY ".sdlk-engine"
+#define SDLK_CONF_FILE "sdlk-engine.conf.json"
+
+using json = nlohmann::json;
+
+sdlk_engine_conf::sdlk_engine_conf(std::string version, const std::vector<std::string> &last_project)
+    : m_version(std::move(version)), m_last_project_paths(last_project)
+{}
+
+auto sdlk_engine_conf::get_file_path() -> std::filesystem::path
+{
+    const auto home_path =  std::filesystem::path(os::get_home_dir());
+    return std::filesystem::path(home_path / SDLK_CONF_DIRECTORY) / SDLK_CONF_FILE;
+}
+
+auto sdlk_engine_conf::is_valid(const std::filesystem::path& file_conf_path) -> bool
+{
+    if (!std::filesystem::exists(file_conf_path))
+        return false;
+
+    try
+    {
+        auto j = json_reader::read(file_conf_path);
+        if (!j.is_object())
+        {
+            return false;
+        }
+
+        if (!j.contains("version") || !j["version"].is_string())
+        {
+            return false;
+        }
+
+        if (!j.contains("last_project_paths") || !j["last_project_paths"].is_array())
+        {
+            return false;
+        }
+        return true;
+    }
+    catch (...)
+    {
+        return false;
+    }
+}
+
+auto sdlk_engine_conf::load_or_init() -> sdlk_engine_conf*
+{
+    const auto path = get_file_path();
+    static sdlk_engine_conf conf;
+
+    if (is_valid(path))
+    {
+        auto j = json_reader::read(path);
+
+        conf.m_version = j.value("version", SDLK_VERSION);
+        conf.m_last_project_paths =
+            j["last_project_paths"].get<std::vector<std::string>>();
+
+        return &conf;
+    }
+
+    conf.save();
+    return &conf;
+}
+
+auto sdlk_engine_conf::save() const -> void
+{
+    const auto path = get_file_path();
+    std::filesystem::create_directories(path.parent_path());
+
+    json j;
+    j["version"] = m_version;
+    j["last_project_paths"] = m_last_project_paths;
+
+    std::ofstream file(path);
+    if (!file.is_open())
+    {
+        throw std::runtime_error("Cannot write config file: " + path.string());
+    }
+
+    file << j.dump(2);
+}
+
+auto sdlk_engine_conf::add_recent_project(const std::string& path) -> void
+{
+    m_last_project_paths.erase(std::remove(m_last_project_paths.begin(), m_last_project_paths.end(), path),m_last_project_paths.end());
+    m_last_project_paths.insert(m_last_project_paths.begin(), path);
+
+    if (m_last_project_paths.size() > MAX_RECENTS)
+    {
+        m_last_project_paths.resize(MAX_RECENTS);
+    }
+
+    save();
+}
+
+auto sdlk_engine_conf::get_last_project_paths() const -> std::vector<std::string>
+{
+    return m_last_project_paths;
+}

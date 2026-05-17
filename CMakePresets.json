@@ -6,7 +6,9 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+        "MSDF_ATLAS_USE_SKIA": "OFF",
+        "MSDF_ATLAS_USE_VCPKG": "ON",
+        "CMAKE_TOOLCHAIN_FILE": "/home/ricka/Apk/vcpkg/scripts/buildsystems/vcpkg.cmake"
       }
     },
     {
@@ -15,7 +17,7 @@
       "displayName": "Build with vcpkg (Debug)",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        "SDLK_BUILD_EXAMPLE": "ON"
+        "SDLK_BUILD_EXAMPLES": "ON"
       }
     },
     {
@@ -24,7 +26,7 @@
       "displayName": "Build with vcpkg (Release)",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "SDLK_BUILD_EXAMPLE": "OFF"
+        "SDLK_BUILD_EXAMPLES": "OFF"
       }
     }
   ],

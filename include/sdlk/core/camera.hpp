@@ -1,15 +1,13 @@
 #pragma once
 
-#include <glad/glad.h>
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <string>
+#include <sdlk/core/gl/gl_program.hpp>
 
 namespace sdlk
 {
 	class camera
 	{
+		unsigned int _width, _height;
+
 	protected:
 		float m_zoom{ 1.0f };
 		glm::vec2 m_position{ 0.0f };
@@ -17,13 +15,13 @@ namespace sdlk
 		glm::mat4 m_projection{ 1.0f };
 		glm::mat4 m_view{ 1.0f };
 
-		void recalculate(int width, int height);
+		auto recalculate(int width, int height) -> void;
 
 	public:
 		camera(int width, int height);
 
-		[[nodiscard]] auto get_zoom() -> float;
-		[[nodiscard]] auto get_position() -> glm::vec2;
+		[[nodiscard]] auto get_zoom() const -> float;
+		[[nodiscard]] auto get_position() const -> glm::vec2;
 
 		auto set_position(const glm::vec2& pos) -> void;
 		auto translate(const glm::vec2& delta) -> void;
@@ -34,9 +32,7 @@ namespace sdlk
 
 		auto update(int width, int height) -> void;	 // Must be called after any change
 
-		auto load_uniforms(GLuint* shader_program,
-			std::string view_name = "uView",
-			std::string proj_name = "uProjection") const -> void const;
+		auto load_uniforms(const std::shared_ptr<gl_program>& program) const -> void;
 
 		[[nodiscard]] auto get_projection() const -> const glm::mat4&;
 		[[nodiscard]] auto get_view() const -> const glm::mat4&;
