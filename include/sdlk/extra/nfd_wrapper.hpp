@@ -47,5 +47,6 @@ namespace sdlk
 		[[nodiscard]] static auto instance() -> std::shared_ptr<nfd_wrapper>;
 		[[nodiscard]] auto open_file_dialog(const std::vector<nfd_filter> &filters)
 			-> nfd_open_dialog_result;
+	    [[nodiscard]] auto open_folder_dialog() -> nfd_open_dialog_result;
 	};
 }  // namespace sdlk

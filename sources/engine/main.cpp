@@ -5,8 +5,6 @@
 #include <imgui.h>
 
 #include <sdlk/core/app.hpp>
-#include <sdlk/extra/nfd_wrapper.hpp>
-
 #include "views/view.hpp"
 
 using namespace sdlk;
@@ -15,12 +13,13 @@ static auto configure_global_style() -> void;
 
 auto main(const int argc, char* argv[]) -> int
 {
-	app sdlk_engine("Sdlk Engine", 1280, 720);
+	const auto sdlk_engine = app::make("Sdlk Engine", 1280, 720);
 
 	configure_global_style();
 
-	sdlk_engine.add_view("home", home());
-	return sdlk_engine.run("home", argc, argv);
+	sdlk_engine->add_view("home", home());
+	sdlk_engine->add_view("project_editor", project_editor());
+	return sdlk_engine->run("home", argc, argv);
 }
 
 static auto configure_global_style() -> void

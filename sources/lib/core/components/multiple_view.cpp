@@ -17,19 +17,20 @@ namespace sdlk
 		return m_current;
 	}
 
-	auto multiple_view::switch_to(const std::string& name, std::shared_ptr<renderable_context> ctx) -> void
+	auto multiple_view::switch_to(const std::string& name, const std::shared_ptr<renderable_context> &ctx) -> void
 	{
-		const auto it = this->m_childs.find(name);
-		if (it == this->m_childs.end())
+		if (this->m_childs.find(name) == this->m_childs.end())
 		{
 			throw std::runtime_error("view::switch_to: no view named '" + name + "' found");
 		}
 
-		this->m_current = it->second;
+	    const auto &to_be_current = this->m_childs[name];
 	    if (ctx)
 	    {
-	        this->m_current->set_context(ctx);
+	        to_be_current->set_context(ctx);
 	    }
+
+		this->m_current = to_be_current;
 	}
 
 	auto multiple_view::render(const std::shared_ptr<gl_program>& program) -> void

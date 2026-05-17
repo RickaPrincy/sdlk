@@ -23,7 +23,7 @@ namespace sdlk
 		[[nodiscard]] auto get_current() const -> std::shared_ptr<renderable>;
 
 		auto add_view(const std::string &name, std::shared_ptr<renderable> child) -> void;
-		auto switch_to(const std::string &name, std::shared_ptr<renderable_context> ctx = nullptr) -> void;
+		auto switch_to(const std::string &name, const std::shared_ptr<renderable_context> &ctx = nullptr) -> void;
 
 		auto render(const std::shared_ptr<gl_program> &program) -> void override;
 

@@ -16,7 +16,7 @@ namespace sdlk
 {
         struct renderable_context
         {
-            std::pmr::unordered_map<std::string, std::any> props;
+            std::unordered_map<std::string, std::any> props{};
 
             template<typename T>
             auto get(const std::string& key) -> std::optional<T>
@@ -32,7 +32,7 @@ namespace sdlk
             template<typename T>
             auto set(const std::string &key, T value)
             {
-                this->props.insert(std::make_pair(key, value));
+                this->props[key] = value;
             }
 
             auto has(const std::string &key) -> bool
@@ -47,8 +47,8 @@ namespace sdlk
 	{
 	protected:
 		std::shared_ptr<geometry> m_geometry{};
-	    std::shared_ptr<renderable_context> m_context{};
 		std::shared_ptr<transform> m_transform{std::make_shared<transform>()};
+	    std::shared_ptr<renderable_context> m_context{std::make_shared<renderable_context>()};
 
 	public:
 		renderable() = default;
@@ -61,14 +61,23 @@ namespace sdlk
 	    auto set_context(const std::shared_ptr<renderable_context> &context) -> void;
 
 	    template <typename T>
-	    auto set_context(std::string name, const std::any &value) -> void
+	    auto set_context(const std::string name, const T &value) -> void
 	    {
+	        if (!this->m_context)
+	        {
+	            this->m_context = std::make_shared<renderable_context>();
+	        }
 	        this->m_context->set<T>(name, value);
 	    }
 
 	    template <typename T>
 	    auto get_context(const std::string &name) -> std::optional<T>
 	    {
+	        if (!this->m_context)
+	        {
+	            return std::nullopt;
+	        }
+
 	        return this->m_context->get<T>(name);
 	    }
 

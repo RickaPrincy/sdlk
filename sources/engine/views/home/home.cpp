@@ -4,7 +4,6 @@
 
 #include <imgui.h>
 
-#include <iostream>
 #include <sdlk/core/imgui/imgui_drawer_utils.hpp>
 #include <sdlk/core/imgui/imgui_renderable.hpp>
 #include <sdlk/extra/nfd_wrapper.hpp>
@@ -16,7 +15,7 @@
 
 namespace sdlk
 {
-	static auto draw_home_content(renderable*) -> void;
+	static auto draw_home_content() -> void;
 	static auto open_existing_project() -> void;
     static auto get_last_projects() -> std::vector<std::shared_ptr<project>>;
 
@@ -27,7 +26,7 @@ namespace sdlk
 		return home_view;
 	}
 
-	auto draw_home_content(renderable*) -> void
+	auto draw_home_content() -> void
 	{
 	    static const auto projects = get_last_projects();
 		static const std::shared_ptr<gl_texture> logo =
@@ -94,12 +93,13 @@ namespace sdlk
 
 	auto open_existing_project() -> void
 	{
-		static nfd_filter filter{ .m_name = "SDLK Project", .m_extensions = "json" };
-
-		if (const auto response = nfd_wrapper::instance()->open_file_dialog({ filter });
+		if (const auto response = nfd_wrapper::instance()->open_folder_dialog();
 			response.m_type == nfd_open_dialog_result::type::success)
 		{
-			std::cout << response.m_path.value() << std::endl;
+		    auto path = response.m_path;
+		    const auto to_open = std::make_shared<project>(path.value());
+
+		    to_open->open();
 		}
 	}
 

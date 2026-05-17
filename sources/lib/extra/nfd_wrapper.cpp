@@ -59,4 +59,36 @@ namespace sdlk
 				return nfd_open_dialog_result(nfd_open_dialog_result::type::error);
 		}
 	}
+
+    auto nfd_wrapper::open_folder_dialog() -> nfd_open_dialog_result
+	{
+	    nfdu8char_t* out_path = nullptr;
+        constexpr nfdpickfolderu8args_t args{};
+
+	    switch (const nfdresult_t result = NFD_PickFolderU8_With(&out_path, &args))
+	    {
+	        case NFD_OKAY:
+	        {
+	            std::string path(out_path);
+	            NFD_FreePathU8(out_path);
+
+	            return nfd_open_dialog_result(
+                    nfd_open_dialog_result::type::success,
+                    path
+                );
+	        }
+
+	        case NFD_CANCEL:
+	            return nfd_open_dialog_result(
+                    nfd_open_dialog_result::type::canceled
+                );
+
+	        case NFD_ERROR:
+	        default:
+	            std::cerr << "NFD error: " << NFD_GetError() << std::endl;
+	            return nfd_open_dialog_result(
+                    nfd_open_dialog_result::type::error
+                );
+	    }
+	}
 }  // namespace sdlk

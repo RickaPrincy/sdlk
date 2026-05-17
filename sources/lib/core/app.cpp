@@ -21,11 +21,28 @@ namespace sdlk
 		is_running = false;
 	}
 
-	app::app(const std::string &window_title,
-		const int &width,
-		const int &height,
-		const app_options &options,
-		const Uint32 sdl_init_flags)
+    static std::shared_ptr<app> global_app{nullptr};
+    auto app::get() -> std::shared_ptr<app>
+    {
+        return global_app;
+    }
+
+    auto app::make(const std::string &window_title, const int &width, const int &height, const app_options &options, Uint32 sdl_init_flags) -> std::shared_ptr<app>
+    {
+        if (global_app == nullptr)
+        {
+            global_app = std::shared_ptr<app>(
+                new app(window_title, width, height, options, sdl_init_flags));
+        }
+
+        return global_app;
+    }
+
+    app::app(const std::string &window_title,
+             const int &width,
+             const int &height,
+             const app_options &options,
+             const Uint32 sdl_init_flags)
 		: _options(options)
 	{
 		this->_frame_delay_ms = 1000 / this->_options.m_fps;
@@ -45,7 +62,7 @@ namespace sdlk
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
-		const auto dpi_scale = 1;
+        constexpr auto dpi_scale = 1;
 		const auto window_width = static_cast<int>(static_cast<float>(width) * dpi_scale);
 		const auto window_height = static_cast<int>(static_cast<float>(height) * dpi_scale);
 
@@ -175,12 +192,17 @@ namespace sdlk
 		this->_frame_start = SDL_GetTicks();
 	}
 
-	auto app::add_view(const std::string &name, std::shared_ptr<renderable> child) const -> void
+	auto app::add_view(const std::string &name, const std::shared_ptr<renderable> &child) const -> void
 	{
-		this->m_view->add_view(name, std::move(child));
+		this->m_view->add_view(name, child);
 	}
 
-	app::~app()
+    auto app::switch_to(const std::string &name, const std::shared_ptr<renderable_context> &context) const -> void
+    {
+        this->m_view->switch_to(name, context);
+    }
+
+    app::~app()
 	{
 		if (this->p_window)
 		{
