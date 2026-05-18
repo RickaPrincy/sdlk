@@ -1,12 +1,7 @@
-set(IMGUI_DIR ${SDLK_SOURCE_DIR}/external/imgui)
+set(IMGUI_DIR ${SDLK_SOURCE_DIR}/sources/lib/core/imgui)
 set(IMGUI_SOURCES
-        ${IMGUI_DIR}/imgui.cpp
-        ${IMGUI_DIR}/imgui_draw.cpp
-        ${IMGUI_DIR}/imgui_tables.cpp
-        ${IMGUI_DIR}/imgui_widgets.cpp
-        # backends (SDL2 + OPENGL3)
-        ${IMGUI_DIR}/backends/imgui_impl_sdl2.cpp
-        ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp
+    # backends (SDL2 + OPENGL3)
+    ${IMGUI_DIR}/backends/imgui_impl_sdl2.cpp
 )
 
 set(EXTRA_SOURCES extra/nfd_wrapper.cpp)
@@ -66,17 +61,14 @@ target_link_libraries(${SDLK_LIB_NAME}
         $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
 )
 
-target_link_libraries(${SDLK_LIB_NAME} PUBLIC glm::glm-header-only)
-
-target_link_libraries(${SDLK_LIB_NAME} PUBLIC $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>)
-
+target_link_libraries(${SDLK_LIB_NAME} PRIVATE nfd::nfd)
 target_link_libraries(${SDLK_LIB_NAME} PRIVATE Freetype::Freetype)
 
+target_link_libraries(${SDLK_LIB_NAME} PUBLIC imgui::imgui)
+target_link_libraries(${SDLK_LIB_NAME} PUBLIC glm::glm-header-only)
+target_link_libraries(${SDLK_LIB_NAME} PUBLIC nlohmann_json::nlohmann_json)
 target_link_libraries(${SDLK_LIB_NAME} PUBLIC msdf-atlas-gen::msdf-atlas-gen)
-
-target_link_libraries(${SDLK_LIB_NAME} PRIVATE nfd)
-
-target_link_libraries(${SDLK_LIB_NAME} PRIVATE nlohmann_json::nlohmann_json)
+target_link_libraries(${SDLK_LIB_NAME} PUBLIC $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>)
 
 # set properties
 set_target_properties(

@@ -1,9 +1,3 @@
 [submodule "external/msdf-atlas-gen"]
 	path = external/msdf-atlas-gen
 	url = https://github.com/Chlumsky/msdf-atlas-gen.git
-[submodule "external/imgui"]
-	path = external/imgui
-	url = https://github.com/ocornut/imgui.git
-[submodule "external/nfd-extended"]
-	path = external/nfd-extended
-	url = https://github.com/btzy/nativefiledialog-extended.git
