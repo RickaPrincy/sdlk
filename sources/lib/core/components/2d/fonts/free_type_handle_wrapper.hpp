@@ -7,7 +7,7 @@
 
 #include <memory>
 
-namespace sdlk
+namespace sdlk2d
 {
 	class free_type_handle_wrapper final
 	{

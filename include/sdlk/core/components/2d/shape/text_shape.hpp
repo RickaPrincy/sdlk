@@ -25,14 +25,14 @@ namespace sdlk2d
 	protected:
 		text_style m_style{};
 		std::u32string m_text{};
-		std::shared_ptr<sdlk::msdf_font> m_font{};
+		std::shared_ptr<msdf_font> m_font{};
 
 		auto update_vertices() -> void;
 
 	public:
 		explicit text_shape(std::u32string text,
 			const text_style &text_style,
-			const std::shared_ptr<sdlk::msdf_font> &font);
+			const std::shared_ptr<msdf_font> &font);
 
 		auto render(const std::shared_ptr<sdlk::gl_program> &program) -> void override;
 	};

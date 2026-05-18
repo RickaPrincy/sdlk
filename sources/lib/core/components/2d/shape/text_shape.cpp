@@ -10,11 +10,13 @@
 #include <sdlk/core/gl/gl_program.hpp>
 #include <utility>
 
+#include "../fonts/msdf_font_impl.hpp"
+
 namespace sdlk2d
 {
 	text_shape::text_shape(std::u32string text,
 		const text_style &text_style,
-		const std::shared_ptr<sdlk::msdf_font> &font)
+		const std::shared_ptr<msdf_font> &font)
 		: m_style(text_style),
 		  m_text(std::move(text)),
 		  m_font(font)
@@ -47,7 +49,7 @@ namespace sdlk2d
 		vbo->unbind();
 		vao->unbind();
 
-		this->m_font->load(this->m_text);
+		this->m_font->get_impl()->load(this->m_text);
 		this->update_vertices();
 	}
 
@@ -60,11 +62,11 @@ namespace sdlk2d
 		uniform->set("u_text_rendering", true);
 		uniform->set("u_use_vertex_color", false);
 
-		uniform->set("u_px_range", this->m_font->get_conf().m_pixel_range);
+		uniform->set("u_px_range", this->m_font->get_impl()->get_conf().m_pixel_range);
 		uniform->set("u_color", this->m_style.m_fg_color.ndc());
 		uniform->set("u_bg_color", this->m_style.m_bg_color.ndc());
 
-		this->m_font->get_texture()->bind();
+		this->m_font->get_impl()->get_texture()->bind();
 		uniform->set("u_texture", 0);
 
 		glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(m_vertices.size()));
@@ -75,13 +77,13 @@ namespace sdlk2d
 		this->m_geometry->get_vao()->bind();
 		this->m_vertices.clear();
 
-		const auto font_metrics = this->m_font->get_metrics();
+		const auto font_metrics = this->m_font->get_impl()->get_metrics();
 		const auto scale = this->m_style.m_size / static_cast<float>(font_metrics.emSize);
 		glm::vec2 pen{ 0.0f, static_cast<float>(font_metrics.ascenderY) * scale };
 
 		for (const char32_t &c : this->m_text)
 		{
-			const auto &opt_glyph = this->m_font->get(c);
+			const auto &opt_glyph = this->m_font->get_impl()->get(c);
 			if (!opt_glyph.has_value())
 				continue;
 
@@ -103,7 +105,7 @@ namespace sdlk2d
 			float x1 = pen.x + static_cast<float>(pr) * scale;
 			float y1 = pen.y - static_cast<float>(pb) * scale;
 
-			const auto &atlas = this->m_font->get_bitmap();
+			const auto &atlas = this->m_font->get_impl()->get_bitmap();
 			float u0 = static_cast<float>(ul) / static_cast<float>(atlas.width);
 			float v0 = static_cast<float>(ut) / static_cast<float>(atlas.height);
 			float u1 = static_cast<float>(ur) / static_cast<float>(atlas.width);

@@ -16,14 +16,14 @@ auto rectangle_with_vertex_color() -> std::shared_ptr<renderable>;
 
 auto main(const int argc, char** argv) -> int
 {
-	app rc_engine("RC_Engine", 1200, 800);
+	auto rc_engine = app::make("RC_Engine", 1200, 800);
 
-	rc_engine.add_view("home", home());
+	rc_engine->add_view("home", home());
 
-	rc_engine.add_event_listener(
+	rc_engine->add_event_listener(
 		event_type::key_up, [&](const SDL_Event& event) { std::cout << "Clicked \n"; });
 
-	return rc_engine.run("home", argc, argv);
+	return rc_engine->run("home", argc, argv);
 }
 
 auto home() -> std::shared_ptr<renderable>
@@ -38,7 +38,7 @@ auto home() -> std::shared_ptr<renderable>
 
 auto text_hello_world() -> std::shared_ptr<renderable>
 {
-	auto font = msdf_font::make("./resources/assets/fonts/arial.ttf");
+	auto font = sdlk2d::msdf_font::make("./resources/assets/fonts/arial.ttf");
 	return std::make_shared<sdlk2d::text_shape>(U"Hello World helloé",
 		sdlk2d::text_style{ .m_size = 20.0f, .m_fg_color = color::white() },
 		font);
