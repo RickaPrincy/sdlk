@@ -1,12 +1,7 @@
-set(IMGUI_DIR ${SDLK_SOURCE_DIR}/external/imgui)
+set(IMGUI_DIR ${SDLK_SOURCE_DIR}/sources/lib/core/imgui)
 set(IMGUI_SOURCES
-        ${IMGUI_DIR}/imgui.cpp
-        ${IMGUI_DIR}/imgui_draw.cpp
-        ${IMGUI_DIR}/imgui_tables.cpp
-        ${IMGUI_DIR}/imgui_widgets.cpp
-        # backends (SDL2 + OPENGL3)
-        ${IMGUI_DIR}/backends/imgui_impl_sdl2.cpp
-        ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp
+    # backends (SDL2 + OPENGL3)
+    ${IMGUI_DIR}/backends/imgui_impl_sdl2.cpp
 )
 
 set(EXTRA_SOURCES extra/nfd_wrapper.cpp)
@@ -30,6 +25,7 @@ set(LIB_SOURCES
         core/components/2d/shape/rectangle_shape.cpp
         core/components/2d/fonts/free_type_handle_wrapper.cpp
         core/components/2d/fonts/msdf_font.cpp
+        core/components/2d/fonts/msdf_font_impl.cpp
         core/components/2d/shape/text_shape.cpp
         core/app.cpp
         core/converter.cpp
@@ -66,17 +62,14 @@ target_link_libraries(${SDLK_LIB_NAME}
         $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
 )
 
-target_link_libraries(${SDLK_LIB_NAME} PUBLIC glm::glm-header-only)
-
-target_link_libraries(${SDLK_LIB_NAME} PUBLIC $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>)
-
+target_link_libraries(${SDLK_LIB_NAME} PRIVATE nfd::nfd)
 target_link_libraries(${SDLK_LIB_NAME} PRIVATE Freetype::Freetype)
+target_link_libraries(${SDLK_LIB_NAME} PRIVATE msdf-atlas-gen::msdf-atlas-gen)
 
-target_link_libraries(${SDLK_LIB_NAME} PUBLIC msdf-atlas-gen::msdf-atlas-gen)
-
-target_link_libraries(${SDLK_LIB_NAME} PRIVATE nfd)
-
-target_link_libraries(${SDLK_LIB_NAME} PRIVATE nlohmann_json::nlohmann_json)
+target_link_libraries(${SDLK_LIB_NAME} PUBLIC imgui::imgui)
+target_link_libraries(${SDLK_LIB_NAME} PUBLIC glm::glm-header-only)
+target_link_libraries(${SDLK_LIB_NAME} PUBLIC nlohmann_json::nlohmann_json)
+target_link_libraries(${SDLK_LIB_NAME} PUBLIC $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>)
 
 # set properties
 set_target_properties(
@@ -87,7 +80,7 @@ set_target_properties(
         VERSION ${SDLK_LIB_VERSION})
 
 # lib install configuration
-if (SDLK_LIB_INSTALL)
+#if (SDLK_LIB_INSTALL)
     include(CMakePackageConfigHelpers)
     write_basic_package_version_file(
             ${CMAKE_BINARY_DIR}/cmake/${SDLK_LIB_NAME}Version.cmake
@@ -95,8 +88,7 @@ if (SDLK_LIB_INSTALL)
             COMPATIBILITY SameMajorVersion)
 
     include(GNUInstallDirs)
-    install(DIRECTORY ${SDLK_SOURCE_DIR}/include/${SDLK_LIB_NAME}
-            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+    install(DIRECTORY ${SDLK_SOURCE_DIR}/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
     install(
             TARGETS ${SDLK_LIB_NAME}
@@ -127,4 +119,4 @@ if (SDLK_LIB_INSTALL)
             ${CMAKE_BINARY_DIR}/cmake/${SDLK_LIB_NAME}Version.cmake
             DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${SDLK_LIB_NAME})
 
-endif ()
+#endif ()

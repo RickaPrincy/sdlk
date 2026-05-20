@@ -1,6 +1,4 @@
-add_executable(example main.cpp
-        ../include/sdlk/core/imgui/imgui_drawer_utils.hpp
-        ../include/sdlk/extra/nfd_wrapper.hpp)
+add_executable(example main.cpp)
 
 target_include_directories(example PRIVATE ${SDLK_SOURCE_DIR}/include)
 

@@ -7,7 +7,13 @@ set(SDLK_ENGINE_SOURCES
         views/home/draw_project_card.cpp
         conf/sdlk_engine_conf.cpp
         utils/os.cpp
+        utils/utils.cpp
         views/project_editor/project_editor.cpp
+        views/home/trigger_open_project.cpp
+        views/home/trigger_new_project.cpp
+        views/home/get_last_projects.cpp
+        views/home/draw_home_options.cpp
+        views/home/draw_create_project.cpp
 )
 
 add_executable(${SDLK_ENGINE_NAME} ${SDLK_ENGINE_SOURCES})
@@ -21,6 +27,8 @@ target_include_directories(
 target_include_directories(${SDLK_ENGINE_NAME} PRIVATE ${SDLK_SOURCE_DIR}/include)
 
 target_link_libraries(${SDLK_ENGINE_NAME} PRIVATE ${SDLK_LIB_NAME})
+
+target_link_libraries(${SDLK_ENGINE_NAME} PRIVATE Templi)
 
 set_target_properties(${SDLK_ENGINE_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 

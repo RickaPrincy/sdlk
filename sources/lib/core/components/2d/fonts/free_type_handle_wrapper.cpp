@@ -7,7 +7,7 @@
 #include <memory>
 #include <stdexcept>
 
-namespace sdlk
+namespace sdlk2d
 {
 	static auto free_type_handle_wrapper_instance = std::make_shared<free_type_handle_wrapper>();
 

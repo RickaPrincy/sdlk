@@ -8,8 +8,9 @@
 #include <stdexcept>
 #include <utility>
 #include <nlohmann/json.hpp>
-#include "../utils/json_reader.hpp"
 #include <sdlk/core/app.hpp>
+
+#include "../utils/json_reader.hpp"
 #include "../conf/sdlk_engine_conf.hpp"
 
 #define SDLK_PROJECT_FILE_CONF_NAME "sdlk_engine.json"
@@ -24,6 +25,10 @@ namespace sdlk
 	    auto project_conf = json_reader::read(file_path / SDLK_PROJECT_FILE_CONF_NAME);
 	    this->m_name = project_conf["name"];
 	}
+
+    project::project(std::string path, std::string name)
+        : m_name(std::move(name)), m_path(std::move(path))
+    {}
 
     auto project::open() const -> void
 	{
@@ -45,4 +50,29 @@ namespace sdlk
     {
         return this->m_path;
     }
+
+    auto project::save() const -> void
+	{
+	    if (this->m_path.empty())
+	    {
+	        throw std::runtime_error("Cannot save project: empty path");
+	    }
+
+	    const std::filesystem::path project_dir(this->m_path);
+	    if (!std::filesystem::exists(project_dir))
+	    {
+	        throw std::runtime_error("Cannot save project: directory does not exist");
+	    }
+
+	    json project_conf;
+	    project_conf["name"] = this->m_name;
+
+	    const auto file_path = project_dir / SDLK_PROJECT_FILE_CONF_NAME;
+	    std::ofstream file(file_path);
+	    if (!file.is_open())
+	    {
+	        throw std::runtime_error("Cannot open project file for saving");
+	    }
+	    file << project_conf.dump(2);
+	}
 }  // namespace sdlk

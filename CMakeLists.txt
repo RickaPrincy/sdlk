@@ -7,13 +7,16 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# SDL2
+find_package(imgui CONFIG REQUIRED)
+find_package(imgui CONFIG REQUIRED)
+find_package(nfd CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(SDL2 CONFIG REQUIRED)
 find_package(SDL2_image CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_path(EARCUT_HPP_INCLUDE_DIRS "mapbox/earcut.hpp")
 find_package(Freetype REQUIRED)
+find_package(Templi CONFIG REQUIRED) # 4.1.31
 
 set(SDLK_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(SDLK_IS_MAIN_PROJECT OFF)
@@ -67,7 +70,6 @@ if (SDLK_IS_MAIN_PROJECT)
             @ONLY)
 endif ()
 
-add_subdirectory(external/nfd-extended)
 add_subdirectory(external/msdf-atlas-gen)
 add_subdirectory(sources)
 add_subdirectory(examples)

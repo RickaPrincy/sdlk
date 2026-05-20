@@ -15,8 +15,11 @@ namespace sdlk
 
 	public:
 	    explicit project(std::string path);
+	    explicit project(std::string path, std::string name);
 
         auto open() const -> void;
+        auto save() const -> void;
+
 		[[nodiscard]] auto get_name() -> std::string;
 	    [[nodiscard]] auto get_path() -> std::string;
 
