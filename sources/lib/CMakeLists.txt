@@ -4,10 +4,19 @@ set(IMGUI_SOURCES
     ${IMGUI_DIR}/backends/imgui_impl_sdl2.cpp
 )
 
+set(SDLK_GAME_SOURCES
+    game/world.cpp
+    game/game_view.cpp
+    game/scene_manager.cpp
+    game/entity_manager.cpp
+    game/systems/movement_system.cpp
+)
+
 set(EXTRA_SOURCES extra/nfd_wrapper.cpp)
 set(LIB_SOURCES
         ${IMGUI_SOURCES}
         ${EXTRA_SOURCES}
+        ${SDLK_GAME_SOURCES}
         ../utils/file.cpp
         core/glad/glad.cpp
         core/gl/gl_program.cpp
