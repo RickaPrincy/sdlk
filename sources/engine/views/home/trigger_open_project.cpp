@@ -2,14 +2,15 @@
 // Created by ricka on 2026-05-20.
 //
 
-#include <sdlk/extra/nfd_wrapper.hpp>
+#include <memory>
+#include "../../utils/nfd_wrapper.hpp"
 #include "../../types/project.hpp"
 
 namespace sdlk
 {
     auto trigger_open_project() -> void
     {
-        if (const auto response = nfd_wrapper::instance()->open_folder_dialog();
+        if (const auto response = nfd_wrapper::instance().open_folder_dialog();
             response.m_type == nfd_open_dialog_result::type::success)
         {
             auto path = response.m_path;

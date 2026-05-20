@@ -7,7 +7,6 @@
 #include <sdlk/core/components/component.hpp>
 #include <sdlk/core/imgui/imgui_drawer_utils.hpp>
 #include <sdlk/core/imgui/imgui_renderable.hpp>
-#include <sdlk/extra/nfd_wrapper.hpp>
 
 #include "components.hpp"
 

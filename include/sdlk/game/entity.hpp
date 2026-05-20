@@ -5,7 +5,7 @@
 
 #include <cstdint>
 
-namespace sdlk
+namespace sdlk::game
 {
     struct entity
     {

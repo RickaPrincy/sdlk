@@ -8,6 +8,7 @@ set(SDLK_ENGINE_SOURCES
         conf/sdlk_engine_conf.cpp
         utils/os.cpp
         utils/utils.cpp
+        utils/nfd_wrapper.cpp
         views/project_editor/project_editor.cpp
         views/home/trigger_open_project.cpp
         views/home/trigger_new_project.cpp
@@ -27,7 +28,7 @@ target_include_directories(
 target_include_directories(${SDLK_ENGINE_NAME} PRIVATE ${SDLK_SOURCE_DIR}/include)
 
 target_link_libraries(${SDLK_ENGINE_NAME} PRIVATE ${SDLK_LIB_NAME})
-
+target_link_libraries(${SDLK_ENGINE_NAME} PRIVATE nfd::nfd)
 target_link_libraries(${SDLK_ENGINE_NAME} PRIVATE Templi)
 
 set_target_properties(${SDLK_ENGINE_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")

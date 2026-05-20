@@ -9,7 +9,7 @@
 #include <sdlk/core/components/renderable.hpp>
 #include <sdlk/core/events/observer.hpp>
 
-namespace sdlk
+namespace sdlk::game
 {
     class game_view : public renderable, public observer {
         float m_last_time{0.0f};

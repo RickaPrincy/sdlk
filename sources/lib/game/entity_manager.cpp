@@ -6,7 +6,7 @@
 #include <cassert>
 #include <sdlk/game/entity_manager.hpp>
 
-namespace sdlk
+namespace sdlk::game
 {
     auto entity_manager::create() -> entity
     {

@@ -5,7 +5,7 @@
 // ReSharper disable CppUseStructuredBinding
 #include <sdlk/game/systems/movement_system.hpp>
 
-namespace sdlk
+namespace sdlk::game
 {
     auto movement_system::update(world &world, const float &dt) -> void
     {

@@ -4,7 +4,7 @@
 
 #include <sdlk/game/scene_manager.hpp>
 
-namespace sdlk
+namespace sdlk::game
 {
     auto scene_manager::change(std::unique_ptr<scene> scene) -> void
     {

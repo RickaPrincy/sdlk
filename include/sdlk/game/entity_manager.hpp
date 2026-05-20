@@ -7,7 +7,7 @@
 #include <vector>
 #include <sdlk/game/entity.hpp>
 
-namespace sdlk
+namespace sdlk::game
 {
     class entity_manager
     {

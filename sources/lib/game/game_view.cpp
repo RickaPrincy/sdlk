@@ -5,7 +5,7 @@
 #include <sdlk/game/game_view.hpp>
 #include <SDL2/SDL.h>
 
-namespace sdlk
+namespace sdlk::game
 {
     game_view::game_view()
     {

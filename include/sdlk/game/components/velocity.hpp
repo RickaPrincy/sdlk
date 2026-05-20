@@ -4,7 +4,7 @@
 
 #pragma once
 
-namespace sdlk
+namespace sdlk::game
 {
     struct velocity
     {

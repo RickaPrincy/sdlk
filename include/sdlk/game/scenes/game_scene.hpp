@@ -7,7 +7,7 @@
 #include <sdlk/game/scenes/scene.hpp>
 #include <sdlk/game/systems/movement_system.hpp>
 
-namespace sdlk
+namespace sdlk::game
 {
     class game_scene: public scene
     {

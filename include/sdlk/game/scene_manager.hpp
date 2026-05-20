@@ -8,7 +8,7 @@
 #include <sdlk/game/scenes/scene.hpp>
 #include <sdlk/core/gl/gl_program.hpp>
 
-namespace sdlk
+namespace sdlk::game
 {
     class scene_manager
     {

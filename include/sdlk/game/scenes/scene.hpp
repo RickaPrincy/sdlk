@@ -8,7 +8,7 @@
 #include <sdlk/game/world.hpp>
 #include <sdlk/core/gl/gl_program.hpp>
 
-namespace sdlk
+namespace sdlk::game
 {
     class scene
     {

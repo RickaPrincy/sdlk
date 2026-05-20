@@ -6,7 +6,7 @@
 
 #include <sdlk/game/systems/system.hpp>
 
-namespace sdlk
+namespace sdlk::game
 {
     class movement_system: public system
     {

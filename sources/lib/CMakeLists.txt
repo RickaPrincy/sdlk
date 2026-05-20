@@ -12,7 +12,6 @@ set(SDLK_GAME_SOURCES
     game/systems/movement_system.cpp
 )
 
-set(EXTRA_SOURCES extra/nfd_wrapper.cpp)
 set(LIB_SOURCES
         ${IMGUI_SOURCES}
         ${EXTRA_SOURCES}
@@ -71,7 +70,6 @@ target_link_libraries(${SDLK_LIB_NAME}
         $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
 )
 
-target_link_libraries(${SDLK_LIB_NAME} PRIVATE nfd::nfd)
 target_link_libraries(${SDLK_LIB_NAME} PRIVATE Freetype::Freetype)
 target_link_libraries(${SDLK_LIB_NAME} PRIVATE msdf-atlas-gen::msdf-atlas-gen)
 

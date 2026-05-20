@@ -5,11 +5,11 @@
 #include <nfd.h>
 
 #include <iostream>
-#include <sdlk/extra/nfd_wrapper.hpp>
+#include "nfd_wrapper.hpp"
 
 namespace sdlk
 {
-	const auto INSTANCE = std::make_shared<nfd_wrapper>();
+	static nfd_wrapper INSTANCE{};
 
 	nfd_wrapper::nfd_wrapper()
 	{
@@ -21,7 +21,7 @@ namespace sdlk
 		NFD_Quit();
 	}
 
-	auto nfd_wrapper::instance() -> std::shared_ptr<nfd_wrapper>
+	auto nfd_wrapper::instance() -> nfd_wrapper&
 	{
 		return INSTANCE;
 	}

@@ -5,7 +5,7 @@
 #include <sdlk/game/world.hpp>
 #include <sdlk/game/component_pool.hpp>
 
-namespace sdlk
+namespace sdlk::game
 {
     auto world::create_entity() -> entity
     {

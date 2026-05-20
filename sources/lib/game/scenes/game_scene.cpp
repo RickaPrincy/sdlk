@@ -4,7 +4,7 @@
 
 #include <sdlk/game/scenes/game_scene.hpp>
 
-namespace sdlk
+namespace sdlk::game
 {
     auto game_scene::update(const float &dt) -> void
     {

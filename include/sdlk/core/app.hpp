@@ -11,6 +11,7 @@
 
 namespace sdlk
 {
+    // TODO: Huge refactor... use std::shared_ptr only when needed
 	class renderable;
 	struct app_options
 	{

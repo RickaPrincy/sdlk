@@ -6,7 +6,7 @@
 #include <imgui.h>
 #include <filesystem>
 #include <memory>
-#include <sdlk/extra/nfd_wrapper.hpp>
+#include "../../utils/nfd_wrapper.hpp"
 #include <regex>
 
 #include "components.hpp"
@@ -53,7 +53,7 @@ namespace sdlk
         ImGui::Text("Location");
         if (ImGui::Button("Choose folder", ImVec2(content_width, 0)))
         {
-            if (const auto res = nfd_wrapper::instance()->open_folder_dialog(); res.m_type == nfd_open_dialog_result::type::success)
+            if (const auto res = nfd_wrapper::instance().open_folder_dialog(); res.m_type == nfd_open_dialog_result::type::success)
             {
                 selected_folder = res.m_path.value();
             }

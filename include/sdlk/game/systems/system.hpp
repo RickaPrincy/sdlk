@@ -6,7 +6,7 @@
 
 #include <sdlk/game/world.hpp>
 
-namespace sdlk
+namespace sdlk::game
 {
     class system
     {

@@ -8,7 +8,7 @@
 #include <unordered_map>
 #include <sdlk/game/entity.hpp>
 
-namespace sdlk
+namespace sdlk::game
 {
     template <typename T>
     class component_pool

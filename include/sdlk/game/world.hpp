@@ -10,7 +10,7 @@
 #include <sdlk/game/components/transform.hpp>
 #include <sdlk/game/components/velocity.hpp>
 
-namespace sdlk
+namespace sdlk::game
 {
     class world
     {
