@@ -13,6 +13,7 @@
 
 #define SDLK_CONF_DIRECTORY ".sdlk-engine"
 #define SDLK_CONF_FILE "sdlk-engine.conf.json"
+#define SDLK_TEMPLATE_DIRECTORY "template-release"
 
 using json = nlohmann::json;
 
@@ -20,10 +21,22 @@ sdlk_engine_conf::sdlk_engine_conf(std::string version, const std::vector<std::s
     : m_version(std::move(version)), m_last_project_paths(last_project)
 {}
 
+auto sdlk_engine_conf::get_config_path() -> std::filesystem::path
+{
+    const auto home_path =  std::filesystem::path(os::get_home_dir());
+    return home_path / SDLK_CONF_DIRECTORY;
+}
+
 auto sdlk_engine_conf::get_file_path() -> std::filesystem::path
 {
     const auto home_path =  std::filesystem::path(os::get_home_dir());
-    return std::filesystem::path(home_path / SDLK_CONF_DIRECTORY) / SDLK_CONF_FILE;
+    return get_config_path() / SDLK_CONF_FILE;
+}
+
+auto sdlk_engine_conf::get_template_path() -> std::filesystem::path
+{
+    const auto home_path =  std::filesystem::path(os::get_home_dir());
+    return get_config_path() / SDLK_TEMPLATE_DIRECTORY;
 }
 
 auto sdlk_engine_conf::is_valid(const std::filesystem::path& file_conf_path) -> bool
