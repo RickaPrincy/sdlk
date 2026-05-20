@@ -2,9 +2,9 @@
 // Created by ricka on 2026-05-20.
 //
 
-#include "entity_manager.hpp"
 
 #include <cassert>
+#include <sdlk/game/entity_manager.hpp>
 
 namespace sdlk
 {

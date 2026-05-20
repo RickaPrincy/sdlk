@@ -13,7 +13,7 @@ namespace sdlk
 {
     class game_view : public renderable, public observer {
         float m_last_time{0.0f};
-        scene_manager m_scene_manager;
+        scene_manager m_scene_manager{};
 
         auto compute_dt() -> float;
 
@@ -22,6 +22,7 @@ namespace sdlk
         virtual auto on_update(const float &dt) -> void;
 
         auto render(const std::shared_ptr<gl_program>& program) -> void override;
+
     public:
 	    game_view();
         ~game_view() override = default;

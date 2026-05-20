@@ -13,9 +13,9 @@ namespace sdlk
     template <typename T>
     class component_pool
     {
-        std::vector<T> m_dense;
-        std::vector<entity> m_entities;
-        std::unordered_map<uint32_t, size_t> m_sparse;
+        std::vector<T> m_dense{};
+        std::vector<entity> m_entities{};
+        std::unordered_map<uint32_t, size_t> m_sparse{};
     public:
         auto add(const entity e, T value) -> void
         {

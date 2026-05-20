@@ -13,7 +13,8 @@ namespace sdlk
     class scene
     {
     protected:
-        world m_world;
+        world m_world{};
+
     public:
         virtual void on_exit() {}
         virtual void on_enter() {}

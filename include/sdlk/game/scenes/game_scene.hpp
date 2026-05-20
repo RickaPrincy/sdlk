@@ -13,6 +13,7 @@ namespace sdlk
     {
         movement_system m_movement_system;
     public:
+        game_scene() = default;
         auto update(const float &dt) -> void override;
         auto on_event(const SDL_Event &e) -> void override;
     };
