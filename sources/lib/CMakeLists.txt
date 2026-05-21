@@ -5,10 +5,12 @@ set(IMGUI_SOURCES
 )
 
 set(SDLK_GAME_SOURCES
+    game/game.cpp
     game/world.cpp
     game/game_view.cpp
     game/scene_manager.cpp
     game/entity_manager.cpp
+    game/scenes/game_scene.cpp
     game/systems/movement_system.cpp
 )
 

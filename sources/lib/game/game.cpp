@@ -1,0 +1,32 @@
+//
+// Created by ricka on 2026-05-21.
+//
+
+#include <sdlk/game/game.hpp>
+#include <sdlk/game/game_view.hpp>
+
+#define GAME_VIEW_NAME "game"
+
+namespace sdlk2d
+{
+    game::game(const std::string &window_title,
+             const int &width,
+             const int &height,
+             const sdlk::app_options &options,
+             const Uint32 sdl_init_flags)
+        : app(window_title, width, height, options, sdl_init_flags)
+    {
+        this->m_game_view = std::make_shared<sdlk::game::game_view>();
+        this->add_view(GAME_VIEW_NAME, this->m_game_view);
+    }
+
+    auto game::run(const std::string &default_view, const int argc, char ** argv) -> int
+    {
+        return this->app::run(GAME_VIEW_NAME, argc, argv);
+    }
+
+    auto game::run(const int argc, char **argv) -> int
+    {
+        return this->app::run(GAME_VIEW_NAME, argc, argv);
+    }
+}

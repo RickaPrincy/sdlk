@@ -38,23 +38,18 @@ namespace sdlk
 		auto handle_event(SDL_Event &event) const -> void;
 		virtual auto limit_fps() -> void;
 
-	    app(const std::string &window_title,
-            const int &width,
-            const int &height,
-            const app_options &options,
-            Uint32 sdl_init_flags);
 	public:
 		std::shared_ptr<multiple_view> m_view{};
 
-	    static auto make(const std::string &window_title,
+	    static auto get() -> std::shared_ptr<app>;
+
+	    app(const std::string &window_title,
             const int &width,
             const int &height,
             const app_options &options = {},
-            Uint32 sdl_init_flags = SDL_INIT_EVERYTHING) -> std::shared_ptr<app>;
+            Uint32 sdl_init_flags = SDL_INIT_EVERYTHING);
 
-	    static auto get() -> std::shared_ptr<app>;
-
-		auto run(const std::string &default_view, int, char **) -> int;
+		virtual auto run(const std::string &default_view, int, char **) -> int;
 		auto add_view(const std::string &name, const std::shared_ptr<renderable> &child) const -> void;
 	    auto switch_to(const std::string &name, const std::shared_ptr<renderable_context> &context = nullptr) const -> void;
 
