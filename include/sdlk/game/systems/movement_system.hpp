@@ -4,15 +4,15 @@
 
 #pragma once
 
-#include <sdlk/game/systems/system.hpp>
+#include <sdlk/game/world.hpp>
 
 namespace sdlk::game
 {
-    class movement_system: public system
+    class movement_system
     {
     public:
-        auto update(world &world, const float &dt) -> void override;
+        static auto update(world &world, const float &dt) -> void;
 
-        movement_system() = default;
+        movement_system() = delete;
     };
 }

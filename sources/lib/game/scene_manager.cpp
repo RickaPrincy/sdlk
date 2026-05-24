@@ -15,7 +15,6 @@ namespace sdlk::game
 
         m_current = std::move(scene);
 
-
         if (m_current)
         {
             m_current->on_enter();

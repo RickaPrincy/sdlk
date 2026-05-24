@@ -12,18 +12,16 @@ namespace sdlk::game
         auto &transforms = world.pool<transform>();
         auto &velocities = world.pool<velocity>();
 
-        for (const auto entity : transforms.get_entities())
+        for (const auto entity : velocities.get_entities())
         {
-            if (!velocities.has(entity))
+            if (!transforms.has(entity))
             {
                 continue;
             }
 
             auto& t = transforms.get(entity);
-            const auto& v = velocities.get(entity);
-
-            t.m_x += v.m_x * dt;
-            t.m_y += v.m_y * dt;
+            auto& v = velocities.get(entity);
+            t.add_translation(v.m_v * dt);
         }
     }
 }

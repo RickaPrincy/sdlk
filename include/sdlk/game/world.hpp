@@ -9,12 +9,17 @@
 #include <sdlk/game/entity_manager.hpp>
 #include <sdlk/game/components/transform.hpp>
 #include <sdlk/game/components/velocity.hpp>
+#include <sdlk/game/components/texture.hpp>
+#include <sdlk/game/components/mesh.hpp>
 
 namespace sdlk::game
 {
     class world
     {
         entity_manager m_entity_manager{};
+
+        component_pool<mesh> m_meshes{};
+        component_pool<texture> m_textures{};
         component_pool<velocity> m_velocities{};
         component_pool<transform> m_transforms{};
 
@@ -50,5 +55,17 @@ namespace sdlk::game
     inline auto world::pool<velocity>() -> component_pool<velocity>&
     {
         return m_velocities;
+    }
+
+    template<>
+    inline auto world::pool<mesh>() -> component_pool<mesh>&
+    {
+        return m_meshes;
+    }
+
+    template<>
+    inline auto world::pool<texture>() -> component_pool<texture>&
+    {
+        return m_textures;
     }
 }

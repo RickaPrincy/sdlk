@@ -16,11 +16,17 @@ namespace sdlk::game
         world m_world{};
 
     public:
-        virtual void on_exit() {}
-        virtual void on_enter() {}
-        virtual void update(const float &dt) {}
-        virtual void on_event(const SDL_Event& e) {}
-        virtual void render(const std::shared_ptr<gl_program>& program) {}
+        virtual auto on_exit() -> void {}
+        virtual auto on_enter() -> void {}
+        virtual auto on_event(const SDL_Event& e) ->void {}
+
+        virtual auto update(const float &dt) -> void {}
+        virtual auto render(const std::shared_ptr<gl_program>& program) -> void {}
+
+        [[nodiscard]] auto get_world() -> world&
+        {
+            return m_world;
+        }
 
         virtual ~scene() = default;
     };

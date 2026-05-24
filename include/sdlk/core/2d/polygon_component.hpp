@@ -43,6 +43,7 @@ namespace sdlk2d
         }
     };
 
+    // TODO: implement
     class polygon_component: public sdlk::component
     {
     protected:

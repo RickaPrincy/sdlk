@@ -4,17 +4,18 @@
 
 #pragma once
 
+#include <memory>
 #include <sdlk/game/scenes/scene.hpp>
-#include <sdlk/game/systems/movement_system.hpp>
+#include <sdlk/core/gl/gl_program.hpp>
 
 namespace sdlk::game
 {
     class game_scene: public scene
     {
-        movement_system m_movement_system;
     public:
         game_scene() = default;
+
         auto update(const float &dt) -> void override;
-        auto on_event(const SDL_Event &e) -> void override;
+        auto render(const std::shared_ptr<gl_program> &program) -> void override;
     };
 };

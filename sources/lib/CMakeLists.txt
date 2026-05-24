@@ -12,6 +12,7 @@ set(SDLK_GAME_SOURCES
     game/entity_manager.cpp
     game/scenes/game_scene.cpp
     game/systems/movement_system.cpp
+    game/systems/render_system.cpp
 )
 
 set(LIB_SOURCES

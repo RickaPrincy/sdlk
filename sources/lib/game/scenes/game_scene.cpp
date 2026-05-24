@@ -3,17 +3,18 @@
 //
 
 #include <sdlk/game/scenes/game_scene.hpp>
+#include <sdlk/game/systems/render_system.hpp>
+#include <sdlk/game/systems/movement_system.hpp>
 
 namespace sdlk::game
 {
     auto game_scene::update(const float &dt) -> void
     {
-        //TODO: input_system, ...
-        m_movement_system.update(m_world, dt);
+        movement_system::update(m_world, dt);
     }
 
-    auto game_scene::on_event(const SDL_Event &e) -> void
+    void game_scene::render(const std::shared_ptr<gl_program> &program)
     {
-        //TODO
+        render_system::update(m_world, program);
     }
 }
