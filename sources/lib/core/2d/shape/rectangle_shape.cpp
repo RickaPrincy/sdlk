@@ -22,13 +22,31 @@ namespace sdlk2d
 		const float x1 = origin.x + width;
 		const float y1 = origin.y + height;
 
-		return {
-		    type::vertex{ type::point{ x0, y0 }, type::point{ 0.0f, 0.0f } },
-            type::vertex{ type::point{ x1, y0 }, type::point{ 1.0f, 0.0f } },
-            type::vertex{ type::point{ x1, y1 }, type::point{ 1.0f, 1.0f } },
-            type::vertex{ type::point{ x0, y0 }, type::point{ 0.0f, 0.0f } },
-            type::vertex{ type::point{ x1, y1 }, type::point{ 1.0f, 1.0f } },
-            type::vertex{ type::point{ x0, y1 }, type::point{ 0.0f, 1.0f } }
-		};
+	    return {
+	        type::vertex{
+                .m_uv = type::point{0.0f, 0.0f},
+	            .m_position = type::point{x0, y0}
+	        },
+            type::vertex{
+                .m_uv = type::point{1.0f, 0.0f},
+                .m_position = type::point{x1, y0}
+            },
+            type::vertex{
+                .m_uv = type::point{1.0f, 1.0f},
+                .m_position = type::point{x1, y1}
+            },
+            type::vertex{
+                .m_uv = type::point{0.0f, 0.0f},
+                .m_position = type::point{x0, y0}
+            },
+            type::vertex{
+                .m_uv = type::point{1.0f, 1.0f},
+                .m_position = type::point{x1, y1}
+            },
+            type::vertex{
+                .m_uv = type::point{0.0f, 1.0f},
+                .m_position = type::point{x0, y1}
+            }
+	    };
 	}
 }  // namespace sdlk2d

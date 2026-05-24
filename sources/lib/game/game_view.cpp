@@ -42,4 +42,9 @@ namespace sdlk::game
 
         m_scene_manager.render(program);
     }
+
+    auto game_view::get_scene_manager() -> scene_manager &
+    {
+        return m_scene_manager;
+    }
 }

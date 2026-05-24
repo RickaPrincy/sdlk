@@ -28,7 +28,7 @@ namespace sdlk::game
         auto destroy_entity(entity entity) -> void;
 
         template <typename T>
-        auto add(entity e, T comp) -> void
+        auto add(entity e, T &comp) -> void
         {
             pool<T>().add(e, comp);
         }

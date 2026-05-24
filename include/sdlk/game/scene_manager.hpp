@@ -12,11 +12,11 @@ namespace sdlk::game
 {
     class scene_manager
     {
-        std::unique_ptr<scene> m_current{};
+        std::shared_ptr<scene> m_current{};
     public:
         auto update(const float &dt) const -> void;
         auto on_event(const SDL_Event& e) const -> void;
-        auto change(std::unique_ptr<scene> scene) -> void;
+        auto change(const std::shared_ptr<scene> &scene) -> void;
         auto render(const std::shared_ptr<gl_program> &program) const -> void;
     };
 }

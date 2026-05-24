@@ -6,14 +6,14 @@
 
 namespace sdlk::game
 {
-    auto scene_manager::change(std::unique_ptr<scene> scene) -> void
+    auto scene_manager::change(const std::shared_ptr<scene> &scene) -> void
     {
         if (m_current)
         {
             m_current->on_exit();
         }
 
-        m_current = std::move(scene);
+        m_current = scene;
 
         if (m_current)
         {

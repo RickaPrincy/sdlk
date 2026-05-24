@@ -16,6 +16,7 @@ namespace sdlk::game
 
         auto run(const std::string &default_view, int argc, char **argv) -> int override;
     public:
+
         auto run(int argc, char ** argv) -> int;
 
         game(const std::string &window_title,
@@ -23,6 +24,8 @@ namespace sdlk::game
             const int &height,
             const app_options &options = {},
             Uint32 sdl_init_flags = SDL_INIT_EVERYTHING);
+
+        auto set_scene(const std::shared_ptr<scene> &scene) const -> void;
 
         game() = delete;
         ~game() override = default;
