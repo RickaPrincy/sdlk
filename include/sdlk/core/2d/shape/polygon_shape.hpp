@@ -5,11 +5,11 @@
 #pragma once
 
 #include <sdlk/core/2d/type.hpp>
-#include <sdlk/core/renderable.hpp>
+#include <sdlk/core/2d/shape/shape.hpp>
 
 namespace sdlk2d
 {
-	class polygon_shape : public sdlk::renderable
+	class polygon_shape : public shape
 	{
 	public:
 		explicit polygon_shape(const type::polygon &polygon);

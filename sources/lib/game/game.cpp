@@ -7,16 +7,16 @@
 
 #define GAME_VIEW_NAME "game"
 
-namespace sdlk2d
+namespace sdlk::game
 {
     game::game(const std::string &window_title,
              const int &width,
              const int &height,
-             const sdlk::app_options &options,
+             const app_options &options,
              const Uint32 sdl_init_flags)
         : app(window_title, width, height, options, sdl_init_flags)
     {
-        this->m_game_view = std::make_shared<sdlk::game::game_view>();
+        this->m_game_view = std::make_shared<game_view>();
         this->add_view(GAME_VIEW_NAME, this->m_game_view);
     }
 

@@ -4,10 +4,13 @@
 
 #pragma once
 
+#include <sdlk/core/transform.hpp>
+
 namespace sdlk::game
 {
-    struct transform
+    class transform: public sdlk::transform
     {
-        float m_x, m_y;
+    public:
+        using sdlk::transform::transform;
     };
 }

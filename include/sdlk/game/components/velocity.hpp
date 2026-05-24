@@ -4,10 +4,12 @@
 
 #pragma once
 
+#include <glm/vec3.hpp>
+
 namespace sdlk::game
 {
     struct velocity
     {
-        float m_x, m_y;
+        glm::vec2 m_v{0.0};
     };
 }

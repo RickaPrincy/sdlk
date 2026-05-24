@@ -6,14 +6,13 @@
 
 #include <memory>
 #include <sdlk/core/app.hpp>
-
 #include <sdlk/game/game_view.hpp>
 
-namespace sdlk2d
+namespace sdlk::game
 {
-    class game: public sdlk::app
+    class game: public app
     {
-        std::shared_ptr<sdlk::game::game_view> m_game_view;
+        std::shared_ptr<game_view> m_game_view;
 
         auto run(const std::string &default_view, int argc, char **argv) -> int override;
     public:
@@ -22,7 +21,7 @@ namespace sdlk2d
         game(const std::string &window_title,
             const int &width,
             const int &height,
-            const sdlk::app_options &options = {},
+            const app_options &options = {},
             Uint32 sdl_init_flags = SDL_INIT_EVERYTHING);
 
         game() = delete;
