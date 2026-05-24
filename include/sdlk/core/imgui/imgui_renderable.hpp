@@ -5,7 +5,7 @@
 #pragma once
 
 #include <functional>
-#include <sdlk/core/components/renderable.hpp>
+#include <sdlk/core/renderable.hpp>
 
 namespace sdlk
 {

@@ -8,6 +8,7 @@ set(SDLK_ENGINE_SOURCES
         conf/sdlk_engine_conf.cpp
         utils/os.cpp
         utils/utils.cpp
+        utils/imgui_drawer_utils.cpp
         utils/nfd_wrapper.cpp
         views/project_editor/project_editor.cpp
         views/home/trigger_open_project.cpp

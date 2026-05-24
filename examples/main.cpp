@@ -4,7 +4,7 @@
 #include <sdlk/core/components/2d/shape/polygon_shape.hpp>
 #include <sdlk/core/components/2d/shape/rectangle_shape.hpp>
 #include <sdlk/core/components/2d/shape/text_shape.hpp>
-#include <sdlk/core/components/component.hpp>
+#include <../include/sdlk/core/component.hpp>
 
 using namespace sdlk;
 

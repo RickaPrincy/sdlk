@@ -7,7 +7,6 @@
 #include <glad/glad.h>
 
 #include <cstddef>
-#include <memory>
 
 namespace sdlk
 {
@@ -28,8 +27,6 @@ namespace sdlk
 
 		auto set_data(const void* data, GLenum usage, std::size_t count, std::size_t element_size)
 			-> void;
-
-		[[nodiscard]] static auto make(GLenum target) -> std::shared_ptr<gl_buffer>;
 
 		[[nodiscard]] auto id() -> GLuint&;
 		[[nodiscard]] auto get_count() const -> std::size_t;

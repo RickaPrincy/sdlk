@@ -5,13 +5,20 @@
 #pragma once
 
 #include <memory>
-#include <sdlk/core/components/2d/fonts/msdf_font.hpp>
-#include <sdlk/core/components/2d/shape/shape_style.hpp>
-#include <sdlk/core/components/renderable.hpp>
+#include <sdlk/core/color.hpp>
+#include <sdlk/core/renderable.hpp>
+#include <sdlk/core/2d/fonts/msdf_font.hpp>
 #include <string>
 
 namespace sdlk2d
 {
+    struct text_style
+    {
+        float m_size{ 12.0f };
+        sdlk::color m_fg_color{ sdlk::color::white() };
+        sdlk::color m_bg_color{ SDL_Color{ .r = 0, .g = 0, .b = 0, .a = 0 } };
+    };
+
 	struct char_vertex
 	{
 		glm::vec3 m_pos;

@@ -28,15 +28,15 @@ set(LIB_SOURCES
         core/gl/gl_texture.cpp
         core/events/event_listener.cpp
         core/events/observer.cpp
-        core/components/renderable.cpp
-        core/components/component.cpp
-        core/components/multiple_view.cpp
-        core/components/2d/shape/polygon_shape.cpp
-        core/components/2d/shape/rectangle_shape.cpp
-        core/components/2d/fonts/free_type_handle_wrapper.cpp
-        core/components/2d/fonts/msdf_font.cpp
-        core/components/2d/fonts/msdf_font_impl.cpp
-        core/components/2d/shape/text_shape.cpp
+        core/renderable.cpp
+        core/component.cpp
+        core/multiple_view.cpp
+        core/2d/shape/polygon_shape.cpp
+        core/2d/shape/rectangle_shape.cpp
+        core/2d/fonts/free_type_handle_wrapper.cpp
+        core/2d/fonts/msdf_font.cpp
+        core/2d/fonts/msdf_font_impl.cpp
+        core/2d/shape/text_shape.cpp
         core/app.cpp
         core/converter.cpp
         core/geometry.cpp
@@ -44,7 +44,6 @@ set(LIB_SOURCES
         core/camera.cpp
         core/imgui/imgui_wrapper.cpp
         core/imgui/imgui_renderable.cpp
-        core/imgui/imgui_drawer_utils.cpp
 )
 
 # Create the library

@@ -6,8 +6,6 @@
 
 #include <glad/glad.h>
 
-#include <memory>
-
 namespace sdlk
 {
 	class gl_vertex_array
@@ -31,6 +29,5 @@ namespace sdlk
 			const void* offset) -> void;
 
 		[[nodiscard]] auto id() -> GLuint&;
-		[[nodiscard]] static auto make() -> std::shared_ptr<gl_vertex_array>;
 	};
 }  // namespace sdlk

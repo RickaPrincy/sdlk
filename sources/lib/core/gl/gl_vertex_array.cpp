@@ -48,9 +48,4 @@ namespace sdlk
 	{
 		return m_id;
 	}
-
-	auto gl_vertex_array::make() -> std::shared_ptr<gl_vertex_array>
-	{
-		return std::make_shared<gl_vertex_array>();
-	}
 }  // namespace sdlk

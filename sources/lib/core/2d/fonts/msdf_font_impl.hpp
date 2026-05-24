@@ -6,10 +6,10 @@
 
 #include <msdf-atlas-gen/msdf-atlas-gen.h>
 
-#include <sdlk/core/components/2d/fonts/msdf_font.hpp>
 #include <memory>
 #include <optional>
 #include <sdlk/core/gl/gl_texture.hpp>
+#include <sdlk/core/2d/fonts/msdf_font.hpp>
 
 #define MIN_SIDE 256
 

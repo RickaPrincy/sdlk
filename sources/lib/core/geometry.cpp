@@ -7,24 +7,14 @@
 
 namespace sdlk
 {
-	geometry::geometry(std::shared_ptr<gl_vertex_array> vao,
-		std::shared_ptr<gl_buffer> vbo,
-		std::shared_ptr<gl_buffer> ebo)
+	geometry::geometry(std::unique_ptr<gl_vertex_array> vao,
+		std::unique_ptr<gl_buffer> vbo,
+		std::unique_ptr<gl_buffer> ebo)
 		: m_vbo(std::move(vbo)),
 		  m_ebo(std::move(ebo)),
 		  m_vao(std::move(vao))
 	{
 		this->m_is_indexed = this->m_ebo != nullptr;
-	}
-
-	auto geometry::get_vbo() const -> std::shared_ptr<gl_buffer>
-	{
-		return this->m_vbo;
-	}
-
-	auto geometry::get_vao() const -> std::shared_ptr<gl_vertex_array>
-	{
-		return this->m_vao;
 	}
 
 	auto geometry::render() const -> void
@@ -42,5 +32,20 @@ namespace sdlk
 		{
 			glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->m_vbo->get_count()));
 		}
+	}
+
+    auto geometry::bind_vao() const -> void
+    {
+	    this->m_vao->bind();
+    }
+
+    auto geometry::bind_vbo() const -> void
+    {
+	    this->m_vbo->bind();
+    }
+
+    auto geometry::get_vbo_id() const -> GLuint
+    {
+	    return this->m_vbo->id();
 	}
 }  // namespace sdlk

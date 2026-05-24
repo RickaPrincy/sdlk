@@ -4,11 +4,11 @@
 
 #include <imgui.h>
 
-#include <sdlk/core/components/component.hpp>
-#include <sdlk/core/imgui/imgui_drawer_utils.hpp>
+#include <sdlk/core/component.hpp>
 #include <sdlk/core/imgui/imgui_renderable.hpp>
 
 #include "components.hpp"
+#include "../../utils/imgui_drawer_utils.hpp"
 
 namespace sdlk
 {

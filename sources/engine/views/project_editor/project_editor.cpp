@@ -3,15 +3,13 @@
 //
 
 #include "../view.hpp"
-#include <sdlk/core/imgui/imgui_renderable.hpp>
 #include <imgui.h>
-#include <iostream>
-#include <ostream>
 
-#include "sdlk/core/components/2d/fonts/msdf_font.hpp"
-#include "sdlk/core/components/2d/shape/text_shape.hpp"
+#include <sdlk/core/2d/fonts/msdf_font.hpp>
+#include <sdlk/core/2d/shape/text_shape.hpp>
+#include <sdlk/core/imgui/imgui_renderable.hpp>
 
-static auto draw_project_content(std::weak_ptr<sdlk::component> parent_view) -> std::function<void()>;
+static auto draw_project_content(const std::weak_ptr<sdlk::component>& parent_view) -> std::function<void()>;
 
 auto sdlk::project_editor() -> std::shared_ptr<component>
 {
@@ -19,13 +17,10 @@ auto sdlk::project_editor() -> std::shared_ptr<component>
     const auto content_drawer = draw_project_content(project_view);
 
     project_view->add_child(imgui_renderable::make(content_drawer));
-    project_view->add_event_listener(event_type::key_down, [](const auto& event) {
-        std::cout << "Key down" << std::endl;
-    });
     return project_view;
 }
 
-auto draw_project_content(std::weak_ptr<sdlk::component> parent_view) -> std::function<void()>
+auto draw_project_content(const std::weak_ptr<sdlk::component>& parent_view) -> std::function<void()>
 {
     return [parent_view]() {
         if (const auto parent = parent_view.lock())

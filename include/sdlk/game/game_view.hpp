@@ -6,7 +6,7 @@
 
 #include <SDL2/SDL_events.h>
 #include <sdlk/game/scene_manager.hpp>
-#include <sdlk/core/components/renderable.hpp>
+#include <sdlk/core/renderable.hpp>
 #include <sdlk/core/events/observer.hpp>
 
 namespace sdlk::game

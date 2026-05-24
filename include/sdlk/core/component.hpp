@@ -5,7 +5,7 @@
 #pragma once
 
 #include <memory>
-#include <sdlk/core/components/renderable.hpp>
+#include <sdlk/core/renderable.hpp>
 #include <sdlk/core/events/observer.hpp>
 #include <vector>
 

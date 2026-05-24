@@ -2,7 +2,7 @@
 // Created by ricka on 2026-05-18.
 //
 
-#include <sdlk/core/components/2d/fonts/msdf_font.hpp>
+#include <sdlk/core/2d/fonts/msdf_font.hpp>
 #include "./msdf_font_impl.hpp"
 
 namespace sdlk2d

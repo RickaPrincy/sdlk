@@ -6,7 +6,7 @@
 
 #include <map>
 #include <memory>
-#include <sdlk/core/components/renderable.hpp>
+#include <sdlk/core/renderable.hpp>
 
 namespace sdlk
 {
@@ -23,7 +23,7 @@ namespace sdlk
 		[[nodiscard]] auto get_current() const -> std::shared_ptr<renderable>;
 
 		auto add_view(const std::string &name, std::shared_ptr<renderable> child) -> void;
-		auto switch_to(const std::string &name, const std::shared_ptr<renderable_context> &ctx = nullptr) -> void;
+		auto switch_to(const std::string &name, std::optional<renderable_context> ctx = std::nullopt) -> void;
 
 		auto render(const std::shared_ptr<gl_program> &program) -> void override;
 

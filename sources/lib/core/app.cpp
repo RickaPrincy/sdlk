@@ -84,12 +84,10 @@ namespace sdlk
 			SDL_GL_SetSwapInterval(1);
 		}
 
-		this->_imgui_wrapper =
-			std::make_shared<imgui_wrapper>(p_window, &m_opengl_context, "#version 330 core");
-		this->m_view = std::make_shared<multiple_view>();
+		this->_imgui_wrapper = std::make_unique<imgui_wrapper>(p_window, &m_opengl_context, "#version 330 core");
 		this->m_program = gl_program::from_files(
 			"resources/shaders/vertex.glsl", "resources/shaders/fragment.glsl");
-		this->m_camera = std::make_shared<camera>(window_width, window_height);
+		this->m_camera = std::make_unique<camera>(window_width, window_height);
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -132,7 +130,7 @@ namespace sdlk
 
 	auto app::run(const std::string& default_view, int, char **) -> int
 	{
-		this->m_view->switch_to(default_view);
+		this->m_view.switch_to(default_view);
 		std::signal(SIGINT, signal_handler);
 
 		const auto ndc_background_color = this->_options.m_background.ndc();
@@ -155,7 +153,7 @@ namespace sdlk
 
 				this->m_program->use();
 				this->m_camera->load_uniforms(this->m_program);
-				this->m_view->render(this->m_program);
+				this->m_view.render(this->m_program);
 
 				imgui_wrapper::render();
 				imgui_wrapper::draw();
@@ -186,14 +184,14 @@ namespace sdlk
 		this->_frame_start = SDL_GetTicks();
 	}
 
-	auto app::add_view(const std::string &name, const std::shared_ptr<renderable> &child) const -> void
+	auto app::add_view(const std::string &name, const std::shared_ptr<renderable> &child) -> void
 	{
-		this->m_view->add_view(name, child);
+		this->m_view.add_view(name, child);
 	}
 
-    auto app::switch_to(const std::string &name, const std::shared_ptr<renderable_context> &context) const -> void
+    auto app::switch_to(const std::string &name, const std::optional<renderable_context> &context) -> void
     {
-        this->m_view->switch_to(name, context);
+        this->m_view.switch_to(name, context);
     }
 
     app::~app()

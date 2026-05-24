@@ -2,7 +2,7 @@
 // Created by ricka on 2025-12-30.
 //
 
-#include <sdlk/core/components/multiple_view.hpp>
+#include <sdlk/core/multiple_view.hpp>
 #include <stdexcept>
 
 namespace sdlk
@@ -17,7 +17,7 @@ namespace sdlk
 		return m_current;
 	}
 
-	auto multiple_view::switch_to(const std::string& name, const std::shared_ptr<renderable_context> &ctx) -> void
+	auto multiple_view::switch_to(const std::string& name, std::optional<renderable_context> ctx) -> void
 	{
 		if (this->m_childs.find(name) == this->m_childs.end())
 		{
@@ -25,9 +25,10 @@ namespace sdlk
 		}
 
 	    const auto &to_be_current = this->m_childs[name];
-	    if (ctx)
+
+	    if (ctx.has_value())
 	    {
-	        to_be_current->set_context(ctx);
+	        to_be_current->set_context(ctx.value());
 	    }
 
 		this->m_current = to_be_current;

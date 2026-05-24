@@ -50,9 +50,4 @@ namespace sdlk
 	{
 		return this->m_count;
 	}
-
-	auto gl_buffer::make(const GLenum target) -> std::shared_ptr<gl_buffer>
-	{
-		return std::make_shared<gl_buffer>(target);
-	}
 }  // namespace sdlk

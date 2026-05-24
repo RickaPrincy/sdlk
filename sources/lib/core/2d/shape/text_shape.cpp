@@ -6,7 +6,7 @@
 #include <iostream>
 #include <locale>
 #include <sdlk/core/app.hpp>
-#include <sdlk/core/components/2d/shape/text_shape.hpp>
+#include <sdlk/core/2d/shape/text_shape.hpp>
 #include <sdlk/core/gl/gl_program.hpp>
 #include <utility>
 
@@ -21,8 +21,8 @@ namespace sdlk2d
 		  m_text(std::move(text)),
 		  m_font(font)
 	{
-		auto vao = std::make_shared<sdlk::gl_vertex_array>();
-		auto vbo = std::make_shared<sdlk::gl_buffer>(GL_ARRAY_BUFFER);
+		auto vao = std::make_unique<sdlk::gl_vertex_array>();
+		auto vbo = std::make_unique<sdlk::gl_buffer>(GL_ARRAY_BUFFER);
 
 		vao->bind();
 		vbo->bind();
@@ -44,7 +44,7 @@ namespace sdlk2d
 			sizeof(char_vertex),
 			reinterpret_cast<void *>(offsetof(char_vertex, m_uv)));
 
-		this->m_geometry = std::make_shared<sdlk::geometry>(vao, vbo, nullptr);
+		this->m_geometry = std::make_unique<sdlk::geometry>(std::move(vao), std::move(vbo), nullptr);
 
 		vbo->unbind();
 		vao->unbind();
@@ -55,7 +55,7 @@ namespace sdlk2d
 
 	auto text_shape::render(const std::shared_ptr<sdlk::gl_program> &program) -> void
 	{
-		this->m_geometry->get_vao()->bind();
+		this->m_geometry->bind_vao();
 		const auto uniform = program->get_uniform();
 
 		uniform->set("u_use_texture", true);
@@ -74,7 +74,7 @@ namespace sdlk2d
 
 	auto text_shape::update_vertices() -> void
 	{
-		this->m_geometry->get_vao()->bind();
+		this->m_geometry->bind_vao();
 		this->m_vertices.clear();
 
 		const auto font_metrics = this->m_font->get_impl()->get_metrics();
@@ -122,8 +122,8 @@ namespace sdlk2d
 			pen.x += static_cast<float>(glyph.getAdvance()) * scale;
 		}
 
-		this->m_geometry->get_vbo()->bind();
-		glBindBuffer(GL_ARRAY_BUFFER, this->m_geometry->get_vbo()->id());
+		this->m_geometry->bind_vbo();
+		glBindBuffer(GL_ARRAY_BUFFER, this->m_geometry->get_vbo_id());
 		glBufferData(GL_ARRAY_BUFFER,
 			static_cast<GLsizei>(m_vertices.size() * sizeof(char_vertex)),
 			m_vertices.data(),

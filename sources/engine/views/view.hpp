@@ -5,7 +5,7 @@
 #pragma once
 
 #include <memory>
-#include <sdlk/core/components/component.hpp>
+#include <sdlk/core/component.hpp>
 
 namespace sdlk
 {
