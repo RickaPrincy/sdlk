@@ -18,6 +18,7 @@ namespace sdlk::game
 
     auto game_view::compute_dt() -> float
     {
+        //TODO
         const float now = static_cast<float>(SDL_GetTicks()) / 1000.0f;
         const float dt = now - m_last_time;
         m_last_time = now;

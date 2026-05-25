@@ -8,6 +8,7 @@
 #include "../../project.hpp"
 #include "../../utils/utils.hpp"
 #include "../../sdlk_engine_conf.hpp"
+#include "../../loader/project_loader.hpp"
 #include "../../serializer/project_serializer.hpp"
 
 #define GAME_NAME_PLACEHOLDER_NAME "GAME_NAME"
@@ -32,8 +33,12 @@ namespace sdlk::engine::home_view
                  throw std::runtime_error("Placeholder not found: " + placeholder.m_name);
             });
 
-         const project created{output_path.string(), game_name};
+         const project created{
+             .m_path=output_path.string(),
+             .m_name=game_name
+         };
          project_serializer::serialize(created);
          sdlk_engine_conf::load_or_init()->add_recent_project(created.m_path);
+         project_loader::load(created);
      }
 }

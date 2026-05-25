@@ -5,7 +5,10 @@
 #include "../project.hpp"
 
 #include "project_serializer.hpp"
-#define SDLK_PROJECT_FILE_CONF_NAME "sdlk_engine.json"
+#include <sdlk/game/serializer/project_serializer.hpp>
+
+#define SDLK_RESOURCES_FOLDER "resources"
+#define SDLK_PROJECT_FILE_CONF_NAME "sdlkgame.sdlkproj"
 
 using json = nlohmann::json;
 namespace sdlk::engine
@@ -26,10 +29,14 @@ namespace sdlk::engine
             throw std::runtime_error("Cannot save project: directory does not exist");
         }
 
-        json project_conf;
-        project_conf["name"] = name;
+        json project_conf{
+            {"name", to_serialize.m_version},
+            {"version", to_serialize.m_version},
+            {"start_scene", to_serialize.m_start_scene},
+            {"window_size", {to_serialize.m_window_size.x, to_serialize.m_window_size.y}}
+        };
 
-        const auto file_path = project_dir / SDLK_PROJECT_FILE_CONF_NAME;
+        const auto file_path = project_dir / SDLK_RESOURCES_FOLDER / SDLK_PROJECT_FILE_CONF_NAME;
         std::ofstream file(file_path);
         if (!file.is_open())
         {
@@ -40,8 +47,20 @@ namespace sdlk::engine
 
     auto project_serializer::deserialize(const std::string &path) -> project
     {
-        const auto file_path = std::filesystem::path(path);
-        auto project_conf = json_reader::read(file_path / SDLK_PROJECT_FILE_CONF_NAME);
-        return project{project_conf["name"], path};
+        const std::filesystem::path project_dir(path);
+        const auto file_path = project_dir / SDLK_RESOURCES_FOLDER / SDLK_PROJECT_FILE_CONF_NAME;
+        const auto [
+            m_name,
+            m_version,
+            m_start_scene,
+            m_window_size] = game::project_serializer::deserialize(file_path);
+
+        return project{
+            .m_path = path,
+            .m_name = m_name,
+            .m_version = m_version,
+            .m_window_size = m_window_size,
+            .m_start_scene = m_start_scene,
+        };
     }
 }

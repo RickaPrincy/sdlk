@@ -5,20 +5,18 @@
 #pragma once
 
 #include <string>
+#include <glm/vec2.hpp>
 #include "../utils/json_reader.hpp"
-#include "dirty.hpp"
 
+//TODO
 namespace sdlk::engine
 {
-    struct project: dirty_object
+    struct project
     {
-        std::string m_name{};
         std::string m_path{};
-
-        explicit project(const std::string &name, const std::string &path)
-        {
-            this->m_name = name;
-            this->m_path = path;
-        }
+        std::string m_name{};
+        std::string m_version{"0.0.1"};
+        glm::vec2 m_window_size{800, 700};
+        std::string m_start_scene{"resources/scenes/main.scene"};
     };
 }
