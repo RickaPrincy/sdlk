@@ -13,6 +13,7 @@ set(SDLK_GAME_SOURCES
     game/scenes/game_scene.cpp
     game/systems/movement_system.cpp
     game/systems/render_system.cpp
+    game/serializer/project_serializer.cpp
 )
 
 set(LIB_SOURCES

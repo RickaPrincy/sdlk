@@ -7,9 +7,10 @@
 #include <algorithm>
 
 #include "utils/os.hpp"
-#include "utils/json_reader.hpp"
+#include "../utils/json_reader.hpp"
 
 #include <nlohmann/json.hpp>
+#include <utility>
 
 #define SDLK_CONF_DIRECTORY ".sdlk-engine"
 #define SDLK_CONF_FILE "sdlk-engine.conf.json"
@@ -19,8 +20,8 @@ using json = nlohmann::json;
 
 namespace sdlk::engine
 {
-    sdlk_engine_conf::sdlk_engine_conf(const std::string &version, const std::vector<std::string> &last_projects)
-        : m_version(version), m_last_project_paths(last_projects)
+    sdlk_engine_conf::sdlk_engine_conf(std::string version, const std::vector<std::string> &last_projects)
+        : m_version(std::move(version)), m_last_project_paths(last_projects)
     {}
 
     auto sdlk_engine_conf::get_config_path() -> std::filesystem::path

@@ -29,7 +29,7 @@ namespace sdlk::engine
         [[nodiscard]] auto get_last_project_paths() const -> std::vector<std::string>;
         [[nodiscard]] static auto is_valid(const std::filesystem::path &file_conf_path) -> bool;
 
-        sdlk_engine_conf(const std::string &version, const std::vector<std::string> &last_projects);
+        sdlk_engine_conf(std::string version, const std::vector<std::string> &last_projects);
         sdlk_engine_conf() = default;
     };
 }

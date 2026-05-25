@@ -5,7 +5,7 @@
 #pragma once
 
 #include <string>
-#include "utils/json_reader.hpp"
+#include "../utils/json_reader.hpp"
 #include "dirty.hpp"
 
 namespace sdlk::engine
