@@ -7,6 +7,8 @@
 #include <string>
 #include <functional>
 
+#include "../../serializer/project_serializer.hpp"
+
 namespace sdlk::engine::editor
 {
     struct sidebar_section_args
@@ -55,7 +57,7 @@ namespace sdlk::engine::editor
         ImGui::Dummy(ImVec2(0.0f, 4.0f));
     }
 
-    auto draw_left_sidebar(const float width) -> void
+    auto draw_left_sidebar(const float width, const context_getter& context_getter) -> void
     {
         ImGui::BeginChild("LeftSidebar", ImVec2(width, 0), true);
 
@@ -70,7 +72,7 @@ namespace sdlk::engine::editor
         std::vector<std::string> scene_names;
         for (const auto&[name, size] : scenes)
         {
-            scene_names.push_back(name);
+            scene_names.emplace_back(name);
         }
 
         draw_sidebar_section({
@@ -104,14 +106,7 @@ namespace sdlk::engine::editor
         ImGui::Separator();
         ImGui::Dummy(ImVec2(0.0f, 2.0f));
 
-        static std::vector<std::string> projects_list;
-        static int selected_project_idx = -1;
-
-        draw_sidebar_section({
-            .title = "Projects",
-            .items = projects_list,
-            .selected_idx = selected_project_idx
-        });
+        draw_left_project_section(context_getter);
 
         ImGui::EndChild();
     }

@@ -30,7 +30,7 @@ namespace sdlk::engine
         }
 
         json project_conf{
-            {"name", to_serialize.m_version},
+            {"name", to_serialize.m_name},
             {"version", to_serialize.m_version},
             {"start_scene", to_serialize.m_start_scene},
             {"window_size", {to_serialize.m_window_size.x, to_serialize.m_window_size.y}}

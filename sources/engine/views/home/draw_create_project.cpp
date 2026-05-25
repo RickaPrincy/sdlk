@@ -13,6 +13,7 @@
 
 namespace sdlk::engine::home_view
 {
+    //TODO: duplicate
     static auto is_valid_project_name(const std::string& name) -> bool
     {
         static const std::regex pattern("^[a-zA-Z0-9_-]{3,32}$");

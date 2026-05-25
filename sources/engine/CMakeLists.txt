@@ -23,6 +23,8 @@ set(SDLK_ENGINE_SOURCES
         views/project_editor/draw_right_side_bar.cpp
         serializer/project_serializer.cpp
         loader/project_loader.cpp
+        validator/project_validator.cpp
+        views/project_editor/draw_left_project_section.cpp
 )
 
 add_executable(${SDLK_ENGINE_NAME} ${SDLK_ENGINE_SOURCES})
