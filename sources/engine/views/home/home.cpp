@@ -7,10 +7,11 @@
 #include <sdlk/core/component.hpp>
 #include <sdlk/core/imgui/imgui_renderable.hpp>
 
+#include "../view.hpp"
 #include "components.hpp"
 #include "../../utils/imgui_drawer_utils.hpp"
 
-namespace sdlk
+namespace sdlk::engine
 {
 	static auto draw_home_content() -> void;
 
@@ -23,7 +24,7 @@ namespace sdlk
 
 	auto draw_home_content() -> void
 	{
-	    static const auto projects = get_last_projects();
+	    static const auto projects = home_view::get_last_projects();
 		static const std::shared_ptr<gl_texture> logo =
 			gl_texture::from_file("./resources/images/home.png");
 
@@ -50,11 +51,11 @@ namespace sdlk
 
 			    if (is_creating_new_project)
 			    {
-			        draw_create_project(content_width, is_creating_new_project);
+			        home_view::draw_create_project(content_width, is_creating_new_project);
 			    }
 			    else
 			    {
-			        draw_home_options(content_width, is_creating_new_project);
+			       home_view::draw_home_options(content_width, is_creating_new_project);
 			    }
 
 				ImGui::End();

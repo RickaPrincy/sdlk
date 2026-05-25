@@ -2,20 +2,27 @@ set(IMGUI_DIR ${SDLK_SOURCE_DIR}/external/imgui)
 
 set(SDLK_ENGINE_SOURCES
         main.cpp
-        types/project.cpp
-        views/home/home.cpp
-        views/home/draw_project_card.cpp
-        conf/sdlk_engine_conf.cpp
+        theme.cpp
+        sdlk_engine_conf.cpp
         utils/os.cpp
         utils/utils.cpp
         utils/imgui_drawer_utils.cpp
         utils/nfd_wrapper.cpp
-        views/project_editor/project_editor.cpp
+        views/home/home.cpp
+        views/home/draw_project_card.cpp
         views/home/trigger_open_project.cpp
         views/home/trigger_new_project.cpp
         views/home/get_last_projects.cpp
         views/home/draw_home_options.cpp
         views/home/draw_create_project.cpp
+        views/project_editor/project_editor.cpp
+        views/project_editor/shared_state.cpp
+        views/project_editor/draw_top_bar.cpp
+        views/project_editor/draw_left_side_bar.cpp
+        views/project_editor/draw_view_port.cpp
+        views/project_editor/draw_right_side_bar.cpp
+        serializer/project_serializer.cpp
+        loader/project_loader.cpp
 )
 
 add_executable(${SDLK_ENGINE_NAME} ${SDLK_ENGINE_SOURCES})

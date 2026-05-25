@@ -3,36 +3,40 @@
 //
 
 #include <imgui.h>
-
 #include "components.hpp"
+#include "../../loader/project_loader.hpp"
 
-namespace sdlk
+namespace sdlk::engine::home_view
 {
-    auto draw_project_card(const std::shared_ptr<project>& project) -> void
+    auto draw_project_card(const project& project) -> void
     {
         ImGui::Dummy(ImVec2(0, 6));
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(12.0f, 12.0f));
+
         ImGui::BeginChild(
-            project->get_name().c_str(),
-            ImVec2(0, 68),
+            project.m_name.c_str(),
+            ImVec2(0, 52),
             true,
             ImGuiWindowFlags_None
         );
 
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(10, 10));
-        ImGui::TextUnformatted(project->get_name().c_str());
+        ImGui::AlignTextToFramePadding();
+        ImGui::TextUnformatted(project.m_name.c_str());
+
         ImGui::SameLine();
 
         constexpr float buttonWidth = 80.0f;
         const float avail = ImGui::GetContentRegionAvail().x;
-
         ImGui::SetCursorPosX(ImGui::GetCursorPosX() + avail - buttonWidth);
+
         if (ImGui::Button("Open", ImVec2(buttonWidth, 0)))
         {
-            project->open();
+            project_loader::load(project);
         }
 
-        ImGui::PopStyleVar();
         ImGui::EndChild();
+        ImGui::PopStyleVar();
+
         ImGui::Dummy(ImVec2(0, 6));
     }
 }  // namespace sdlk

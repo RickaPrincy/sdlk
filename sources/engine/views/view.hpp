@@ -7,7 +7,7 @@
 #include <memory>
 #include <sdlk/core/component.hpp>
 
-namespace sdlk
+namespace sdlk::engine
 {
 	auto home() -> std::shared_ptr<component>;
 	auto project_editor() -> std::shared_ptr<component>;

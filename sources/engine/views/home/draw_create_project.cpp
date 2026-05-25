@@ -6,12 +6,12 @@
 #include <imgui.h>
 #include <filesystem>
 #include <memory>
-#include "../../utils/nfd_wrapper.hpp"
 #include <regex>
 
 #include "components.hpp"
+#include "../../utils/nfd_wrapper.hpp"
 
-namespace sdlk
+namespace sdlk::engine::home_view
 {
     static auto is_valid_project_name(const std::string& name) -> bool
     {

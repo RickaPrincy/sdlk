@@ -6,7 +6,7 @@
 #include "components.hpp"
 #include "../../utils/imgui_drawer_utils.hpp"
 
-namespace sdlk
+namespace sdlk::engine::home_view
 {
     auto draw_home_options(const float content_width, bool &is_creating_new_project) -> void
     {

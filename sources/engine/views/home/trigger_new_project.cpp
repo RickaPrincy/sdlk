@@ -5,13 +5,14 @@
 #include <string>
 #include <Templi/Templi.hpp>
 
-#include "../../conf/sdlk_engine_conf.hpp"
-#include "../../types/project.hpp"
+#include "../../project.hpp"
 #include "../../utils/utils.hpp"
+#include "../../sdlk_engine_conf.hpp"
+#include "../../serializer/project_serializer.hpp"
 
 #define GAME_NAME_PLACEHOLDER_NAME "GAME_NAME"
 
-namespace sdlk
+namespace sdlk::engine::home_view
 {
      auto trigger_new_project(const std::string &path, const std::string &name) -> void
      {
@@ -31,11 +32,8 @@ namespace sdlk
                  throw std::runtime_error("Placeholder not found: " + placeholder.m_name);
             });
 
-         const auto created = std::make_shared<project>(output_path.string(), game_name);
-         created->save();
-
-         sdlk_engine_conf::load_or_init()->add_recent_project(created->get_path());
-
-         created->open();
+         const project created{output_path.string(), game_name};
+         project_serializer::serialize(created);
+         sdlk_engine_conf::load_or_init()->add_recent_project(created.m_path);
      }
 }

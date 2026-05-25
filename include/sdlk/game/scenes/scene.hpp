@@ -14,6 +14,7 @@ namespace sdlk::game
     {
     protected:
         world m_world{};
+        glm::vec2 m_canva_size{};
 
     public:
         virtual auto on_exit() -> void {}
@@ -27,6 +28,15 @@ namespace sdlk::game
         {
             return m_world;
         }
+
+        [[nodiscard]] auto get_canva_size() const -> glm::vec2
+        {
+            return m_canva_size;
+        }
+
+        explicit scene(const glm::vec2 &canva_size)
+            :m_canva_size(canva_size)
+        {}
 
         virtual ~scene() = default;
     };
