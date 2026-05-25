@@ -4,8 +4,6 @@
 
 #include "../view.hpp"
 #include <imgui.h>
-#include <string>
-#include <vector>
 #include <sdlk/core/imgui/imgui_renderable.hpp>
 
 static int selected_entity_id = 0;
@@ -82,7 +80,7 @@ static auto draw_scene_list_manager() -> void
         ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
         if (selected_scene_id == i) flags |= ImGuiTreeNodeFlags_Selected;
 
-        ImGui::TreeNodeEx((void*)(intptr_t)i, flags, "  %s.scene", scenes[i]);
+        ImGui::TreeNodeEx(reinterpret_cast<void *>(static_cast<intptr_t>(i)), flags, "  %s.scene", scenes[i]);
         if (ImGui::IsItemClicked())
         {
             selected_scene_id = i;

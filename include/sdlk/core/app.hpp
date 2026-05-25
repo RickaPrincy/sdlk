@@ -41,7 +41,7 @@ namespace sdlk
 	public:
 		multiple_view m_view{};
 
-	    static auto get() -> std::shared_ptr<app>;
+	    static auto get() -> app*;
 
 	    app(const std::string &window_title,
             const int &width,

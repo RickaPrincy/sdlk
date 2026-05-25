@@ -21,8 +21,8 @@ namespace sdlk
 		is_running = false;
 	}
 
-    static std::shared_ptr<app> global_app{nullptr};
-    auto app::get() -> std::shared_ptr<app>
+    static app *global_app{nullptr};
+    auto app::get() -> app*
     {
         return global_app;
     }
@@ -36,7 +36,7 @@ namespace sdlk
 	{
         if (global_app == nullptr)
         {
-            global_app = std::shared_ptr<app>(this);
+            global_app = this;
         }
 
 		this->_frame_delay_ms = 1000 / this->_options.m_fps;
@@ -196,14 +196,14 @@ namespace sdlk
 
     app::~app()
 	{
+		SDL_GL_DeleteContext(this->m_opengl_context);
+
 		if (this->p_window)
 		{
 			SDL_DestroyWindow(this->p_window);
 		}
 
-		SDL_GL_DeleteContext(this->m_opengl_context);
-
-		IMG_Quit();
+        IMG_Quit();
 		SDL_Quit();
 	}
 }  // namespace sdlk
