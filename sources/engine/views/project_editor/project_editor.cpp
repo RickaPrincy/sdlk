@@ -2,16 +2,16 @@
 // Created by ricka on 2026-05-17.
 //
 
+#include <imgui.h>
 #include <sdlk/core/component.hpp>
 #include <sdlk/core/imgui/imgui_renderable.hpp>
 
 #include "../view.hpp"
 #include "components.hpp"
-#include <imgui.h>
 
 static auto draw_editor_root_content(const sdlk::engine::editor::context_getter &context_getter) -> std::function<void()>
 {
-    return [context_getter]()
+    return [context_getter]() -> void
     {
         sdlk::engine::editor::draw_top_bar();
 
@@ -43,7 +43,7 @@ static auto draw_editor_root_content(const sdlk::engine::editor::context_getter 
             ImGui::TableNextColumn();
             float right_width = ImGui::GetContentRegionAvail().x;
             if (right_width < 180.0f) right_width = 180.0f;
-            sdlk::engine::editor::draw_right_sidebar(right_width);
+            sdlk::engine::editor::draw_right_sidebar(right_width, context_getter);
 
             ImGui::EndTable();
         }
@@ -53,9 +53,9 @@ static auto draw_editor_root_content(const sdlk::engine::editor::context_getter 
 
 static auto draw_editor_root(const std::weak_ptr<sdlk::component> &view) -> std::function<void()>
 {
-    const sdlk::engine::editor::context_getter context_getter = [view]() -> sdlk::renderable_context&
+    const sdlk::engine::editor::context_getter context_getter = [view]() -> std::unordered_map<std::string, std::any>&
     {
-        return view.lock()->get_context();
+        return view.lock()->get_context().m_props;
     };
 
     return draw_editor_root_content(context_getter);

@@ -1,7 +1,7 @@
 #include <string>
 #include <algorithm>
 #include <cctype>
-#include "../project.hpp"
+#include "../types/project.hpp"
 #include "validator_result.hpp"
 #include "project_validator.hpp"
 

@@ -15,14 +15,14 @@ namespace sdlk
 {
         struct renderable_context
         {
-            std::unordered_map<std::string, std::any> props{};
+            std::unordered_map<std::string, std::any> m_props{};
 
             template<typename T>
             auto get(const std::string& key) -> std::optional<T>
             {
                 if (has(key))
                 {
-                    return std::any_cast<T>(props[key]);
+                    return std::any_cast<T>(m_props[key]);
                 }
 
                 return std::nullopt;
@@ -31,12 +31,12 @@ namespace sdlk
             template<typename T>
             auto set(const std::string &key, T value)
             {
-                this->props[key] = value;
+                this->m_props[key] = value;
             }
 
             auto has(const std::string &key) -> bool
             {
-                return this->props.find(key) != this->props.end();
+                return this->m_props.find(key) != this->m_props.end();
             }
 
             renderable_context() = default;

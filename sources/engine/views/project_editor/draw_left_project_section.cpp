@@ -3,7 +3,7 @@
 //
 
 #include "components.hpp"
-#include "../../project.hpp"
+#include "../../types/project.hpp"
 #include "../../serializer/project_serializer.hpp"
 #include "../../validator/project_validator.hpp"
 
@@ -14,7 +14,7 @@ namespace sdlk::engine::editor
 {
     auto draw_left_project_section(const context_getter& context_getter) -> void
     {
-        auto& [props] = context_getter();
+        auto& props = context_getter();
         auto& current_project = std::any_cast<project&>(props["project"]);
 
         if (ImGui::TreeNode("Project"))

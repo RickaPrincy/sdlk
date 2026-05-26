@@ -5,17 +5,10 @@
 #pragma once
 
 #include <string>
+#include "../types/project.hpp"
 
-namespace sdlk::engine
+namespace sdlk::engine::project_serializer
 {
-    struct project;
-
-    class project_serializer
-    {
-    public:
-        static auto serialize(const project& to_serialize) -> void;
-        [[nodiscard]] static auto deserialize(const std::string& path) -> project;
-
-        project_serializer() = delete;
-    };
+    auto serialize(const project& to_serialize) -> void;
+    [[nodiscard]] auto deserialize(const std::string& path) -> project;
 }

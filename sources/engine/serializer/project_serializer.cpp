@@ -2,18 +2,20 @@
 // Created by ricka on 2026-05-25.
 //
 
-#include "../project.hpp"
+#include <nlohmann/json.hpp>
+#include <sdlk/game/serializer/project_serializer.hpp>
 
 #include "project_serializer.hpp"
-#include <sdlk/game/serializer/project_serializer.hpp>
+#include "../types/project.hpp"
+#include "../../utils/json_io.hpp"
 
 #define SDLK_RESOURCES_FOLDER "resources"
 #define SDLK_PROJECT_FILE_CONF_NAME "sdlkgame.sdlkproj"
 
 using json = nlohmann::json;
-namespace sdlk::engine
+namespace sdlk::engine::project_serializer
 {
-    auto project_serializer::serialize(const project &to_serialize) -> void
+    auto serialize(const project &to_serialize) -> void
     {
         const auto name = to_serialize.m_name;
         const auto path = to_serialize.m_path;
@@ -29,7 +31,7 @@ namespace sdlk::engine
             throw std::runtime_error("Cannot save project: directory does not exist");
         }
 
-        json project_conf{
+        const json project_conf{
             {"name", to_serialize.m_name},
             {"version", to_serialize.m_version},
             {"start_scene", to_serialize.m_start_scene},
@@ -37,15 +39,10 @@ namespace sdlk::engine
         };
 
         const auto file_path = project_dir / SDLK_RESOURCES_FOLDER / SDLK_PROJECT_FILE_CONF_NAME;
-        std::ofstream file(file_path);
-        if (!file.is_open())
-        {
-            throw std::runtime_error("Cannot open project file for saving");
-        }
-        file << project_conf.dump(2);
+        json_io::write(file_path, project_conf);
     }
 
-    auto project_serializer::deserialize(const std::string &path) -> project
+    auto deserialize(const std::string &path) -> project
     {
         const std::filesystem::path project_dir(path);
         const auto file_path = project_dir / SDLK_RESOURCES_FOLDER / SDLK_PROJECT_FILE_CONF_NAME;

@@ -1,6 +1,8 @@
 //
 // Created by ricka on 2026-05-25.
 //
+
+#include <imgui.h>
 #include "components.hpp"
 
 namespace sdlk::engine::editor
@@ -11,7 +13,6 @@ namespace sdlk::engine::editor
         {
             if (ImGui::BeginMenu("Projects"))
             {
-                if (ImGui::MenuItem("Save Project")) {}
                 ImGui::EndMenu();
             }
             ImGui::EndMainMenuBar();

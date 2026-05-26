@@ -8,7 +8,13 @@ set(SDLK_ENGINE_SOURCES
         utils/utils.cpp
         utils/imgui_drawer_utils.cpp
         utils/nfd_wrapper.cpp
+        loader/project_loader.cpp
+        validator/project_validator.cpp
+        loader/scene_loader.cpp
+        types/scene.cpp
         views/home/home.cpp
+        serializer/project_serializer.cpp
+        serializer/scene_serializer.cpp
         views/home/draw_project_card.cpp
         views/home/trigger_open_project.cpp
         views/home/trigger_new_project.cpp
@@ -16,15 +22,15 @@ set(SDLK_ENGINE_SOURCES
         views/home/draw_home_options.cpp
         views/home/draw_create_project.cpp
         views/project_editor/project_editor.cpp
-        views/project_editor/shared_state.cpp
         views/project_editor/draw_top_bar.cpp
         views/project_editor/draw_left_side_bar.cpp
         views/project_editor/draw_view_port.cpp
         views/project_editor/draw_right_side_bar.cpp
-        serializer/project_serializer.cpp
-        loader/project_loader.cpp
-        validator/project_validator.cpp
         views/project_editor/draw_left_project_section.cpp
+        views/project_editor/draw_left_scenes_section.cpp
+        views/project_editor/get_selected_scene.cpp
+        views/project_editor/get_selected_item.cpp
+        views/project_editor/draw_sidebar_section.cpp
 )
 
 add_executable(${SDLK_ENGINE_NAME} ${SDLK_ENGINE_SOURCES})
@@ -37,9 +43,9 @@ target_include_directories(
 
 target_include_directories(${SDLK_ENGINE_NAME} PRIVATE ${SDLK_SOURCE_DIR}/include)
 
-target_link_libraries(${SDLK_ENGINE_NAME} PRIVATE ${SDLK_LIB_NAME})
-target_link_libraries(${SDLK_ENGINE_NAME} PRIVATE nfd::nfd)
 target_link_libraries(${SDLK_ENGINE_NAME} PRIVATE Templi)
+target_link_libraries(${SDLK_ENGINE_NAME} PRIVATE nfd::nfd)
+target_link_libraries(${SDLK_ENGINE_NAME} PRIVATE ${SDLK_LIB_NAME})
 
 set_target_properties(${SDLK_ENGINE_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 

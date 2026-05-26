@@ -13,7 +13,7 @@ namespace sdlk::game
     class game_scene: public scene
     {
     public:
-        game_scene() = default;
+        explicit game_scene(const glm::vec2& canva_size);
 
         auto update(const float &dt) -> void override;
         auto render(const std::shared_ptr<gl_program> &program) -> void override;

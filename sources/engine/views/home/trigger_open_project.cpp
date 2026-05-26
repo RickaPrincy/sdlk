@@ -2,7 +2,7 @@
 // Created by ricka on 2026-05-20.
 //
 
-#include "../../project.hpp"
+#include "../../types/project.hpp"
 #include "../../utils/nfd_wrapper.hpp"
 #include "../../loader/project_loader.hpp"
 #include "../../serializer/project_serializer.hpp"

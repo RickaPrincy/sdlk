@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "../project.hpp"
+#include "../types/project.hpp"
 #include "validator_result.hpp"
 
 namespace sdlk::engine::project_validator

@@ -3,14 +3,14 @@
 //
 
 #include <sdlk/game/serializer/project_serializer.hpp>
-#include "../../../utils/json_reader.hpp"
+#include "../../../utils/json_io.hpp"
 
 namespace sdlk::game::project_serializer
 {
     //TODO: validate
     auto deserialize(const std::string &path) -> project
     {
-        const auto json = json_reader::read(path);
+        const auto json = json_io::read(path);
         const auto name = json["name"].get<std::string>();
         const auto version = json["version"].get<std::string>();
         const auto start_scene = json["start_scene"].get<std::string>();

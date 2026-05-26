@@ -6,7 +6,7 @@
 
 #include <vector>
 
-#include "../../project.hpp"
+#include "../../types/project.hpp"
 
 namespace sdlk::engine::home_view
 {

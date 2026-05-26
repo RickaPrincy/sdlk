@@ -8,6 +8,11 @@
 
 namespace sdlk::game
 {
+    game_scene::game_scene(const glm::vec2 &canva_size) :
+        scene(canva_size)
+    {
+    }
+
     auto game_scene::update(const float &dt) -> void
     {
         movement_system::update(m_world, dt);

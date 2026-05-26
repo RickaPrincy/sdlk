@@ -4,20 +4,18 @@
 
 #include "sdlk_engine_conf.hpp"
 
+#include <utility>
 #include <algorithm>
+#include <nlohmann/json.hpp>
 
 #include "utils/os.hpp"
-#include "../utils/json_reader.hpp"
-
-#include <nlohmann/json.hpp>
-#include <utility>
+#include "../utils/json_io.hpp"
 
 #define SDLK_CONF_DIRECTORY ".sdlk-engine"
 #define SDLK_CONF_FILE "sdlk-engine.conf.json"
 #define SDLK_TEMPLATE_DIRECTORY "template-release"
 
 using json = nlohmann::json;
-
 namespace sdlk::engine
 {
     sdlk_engine_conf::sdlk_engine_conf(std::string version, const std::vector<std::string> &last_projects)
@@ -49,7 +47,7 @@ namespace sdlk::engine
 
         try
         {
-            auto j = json_reader::read(file_conf_path);
+            auto j = json_io::read(file_conf_path);
             if (!j.is_object())
             {
                 return false;
@@ -79,7 +77,7 @@ namespace sdlk::engine
 
         if (is_valid(path))
         {
-            auto j = json_reader::read(path);
+            auto j = json_io::read(path);
 
             conf.m_version = j.value("version", SDLK_VERSION);
             conf.m_last_project_paths =
@@ -101,13 +99,7 @@ namespace sdlk::engine
         j["version"] = m_version;
         j["last_project_paths"] = m_last_project_paths;
 
-        std::ofstream file(path);
-        if (!file.is_open())
-        {
-            throw std::runtime_error("Cannot write config file: " + path.string());
-        }
-
-        file << j.dump(2);
+        json_io::write(path, j);
     }
 
     auto sdlk_engine_conf::add_recent_project(const std::string& path) -> void

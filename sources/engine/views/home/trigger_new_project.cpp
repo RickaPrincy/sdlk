@@ -5,7 +5,7 @@
 #include <string>
 #include <Templi/Templi.hpp>
 
-#include "../../project.hpp"
+#include "../../types/project.hpp"
 #include "../../utils/utils.hpp"
 #include "../../sdlk_engine_conf.hpp"
 #include "../../loader/project_loader.hpp"

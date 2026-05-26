@@ -4,15 +4,9 @@
 
 #pragma once
 
-namespace sdlk::engine
+#include "../types/project.hpp"
+
+namespace sdlk::engine::project_loader
 {
-    struct project;
-
-    class project_loader
-    {
-    public:
-        static auto load(project to_load) -> void;
-
-        project_loader() = delete;
-    };
+    auto load(project to_load) -> void;
 }
