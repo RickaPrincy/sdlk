@@ -2,6 +2,11 @@
 
 #sdlk :memo:
 
+> [!NOTE]
+> **sdlk is no longer maintained.** This SDL2 wrapper started as the rendering layer for [R_Chess](https://github.com/RickaPrincy/R_Chess) and is where [**Noi Engine**](https://github.com/noi-engine/noi_engine) was born: a C++20 2D game engine with an ECS core, a JSON scene format and a Qt editor. Development continues there.
+>
+> **Lineage:** R_Chess → sdlk → [Noi Engine](https://github.com/noi-engine/noi_engine) ([Editor](https://github.com/noi-engine/noi_engine_editor))
+
 SDL2 Kit (SDL2 Wrapper)
 
 # Installation :seedling:
